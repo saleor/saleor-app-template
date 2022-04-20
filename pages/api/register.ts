@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { client } from "../../lib/graphql"
 
 const handler = async (request: NextApiRequest, res: NextApiResponse): Promise<undefined> => {
-  console.log(request)
   const saleor_domain = request.headers['x-saleor-domain']
   if (!saleor_domain) {
     res.statusCode = 400
