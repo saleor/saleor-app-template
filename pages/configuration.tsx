@@ -5,7 +5,7 @@ import { useFetchTwelveProductsQuery } from '../generated/graphql'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
-  const [{ data, loading, error }] = useFetchTwelveProductsQuery()
+  const [{ data, fetching, error }] = useFetchTwelveProductsQuery()
 
   return (
     <div className={styles.container}>
