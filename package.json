@@ -10,6 +10,7 @@
     "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "dotenv": "^16.0.0",
     "graphql": "^16.3.0",
     "graphql-tag": "^2.12.6",
     "next": "12.1.5",
