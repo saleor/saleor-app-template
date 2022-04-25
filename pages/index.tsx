@@ -1,18 +1,17 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Saleor App Boilerplate</title>
         <meta name="description" content="Extend Saleor with Apps with ease." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <main>
         <div>
           <h1>🦄 🎉 Your app is up and running.</h1>
           <p>Welcome in the Saleor App Boilerplate.</p>
@@ -45,13 +44,13 @@ const Home: NextPage = () => {
       </main>
 
       <footer>
-        Powered by
+        Powered by{' '}
         <a
           href="https://saleor.io"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span className={styles.logo}>
+          <span>
             Saleor
           </span>
         </a>
