@@ -1,8 +1,17 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
+import { useEffect, useState } from 'react';
 
 const Home: NextPage = () => {
+  const [isBrowser, setIsBrowser] = useState(false);
+
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
+
+  const hostname = isBrowser ? window.location.hostname : undefined;
+  const isTunnel = hostname?.includes('saleor.live')
+
   return (
     <div>
       <Head>
@@ -19,10 +28,14 @@ const Home: NextPage = () => {
         <div>
           <h2>Next steps:</h2>
           <ul>
-            <li>
+            {!isTunnel && <li>
               <span>Use Saleor CLI to setup a live tunnel to your Cloud environment:</span><br/>
               <code>saleor app tunnel</code>
-            </li>
+            </li>}
+            { isTunnel && <li>
+              <span>You are accessing your Saleor App via the tunnel</span><br/>
+              <code>{hostname}</code>
+            </li>}
             <li>
               <span>Write your first webhook:</span><br/>
               <code>saleor webhook generate</code>
