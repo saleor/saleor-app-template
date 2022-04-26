@@ -60,7 +60,7 @@ or you can you can use [localtunnel](https://github.com/localtunnel/localtunnel)
 1. Start App dev server
 
 ```
-$ yarn dev
+$ pnpm run dev
 ```
 
 2. Run `appInstall` mutation from graphql client (MANAGE_APPS permission required!)
