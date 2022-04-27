@@ -19,7 +19,7 @@ You can use any preferred technology to create Saleor Apps, but Next.js is among
 ## How to use this project
 
 ### Saleor CLI for the win 🚀
-Saleor CLI is designed to save you from the repetitive chores around Saleor development, including creating Apps. It will take the burden of spawning new apps locally, connecting them with Saleor environments, and establishing a tunnel for local development in seconds.
+[Saleor CLI](https://github.com/saleor/saleor-cli) is designed to save you from the repetitive chores around Saleor development, including creating Apps. It will take the burden of spawning new apps locally, connecting them with Saleor environments, and establishing a tunnel for local development in seconds.
 
 [Full Saleor CLI reference](https://docs.saleor.io/docs/3.x/developer/cli)
 
