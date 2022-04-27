@@ -1,93 +1,64 @@
 # Saleor App Template
 
-Bare-bones Saleor App template to start with.
+Bare-bones boilerplate for writing Saleor Apps with Next.js.
 
-Useful resources:
+### What's Saleor App in a nutshell 
+Saleor App is the fastest way of extending Saleor with custom logic using asynchronous and synchronous webhooks (and vast Saleor's API). In most cases, creating an App consists of two tasks:
+* Writing webhook's code realizing your custom login
+* Developing configuration UI that can be exposed to Saleor Dashboard via specialized view (designated in App's manifest).
+
+### Why Next.js
+You can use any preferred technology to create Saleor Apps, but Next.js is among the most efficient for two reasons. The first is the simplicity of maintaining your API endpoints/webhooks and your apps' configuration React front-end in a single, well-organized project. The second reason is the ease and quality of local development and deployment.
+
+### Learn more about Apps
 
 [Apps guide](https://docs.saleor.io/docs/3.x/developer/extending/apps/key-concepts)
 
 [Configuring apps in dashboard](https://docs.saleor.io/docs/3.x/dashboard/apps)
 
-[Saleor CLI guide](https://docs.saleor.io/docs/3.x/dashboard/apps)
+## How to use this project
 
-## Installation
+### Saleor CLI for the win 🚀
+Saleor CLI is designed to save you from the repetitive chores around Saleor development, including creating Apps. It will take the burden of spawning new apps locally, connecting them with Saleor environments, and establishing a tunnel for local development in seconds.
 
-### From Saleor CLI
+[Full Saleor CLI reference](https://docs.saleor.io/docs/3.x/developer/cli)
 
-Saleor CLI is a tool which allows to manage your Saleor Cloud resources directly from the command line.
+Here's how to start:
+If you don't have (free developer) Saleor Cloud account yet:
+```
+saleor register
+```
 
-[Saleor CLI guide] (https://docs.saleor.io/docs/3.x/developer/extending/apps/key-concepts)
-
+Now you're ready to create your first App:
 ```
 saleor app create [your-app-name]
 ```
 
-The Saleor CLI will:
+In this step, Saleor CLI will:
 - clone this repository to the specified folder
 - install dependencies
-- ask you weather you'd like to install the app in the environment
+- ask you whether you'd like to install the app in the selected Saleor environment
 - create `.env` file
-- create tunnel so you can test the app integration with the environment
 - start the app in development mode
 
-### Manual
-
-1. Update Saleor URI in the `.env`. If you don't have running instance of Saleor, you create a [free dev account](https://cloud.saleor.io/)
-   or run instance [locally](https://github.com/saleor/saleor-platform)
-2. You'll need [pnpm](https://pnpm.io/installation) `npm install -g pnpm` to install dependencies.
-
-
-## How to add app to Saleor?
-
-### From Saleor CLI
-
-Use the `saleor` command from the app project directory
-
-```
-saleor app install
-```
-
-### Manual
-
-For local development you can use tunnel feature build in Saleor CLI
-
+Having your app ready, the final thing you want to establish is a tunnel with your Saleor environment. Go to your app's directory first and run:
 ```
 saleor app tunnel
 ```
+Your local application should be available now to the outside world (Saleor instance) for accepting all the events via webhooks.
 
-or you can you can use [localtunnel](https://github.com/localtunnel/localtunnel) or [ngrok](https://ngrok.com/) to expose your app.
-
-1. Start App dev server
-
-```
-$ pnpm run dev
-```
-
-2. Run `appInstall` mutation from graphql client (MANAGE_APPS permission required!)
+A quick note: the next time you come back to your project, it is enough to launch your app in a standard way (and then launch your tunnel as described earlier):
 
 ```
-mutation {
-  appInstall(
-    input: {
-      appName: "Saleor App Template"
-      manifestUrl: "https://your.app.url.saleor.live"
-      permissions: [MANAGE_PRODUCTS]
-    }
-  ) {
-    appInstallation {
-      id
-      status
-      appName
-      manifestUrl
-    }
-    appErrors {
-      field
-      message
-      code
-      permissions
-    }
-  }
-}
+pnpm dev
+```
+or 
+```
+npm run dev
 ```
 
-3. That's it! 🦄
+### Manual installation
+If you don't want to use our CLI tool, just clone this repository and use standard tools instead. Learn how to [install your app manually](https://docs.saleor.io/docs/3.x/developer/extending/apps/installing-apps#installation-using-graphql-api) at any Saleor instance from our general docs and use tunneling tools like [localtunnel](https://github.com/localtunnel/localtunnel) or [ngrok](https://ngrok.com/) in order to expose it to the external world if needed.
+
+
+That's it! 🦄
