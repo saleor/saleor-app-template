@@ -23,8 +23,7 @@ You can use any preferred technology to create Saleor Apps, but Next.js is among
 
 [Full Saleor CLI reference](https://docs.saleor.io/docs/3.x/developer/cli)
 
-Here's how to start:
-If you don't have (free developer) Saleor Cloud account yet:
+If you don't have (free developer) Saleor Cloud account create one with the following command:
 ```
 saleor register
 ```
