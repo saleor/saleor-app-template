@@ -35,4 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 
 # GraphQL auto-generated
+generated
 graphql.schema.json
