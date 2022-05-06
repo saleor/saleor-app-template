@@ -7,7 +7,7 @@
     "build": "pnpm generate && next build",
     "start": "pnpm generate && next start",
     "lint": "next lint",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "graphql-codegen"
   },
   "dependencies": {
     "graphql": "^16.4.0",
