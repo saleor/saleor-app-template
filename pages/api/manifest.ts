@@ -1,23 +1,21 @@
-import { NextApiHandler } from "next"
-import { version, name } from "../../package.json"
-import dotenv from 'dotenv'
-import fs from 'fs/promises';
+import { NextApiHandler } from "next";
 
-const handler: NextApiHandler = async (req, res) => {
-  const content = await fs.readFile('.env', 'utf-8');
-  const { APP_URL } = dotenv.parse(content);
-  process.env.APP_URL = APP_URL 
+import { version, name } from "../../package.json";
+import { getBaseURL } from "../../lib/middlewares";
+
+const handler: NextApiHandler = async (request, response) => {
+  const baseURL = getBaseURL(request);
 
   const manifest = {
     id: "saleor.app",
     version: version,
     name: name,
-    permissions: ['MANAGE_ORDERS'],
-    configurationUrl: `${process.env.APP_URL}/configuration`,
-    tokenTargetUrl: `${process.env.APP_URL}/api/register`,
-  }
+    permissions: ["MANAGE_ORDERS"],
+    configurationUrl: `${baseURL}/configuration`,
+    tokenTargetUrl: `${baseURL}/api/register`,
+  };
 
-  res.end(JSON.stringify(manifest))
+  response.json(manifest);
 }
 
-export default handler
+export default handler;
