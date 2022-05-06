@@ -1,8 +1,8 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import { useEffect, useState } from 'react';
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useEffect, useState } from "react";
 
-const Home: NextPage = () => {
+const Index: NextPage = () => {
   const [isBrowser, setIsBrowser] = useState(false);
 
   useEffect(() => {
@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   }, []);
 
   const hostname = isBrowser ? window.location.hostname : undefined;
-  const isTunnel = hostname?.includes('saleor.live')
+  const isTunnel = hostname?.includes("saleor.live");
 
   return (
     <div>
@@ -40,7 +40,7 @@ const Home: NextPage = () => {
               <span>Write your first webhook:</span><br/>
               <code>saleor webhook generate</code>
             </li>
-            <li><a target="_blank" href="">Go to your App's Dashboard</a></li>
+            <li><a target="_blank" href="">Go to your App&apos;s Dashboard</a></li>
             <li><a target="_blank" href="">Explore your GraphQL API</a></li>
           </ul>
         </div>
@@ -48,9 +48,26 @@ const Home: NextPage = () => {
         <div>
           <h2>Additional resources:</h2>
           <ul>
-            <li><a target="_blank" href="https://docs.saleor.io/docs/3.x/developer/extending/apps/asynchronous-webhooks">Saleor Asynchrnous Webhooks</a></li>
-            <li><a target="_blank" href="https://docs.saleor.io/docs/3.x/developer/extending/apps/synchronous-webhooks">Saleor Synchrnous Webhooks</a></li>
-            <li>If you're new to Next.js make sure to check out <a target="_blank" href="https://nextjs.org/learn">Next.js Tutorial</a></li>
+            <li>
+              <a
+                href="https://docs.saleor.io/docs/3.x/developer/extending/apps/asynchronous-webhooks"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Saleor Asynchrnous Webhooks
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://docs.saleor.io/docs/3.x/developer/extending/apps/synchronous-webhooks"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Saleor Synchrnous Webhooks
+              </a>
+            </li>
+            <li>
+              If you&apos;re new to Next.js make sure to check out <a target="_blank" rel="noopener noreferrer" href="https://nextjs.org/learn">Next.js Tutorial</a></li>
           </ul>
         </div>
 
@@ -69,7 +86,7 @@ const Home: NextPage = () => {
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Index;
