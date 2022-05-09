@@ -1,0 +1,10 @@
+subscription OrderCreatedSubscription {
+  event {
+    ... on OrderCreated {
+      order {
+        id
+        userEmail
+      }
+    }
+  }
+}
