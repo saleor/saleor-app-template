@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import { useFetchTwelveProductsQuery } from "../generated/graphql";
 
-const Home: NextPage = () => {
+const Configuration: NextPage = () => {
   const [{ data }] = useFetchTwelveProductsQuery();
 
   return (
@@ -22,4 +22,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Configuration;
