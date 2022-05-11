@@ -19,7 +19,7 @@ const handler: NextApiHandler = async (request, response) => {
     webhooks: [
       {
         name: "order-created",
-        events: ["ORDER_CREATED"],
+        asyncEvents: ["ORDER_CREATED"],
         query: print(OrderCreatedSubscriptionDocument),
         targetUrl: `${baseURL}/api/webhooks/order-created`,
         isActive: true,
