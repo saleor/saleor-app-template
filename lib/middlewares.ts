@@ -1,41 +1,33 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest } from "next";
 import * as Constants from "../constants";
+import MiddlewareError from "../utils/MiddlewareError";
 
 export const getBaseURL = (req: NextApiRequest): string => {
   const { host, "x-forwarded-proto": protocol = "http" } = req.headers;
   return `${protocol}://${host}`;
 };
 
-export const domainMiddleware = (
-  request: NextApiRequest,
-  response: NextApiResponse
-) => {
+export const domainMiddleware = (request: NextApiRequest) => {
   const saleorDomain = request.headers[Constants.SALEOR_DOMAIN_HEADER];
   if (!saleorDomain) {
-    response
-      .status(400)
-      .json({ success: false, message: "Missing saleor domain token." });
-    return;
+    throw new MiddlewareError("Missing saleor domain token.", 400);
   }
 };
 
 export const eventMiddleware = (
   request: NextApiRequest,
-  response: NextApiResponse,
   expectedEvent: string
 ) => {
   const receivedEvent = request.headers[Constants.SALEOR_EVENT]?.toString();
   if (receivedEvent !== expectedEvent) {
-    response.status(400).json({ success: false, message: "Invalid event" });
-    return;
+    throw new MiddlewareError("Invalid event", 400);
   }
 };
 
 export const webhookMiddleware = (
   request: NextApiRequest,
-  response: NextApiResponse,
   expectedEvent: string
 ) => {
-  domainMiddleware(request, response);
-  eventMiddleware(request, response, expectedEvent);
+  domainMiddleware(request);
+  eventMiddleware(request, expectedEvent);
 };
