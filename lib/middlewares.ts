@@ -18,7 +18,8 @@ export const eventMiddleware = (
   request: NextApiRequest,
   expectedEvent: string
 ) => {
-  const receivedEvent = request.headers[Constants.SALEOR_EVENT]?.toString();
+  const receivedEvent =
+    request.headers[Constants.SALEOR_EVENT_HEADER]?.toString();
   if (receivedEvent !== expectedEvent) {
     throw new MiddlewareError("Invalid event", 400);
   }
