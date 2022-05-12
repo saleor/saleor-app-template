@@ -10,6 +10,7 @@
     "generate": "graphql-codegen"
   },
   "dependencies": {
+    "fast-glob": "^3.2.11",
     "graphql": "^16.5.0",
     "graphql-tag": "^2.12.6",
     "next": "12.1.6",
