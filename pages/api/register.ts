@@ -1,5 +1,6 @@
 import { NextApiHandler } from "next";
-import fetch from "node-fetch";
+
+import { setAuthToken } from "../../lib/environment";
 
 const handler: NextApiHandler = async (request, response) => {
   const saleor_domain = request.headers["saleor-domain"];
@@ -14,20 +15,7 @@ const handler: NextApiHandler = async (request, response) => {
     return;
   }
 
-  if (process.env.VERCEL === "1") {
-    await fetch(
-      process.env.SALEOR_MARKETPLACE_REGISTER_URL as string,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          auth_token,
-          marketplace_token: process.env.SALEOR_MARKETPLACE_TOKEN,
-        }),
-      },
-    );
-  }
-
+  await setAuthToken(auth_token);
   response.json({ success: true });
 };
 
