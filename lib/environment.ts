@@ -1,9 +1,9 @@
 import fs from "fs";
 import fetch from "node-fetch";
 
-export const getAuthToken = (): string => {
+export const getAuthToken = () => {
   if (process.env.VERCEL === "1") {
-    return process.env.AUTH_TOKEN as string;
+    return process.env.AUTH_TOKEN || "";
   } else {
     return fs.readFileSync(".auth_token", "utf8");
   }
