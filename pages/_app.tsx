@@ -1,14 +1,17 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
-import { Provider } from 'urql';
-import { client } from '../lib/graphql';
+import type { AppProps } from "next/app";
 
-function MyApp({ Component, pageProps }: AppProps) {
+import "../styles/globals.css";
+import AppBridgeProvider from "../providers/AppBridgeProvider";
+import GraphQLProvider from "../providers/GraphQLProvider";
+
+const SaleorApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <Provider value={client}>
-      <Component {...pageProps} />
-    </Provider>
+    <AppBridgeProvider>
+      <GraphQLProvider>
+        <Component {...pageProps} />
+      </GraphQLProvider>
+    </AppBridgeProvider>
   );
-}
+};
 
-export default MyApp
+export default SaleorApp;

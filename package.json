@@ -10,6 +10,8 @@
     "generate": "graphql-codegen"
   },
   "dependencies": {
+    "@saleor/app-bridge": "^0.1.7",
+    "@urql/exchange-auth": "^0.1.7",
     "fast-glob": "^3.2.11",
     "graphql": "^16.5.0",
     "graphql-tag": "^2.12.6",
