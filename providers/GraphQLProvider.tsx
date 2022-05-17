@@ -10,6 +10,7 @@ interface IAuthState {
 
 const GraphQLProvider: React.FC<PropsWithChildren<{}>> = (props) => {
   const { domain, token } = useApp()?.getState() || {};
+
   const client = createClient({
     url :`https://${domain}/graphql/`,
     exchanges: [
@@ -41,7 +42,7 @@ const GraphQLProvider: React.FC<PropsWithChildren<{}>> = (props) => {
           };
         },
         getAuth: async ({ authState, mutate }) =>  {
-          return { token };
+          return Promise.resolve({ token: token as string });
         },
       }),
       fetchExchange,
