@@ -1,0 +1,10 @@
+query FetchTwelveOrders {
+  orders(first: 12) {
+    edges {
+      node {
+        id
+        userEmail
+      }
+    }
+  }
+}
