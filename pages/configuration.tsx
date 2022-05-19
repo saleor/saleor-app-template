@@ -8,26 +8,26 @@ import { useFetchTwelveOrdersQuery } from "../generated/graphql";
 import useApp from "../hooks/useApp";
 
 const Configuration: NextPage = () => {
-  const app = useApp();
+  const appState = useApp()?.getState();
 
-  const [appState, setAppState] = useState<AppBridgeState>();
   const [configuration, setConfiguration] = useState(null);
-
   const [{ data: orders }] = useFetchTwelveOrdersQuery();
-
-  useEffect(() => setAppState(app?.getState()), [app]);
 
   useEffect(() => {
     appState?.domain && appState?.token && fetch(
         "/api/configuration",
         { headers: [
-          [SALEOR_DOMAIN_HEADER, appState?.domain],
-          ["authorization-bearer", appState?.token!],
+          [SALEOR_DOMAIN_HEADER, appState.domain],
+          ["authorization-bearer", appState.token!],
         ] },
       )
         .then((res) => res.json())
         .then(({ data }) => setConfiguration(data))
   }, [appState]);
+
+  if (!appState?.ready) {
+    return <div className="text-white">Loading...</div>;
+  }
 
   return (
     <div>

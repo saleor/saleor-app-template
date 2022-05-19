@@ -42,7 +42,14 @@ export const jwtVerifyMiddleware = async (request: NextApiRequest) => {
     [Constants.SALEOR_DOMAIN_HEADER]: domain,
     "authorization-bearer": token
   } = request.headers;
-  const tokenClaims = jwt.decode(token as string);
+
+  let tokenClaims;
+  try {
+    tokenClaims = jwt.decode(token as string);
+  } catch (e) {
+    console.error(e);
+    throw new MiddlewareError("Invalid token.", 400);
+  }
 
   if (tokenClaims === null) {
     throw new MiddlewareError("Missing token.", 400);
@@ -60,7 +67,7 @@ export const jwtVerifyMiddleware = async (request: NextApiRequest) => {
   try {
     jwt.verify(token as string, signingSecret);
   } catch (e) {
-    console.log(e);
+    console.error(e);
     throw new MiddlewareError("Invalid token.", 400);
   }
 };

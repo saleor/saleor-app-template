@@ -16,6 +16,18 @@ const CONFIGURATION_KEYS = [
   "THIS_VALUE",
 ];
 
+interface IMetadata {
+  key: string;
+  value: string;
+}
+
+const filterConfigFromMetadata = (input: IMetadata[]) =>
+  input
+    .filter(({ key }) => CONFIGURATION_KEYS.includes(key))
+    .map(({ key, value }) => ({ key, value }));
+
+
+
 const handler: NextApiHandler = async (request, response) => {
   let saleorDomain: string;
 
@@ -42,38 +54,24 @@ const handler: NextApiHandler = async (request, response) => {
   switch (request.method!) {
     case "GET":
       privateMetadata  = (
-        (await client.query(FetchAppMetadataDocument).toPromise()).data as FetchAppMetadataQuery
+        (await client.query<FetchAppMetadataQuery>(FetchAppMetadataDocument).toPromise()).data
       )?.app?.privateMetadata!;
 
-      response.json({
-        success: true,
-        data: privateMetadata
-          .filter(({ key }) => CONFIGURATION_KEYS.includes(key as string))
-          .map(({ key, value }) => ({ key, value }))
-      });
+      response.json({ success: true, data: filterConfigFromMetadata(privateMetadata) });
       break;
     case "POST":
-      const newPrivateMetadata = request.body.data
-        .filter(({ key }: { key: string, value: string }) => CONFIGURATION_KEYS.includes(key as string))
-        .map(({ key, value }: { key: string, value: string }) => ({ key, value }));
-
       const appId = (
-        (await client.query(FetchAppMetadataDocument).toPromise()).data as FetchAppMetadataQuery
+        (await client.query<FetchAppMetadataQuery>(FetchAppMetadataDocument).toPromise()).data
       )?.app?.id;
 
       privateMetadata = (
-        (await client.mutation(
+        (await client.mutation<UpdateAppMetadataMutation>(
           UpdateAppMetadataDocument,
-          { id: appId, input: newPrivateMetadata }
-        ).toPromise()).data as UpdateAppMetadataMutation
+          { id: appId, input: filterConfigFromMetadata(request.body.data) }
+        ).toPromise()).data
       )?.updatePrivateMetadata?.item?.privateMetadata!;
 
-      response.json({
-        success: true,
-        data: privateMetadata
-          .filter(({ key }) => CONFIGURATION_KEYS.includes(key))
-          .map(({ key, value }) => ({ key, value }))
-      });
+      response.json({ success: true, data: filterConfigFromMetadata(privateMetadata) });
       break;
     default:
       response
