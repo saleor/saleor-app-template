@@ -37,9 +37,19 @@ const handler: NextApiHandler = async (request, response) => {
     version: version,
     name: name,
     permissions: ["MANAGE_ORDERS"],
+    appUrl: baseURL,
     configurationUrl: `${baseURL}/configuration`,
     tokenTargetUrl: `${baseURL}/api/register`,
     webhooks,
+    extensions: [
+      {
+        label: "Orders in an app",
+        mount: "NAVIGATION_ORDERS",
+        target: "APP_PAGE",
+        permissions: ["MANAGE_ORDERS"],
+        url: "/orders",
+      },
+    ],
   };
 
   response.json(manifest);
