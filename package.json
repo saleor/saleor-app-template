@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "pnpm generate && next dev",
     "build": "pnpm generate && next build",
-    "start": "pnpm generate && next start",
+    "start": "next start",
     "lint": "next lint",
     "generate": "graphql-codegen"
   },
