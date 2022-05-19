@@ -9,6 +9,8 @@ import {
   FetchAppMetadataQuery,
   UpdateAppMetadataDocument,
   UpdateAppMetadataMutation,
+  MetadataItem,
+  MetadataInput,
 } from "../../generated/graphql";
 
 const CONFIGURATION_KEYS = [
@@ -16,17 +18,10 @@ const CONFIGURATION_KEYS = [
   "THIS_VALUE",
 ];
 
-interface IMetadata {
-  key: string;
-  value: string;
-}
-
-const filterConfigFromMetadata = (input: IMetadata[]) =>
+const filterConfigFromMetadata = (input: MetadataInput[] | MetadataItem[]) =>
   input
     .filter(({ key }) => CONFIGURATION_KEYS.includes(key))
     .map(({ key, value }) => ({ key, value }));
-
-
 
 const handler: NextApiHandler = async (request, response) => {
   let saleorDomain: string;
