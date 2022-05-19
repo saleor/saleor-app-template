@@ -17,7 +17,7 @@ export const setAuthToken = async (token: string) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          token,
+          auth_token: token,
           marketplace_token: process.env.SALEOR_MARKETPLACE_TOKEN,
         }),
       },
