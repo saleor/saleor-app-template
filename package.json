@@ -10,7 +10,11 @@
     "generate": "graphql-codegen"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "4.0.0-alpha.61",
     "@saleor/app-bridge": "^0.1.7",
+    "@saleor/macaw-ui": "^0.6.0",
     "@urql/exchange-auth": "^0.1.7",
     "fast-glob": "^3.2.11",
     "graphql": "^16.5.0",
@@ -21,6 +25,7 @@
     "node-fetch": "^3.2.4",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-helmet": "^6.1.0",
     "urql": "^2.2.0"
   },
   "devDependencies": {
