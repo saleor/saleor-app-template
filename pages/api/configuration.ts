@@ -14,8 +14,7 @@ import {
 } from "../../generated/graphql";
 
 const CONFIGURATION_KEYS = [
-  "THAT_SECRET",
-  "THIS_VALUE",
+  "NUMBER_OF_ORDERS",
 ];
 
 const prepareMetadataFromRequest = (input: MetadataInput[] | MetadataItem[]) =>

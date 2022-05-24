@@ -1,9 +1,30 @@
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 
-import { useFetchTwelveOrdersQuery } from "../generated/graphql";
+import { useFetchVariousNumberOfOrdersQuery } from "../generated/graphql";
+import useApp from "../hooks/useApp";
+import { SALEOR_DOMAIN_HEADER } from "../constants";
 
 const Orders: NextPage = () => {
-  const [{ data }] = useFetchTwelveOrdersQuery();
+  const appState = useApp()?.getState();
+  const [numberOfOrders, setNumberOfOrders] = useState<number | undefined>();
+
+  useEffect(() => {
+    appState?.domain && appState?.token && fetch(
+      "/api/orders",
+      { headers: [
+        [SALEOR_DOMAIN_HEADER, appState.domain],
+        ["authorization-bearer", appState.token!],
+      ] },
+    )
+      .then((res) => res.json())
+      .then(({ data: { number_of_orders } }) => setNumberOfOrders(parseInt(number_of_orders)));
+  }, [appState]);
+
+  const [{ data }] = useFetchVariousNumberOfOrdersQuery({
+    variables: { number_of_orders: numberOfOrders as number },
+    pause: numberOfOrders === undefined,
+  });
 
   return (
     <div>

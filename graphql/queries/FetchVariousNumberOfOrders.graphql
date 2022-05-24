@@ -1,0 +1,10 @@
+query FetchVariousNumberOfOrders($number_of_orders: Int!) {
+  orders(first: $number_of_orders) {
+    edges {
+      node {
+        id
+        userEmail
+      }
+    }
+  }
+}
