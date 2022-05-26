@@ -19,20 +19,16 @@ const inferWebhooks = async (baseURL: string) => {
 
     const eventName = name.toUpperCase().replace(new RegExp("-", "g"), "_");
     let eventType: string;
-    console.log();
-    switch (true) {
-      case Object.values(GeneratedGraphQL.WebhookEventTypeAsyncEnum).includes(
-        eventName as GeneratedGraphQL.WebhookEventTypeAsyncEnum
-      ):
-        eventType = "asyncEvents";
-        break;
-      case Object.values(GeneratedGraphQL.WebhookEventTypeSyncEnum).includes(
-        eventName as GeneratedGraphQL.WebhookEventTypeSyncEnum
-      ):
-        eventType = "syncEvents";
-        break;
-      default:
-        throw Error("Event type not found.");
+    if (Object.values(GeneratedGraphQL.WebhookEventTypeAsyncEnum).includes(
+      eventName as GeneratedGraphQL.WebhookEventTypeAsyncEnum
+    )) {
+      eventType = "asyncEvents";
+    } else if (Object.values(GeneratedGraphQL.WebhookEventTypeSyncEnum).includes(
+      eventName as GeneratedGraphQL.WebhookEventTypeSyncEnum
+    )) {
+      eventType = "syncEvents";
+    } else {
+      throw Error("Event type not found.");
     }
 
     const statement = `${camelcaseName}SubscriptionDocument`;
