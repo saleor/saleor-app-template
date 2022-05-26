@@ -1,28 +1,24 @@
-import { NextApiHandler } from "next";
+import type { Handler } from "retes";
 
-import { webhookMiddleware } from "../../../lib/middlewares";
-import MiddlewareError from "../../../utils/MiddlewareError";
+import { Response } from 'retes/response';
+import { toNextHandler } from "retes/adapter";
+import { 
+  withSaleorDomainPresent, 
+  withSaleorEventMatch 
+} from "@saleor/app-sdk/middleware";
 
-const expectedEvent = "order_created";
+const handler: Handler = async (request) => {
 
-const handler: NextApiHandler = async (request, response) => {
-  console.log(request.body);
+  //
+  // Your logic goes here
+  //
 
-  try {
-    webhookMiddleware(request, expectedEvent);
-  } catch (e: unknown) {
-    const error = e as MiddlewareError;
-
-    console.error(error);
-    response
-      .status(error.statusCode)
-      .json({ success: false, message: error.message });
-    return;
-  }
-
-  console.info("Middleware checks were successful!");
-
-  response.json({ success: true });
+  return Response.OK({ success: true });
 };
 
-export default handler;
+export default toNextHandler([
+  withSaleorDomainPresent,
+  withSaleorEventMatch("order_created"),
+  handler
+]);
+
