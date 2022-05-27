@@ -11,14 +11,19 @@ const Orders: NextPage = () => {
 
   useEffect(() => {
     appState?.domain && appState?.token && fetch(
-      "/api/orders",
-      { headers: [
-        [SALEOR_DOMAIN_HEADER, appState.domain],
-        ["authorization-bearer", appState.token!],
-      ] },
+      "/api/number-of-orders",
+      {
+        headers: [
+          [SALEOR_DOMAIN_HEADER, appState.domain],
+          ["authorization-bearer", appState.token!],
+        ]
+      },
     )
       .then((res) => res.json())
-      .then(({ data: { number_of_orders } }) => setNumberOfOrders(parseInt(number_of_orders)));
+      .then((json) => {
+        const number_of_orders: string | null = json.data?.number_of_orders;
+        setNumberOfOrders(parseInt(number_of_orders || "100"))
+      });
   }, [appState]);
 
   const [{ data }] = useFetchVariousNumberOfOrdersQuery({

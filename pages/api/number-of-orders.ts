@@ -30,11 +30,11 @@ const handler: NextApiHandler = async (request, response) => {
     response
       .status(500)
       .json({ success: false, message: error.message });
-      return;
+    return;
   }
 
 
-  response.json({success: true, data: { number_of_orders } });
+  response.json({ success: true, data: { number_of_orders } });
 };
 
 export default handler;
