@@ -38,7 +38,7 @@ const Index: NextPage = () => {
             </li>}
             <li>
               <span>Write your first webhook:</span><br/>
-              <code>saleor webhook create</code>
+              <code>saleor app generate webhook</code>
             </li>
             <li><a target="_blank" href="">Go to your App&apos;s Dashboard</a></li>
             <li><a target="_blank" href="">Explore your GraphQL API</a></li>
