@@ -1,7 +1,7 @@
-import type { Handler } from 'retes';
+import type { Handler } from "retes";
 
-import { toNextHandler } from 'retes/adapter';
-import { Response } from 'retes/response';
+import { toNextHandler } from "retes/adapter";
+import { Response } from "retes/response";
 import { inferWebhooks } from "@saleor/app-sdk";
 import { withBaseURL } from "@saleor/app-sdk/middleware";
 
@@ -11,7 +11,11 @@ import * as GeneratedGraphQL from "../../generated/graphql";
 const handler: Handler = async (request) => {
   const { baseURL } = request.context;
 
-  const webhooks = await inferWebhooks(baseURL, GeneratedGraphQL);
+  const webhooks = await inferWebhooks(
+    baseURL,
+    `${__dirname}/webhooks`,
+    GeneratedGraphQL,
+  );
 
   const manifest = {
     id: "saleor.app",
@@ -34,9 +38,6 @@ const handler: Handler = async (request) => {
   };
 
   return Response.OK(manifest);
-}
+};
 
-export default toNextHandler([
-  withBaseURL,
-  handler
-]);
+export default toNextHandler([withBaseURL, handler]);

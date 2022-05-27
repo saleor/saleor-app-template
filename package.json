@@ -14,7 +14,7 @@
     "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "4.0.0-alpha.61",
     "@saleor/app-bridge": "^0.1.7",
-    "@saleor/app-sdk": "^0.4.0",
+    "@saleor/app-sdk": "^0.4.1",
     "@saleor/macaw-ui": "^0.6.0",
     "@urql/exchange-auth": "^0.1.7",
     "graphql": "^16.5.0",
