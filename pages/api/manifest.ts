@@ -28,7 +28,7 @@ const handler: Handler = async (request) => {
     webhooks,
     extensions: [
       {
-        label: "Orders in an app",
+        label: "Guest orders",
         mount: "NAVIGATION_ORDERS",
         target: "APP_PAGE",
         permissions: ["MANAGE_ORDERS"],
