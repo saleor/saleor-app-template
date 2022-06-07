@@ -40,7 +40,6 @@ const Index: NextPage = () => {
               <span>Write your first webhook:</span><br/>
               <code>saleor app generate webhook</code>
             </li>
-            <li><a target="_blank" href="">Go to your App&apos;s Dashboard</a></li>
             <li><a target="_blank" href="">Explore your GraphQL API</a></li>
           </ul>
         </div>
