@@ -41,7 +41,7 @@ const Index: NextPage = () => {
               <code>saleor app generate webhook</code>
             </li>
             <li><a target="_blank" href="">Go to your App&apos;s Dashboard</a></li>
-            <li><a target="_blank" href="">Explore your GraphQL API</a></li>
+            <li><a target="_blank" href={`${process.env.NEXT_PUBLIC_SALEOR_API_URL}`} rel="noreferrer">Explore your GraphQL API</a></li>
           </ul>
         </div>
 
