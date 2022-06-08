@@ -3,7 +3,14 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import jwks , { CertSigningKey, RsaSigningKey } from "jwks-rsa";
 
 import * as Constants from "../constants";
+import { createClient } from "./graphql";
+import { getAuthToken } from "./environment";
 import MiddlewareError from "../utils/MiddlewareError";
+import { FetchAppDetailsDocument, FetchAppDetailsQuery } from "../generated/graphql";
+
+interface DashboardTokenPayload extends JwtPayload {
+  app: string;
+}
 
 export const getBaseURL = (req: NextApiRequest): string => {
   const { host, "x-forwarded-proto": protocol = "http" } = req.headers;
@@ -39,7 +46,7 @@ export const webhookMiddleware = (
 
 export const jwtVerifyMiddleware = async (request: NextApiRequest) => {
   const {
-    [Constants.SALEOR_DOMAIN_HEADER]: domain,
+    [Constants.SALEOR_DOMAIN_HEADER]: saleorDomain,
     "authorization-bearer": token
   } = request.headers;
 
@@ -54,11 +61,23 @@ export const jwtVerifyMiddleware = async (request: NextApiRequest) => {
   if (tokenClaims === null) {
     throw new MiddlewareError("Missing token.", 400);
   }
-  if ((tokenClaims as JwtPayload).iss !== domain) {
+  if ((tokenClaims as DashboardTokenPayload).iss !== saleorDomain) {
     throw new MiddlewareError("Invalid token.", 400);
   }
 
-  const jwksClient = jwks({ jwksUri: `https://${domain}/.well-known/jwks.json` });
+  const client = createClient(
+    `https://${saleorDomain}/graphql/`,
+    async () => Promise.resolve({ token: getAuthToken() }),
+  );
+  const appId = (
+    (await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument).toPromise()).data
+  )?.app?.id;
+
+  if ((tokenClaims as DashboardTokenPayload).app !== appId) {
+    throw new MiddlewareError("Invalid token.", 400);
+  }
+
+  const jwksClient = jwks({ jwksUri: `https://${saleorDomain}/.well-known/jwks.json` });
   const signingKey = await jwksClient.getSigningKey();
   const signingSecret =
     (signingKey as CertSigningKey).publicKey ||
