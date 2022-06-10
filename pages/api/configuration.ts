@@ -5,8 +5,8 @@ import { domainMiddleware, jwtVerifyMiddleware } from "../../lib/middlewares";
 import MiddlewareError from "../../utils/MiddlewareError";
 import { getAuthToken } from "../../lib/environment";
 import {
-  FetchAppMetadataDocument,
-  FetchAppMetadataQuery,
+  FetchAppDetailsDocument,
+  FetchAppDetailsQuery,
   UpdateAppMetadataDocument,
   UpdateAppMetadataMutation,
   MetadataItem,
@@ -58,14 +58,14 @@ const handler: NextApiHandler = async (request, response) => {
   switch (request.method!) {
     case "GET":
       privateMetadata  = (
-        (await client.query<FetchAppMetadataQuery>(FetchAppMetadataDocument).toPromise()).data
+        (await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument).toPromise()).data
       )?.app?.privateMetadata!;
 
       response.json({ success: true, data: prepareResponseFromMetadata(privateMetadata) });
       break;
     case "POST":
       const appId = (
-        (await client.query<FetchAppMetadataQuery>(FetchAppMetadataDocument).toPromise()).data
+        (await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument).toPromise()).data
       )?.app?.id;
 
       privateMetadata = (

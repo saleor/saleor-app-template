@@ -1,4 +1,4 @@
-query FetchAppMetadata {
+query FetchAppDetails {
   app {
     id
     privateMetadata {

@@ -1,4 +1,4 @@
-import { FetchAppMetadataDocument, FetchAppMetadataQuery } from "../generated/graphql";
+import { FetchAppDetailsDocument, FetchAppDetailsQuery } from "../generated/graphql";
 import { createClient } from "./graphql";
 import { getAuthToken } from "./environment";
 
@@ -9,7 +9,7 @@ export const getValue = async (saleorDomain: string, key: string) => {
   );
 
   const item  = (
-    (await client.query<FetchAppMetadataQuery>(FetchAppMetadataDocument).toPromise()).data
+    (await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument).toPromise()).data
   )?.app?.privateMetadata!.find((i) => i.key === key);
 
   if (item === undefined) {
