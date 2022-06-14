@@ -7,14 +7,14 @@ import useApp from "../hooks/useApp";
 
 const Index: NextPage = () => {
   const [isBrowser, setIsBrowser] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const appState = useApp()?.getState();
 
   useEffect(() => {
     if (appState?.domain && isBrowser) {
-      router.push("/configuration", { query: location.search })
+      router.replace("/configuration", { query: location.search });
     }
-  }, [isBrowser])
+  }, [isBrowser]);
 
   useEffect(() => {
     setIsBrowser(true);
