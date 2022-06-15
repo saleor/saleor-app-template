@@ -1,37 +1,60 @@
-import fs from "fs";
+import { promises as fsPromises } from "fs";
 import fetch from "node-fetch";
 
-const maskToken = (token: string) =>
-  "*".repeat(Math.max(token.length-4, 0)) + token.slice(-4);
+interface IEnvVar {
+  key: string;
+  value: string;
+}
 
-export const getAuthToken = () => {
-  let token;
+const ENVFILE = ".envfile";
+
+export const getEnvVars = async () => {
+  let variables;
   if (process.env.VERCEL === "1") {
-    token = process.env.SALEOR_AUTH_TOKEN || "";
+    variables = process.env;
   } else {
-    token = fs.readFileSync(".auth_token", "utf8");
+    try {
+      await fsPromises.access(ENVFILE);
+      variables = JSON.parse(await fsPromises.readFile(ENVFILE, "utf-8"));
+    } catch {
+      variables = {};
+    }
   }
 
-  console.log("Using authToken: ", maskToken(token));
-  return token;
+  console.log("Using environment variables: ", variables);
+  return variables;
 };
 
-export const setAuthToken = async (token: string) => {
-  console.log("Setting authToken: ", maskToken(token));
+export const setEnvVars = async (variables: IEnvVar[]) => {
+  console.log("Setting environment variables: ", variables);
 
   if (process.env.VERCEL === "1") {
-    await fetch(
-      process.env.SALEOR_MARKETPLACE_REGISTER_URL as string,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          auth_token: token,
-          marketplace_token: process.env.SALEOR_MARKETPLACE_TOKEN,
-        }),
-      },
-    );
+    await fetch(process.env.SALEOR_MARKETPLACE_REGISTER_URL as string, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        marketplace_token: process.env.SALEOR_MARKETPLACE_TOKEN,
+        envVars: variables.map(({ key, value }) => ({ key, value })),
+      }),
+    });
   } else {
-    fs.writeFileSync(".auth_token", token);
+    let currentEnvVars;
+    try {
+      await fsPromises.access(ENVFILE);
+      currentEnvVars = JSON.parse(await fsPromises.readFile(ENVFILE, "utf-8"));
+    } catch {
+      currentEnvVars = {};
+    }
+
+    await fsPromises.writeFile(
+      ENVFILE,
+      JSON.stringify({
+        ...currentEnvVars,
+        ...variables.reduce(
+          (acc, cur) => ({ ...acc, [cur.key]: cur.value }),
+          {}
+        ),
+      })
+    );
   }
 };

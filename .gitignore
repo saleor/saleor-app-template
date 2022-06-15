@@ -38,4 +38,4 @@ yarn-error.log*
 generated
 graphql.schema.json
 
-.auth_token
+.envfile

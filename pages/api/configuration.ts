@@ -3,7 +3,7 @@ import { NextApiHandler } from "next";
 import { createClient } from "../../lib/graphql";
 import { domainMiddleware, jwtVerifyMiddleware } from "../../lib/middlewares";
 import MiddlewareError from "../../utils/MiddlewareError";
-import { getAuthToken } from "../../lib/environment";
+import { getEnvVars } from "../../lib/environment";
 import {
   FetchAppDetailsDocument,
   FetchAppDetailsQuery,
@@ -13,9 +13,7 @@ import {
   MetadataInput,
 } from "../../generated/graphql";
 
-const CONFIGURATION_KEYS = [
-  "NUMBER_OF_ORDERS",
-];
+const CONFIGURATION_KEYS = ["NUMBER_OF_ORDERS"];
 
 const prepareMetadataFromRequest = (input: MetadataInput[] | MetadataItem[]) =>
   input
@@ -26,7 +24,10 @@ const prepareResponseFromMetadata = (input: MetadataItem[]) => {
   const output: MetadataInput[] = [];
   for (const configurationKey of CONFIGURATION_KEYS) {
     output.push(
-      input.find(({ key }) => key === configurationKey) ?? { key: configurationKey, value: "" }
+      input.find(({ key }) => key === configurationKey) ?? {
+        key: configurationKey,
+        value: "",
+      }
     );
   }
   return output.map(({ key, value }) => ({ key, value }));
@@ -38,8 +39,7 @@ const handler: NextApiHandler = async (request, response) => {
   try {
     saleorDomain = domainMiddleware(request) as string;
     await jwtVerifyMiddleware(request);
-  }
-  catch (e: unknown) {
+  } catch (e: unknown) {
     const error = e as MiddlewareError;
 
     console.error(error);
@@ -49,33 +49,44 @@ const handler: NextApiHandler = async (request, response) => {
     return;
   }
 
-  const client = createClient(
-    `https://${saleorDomain}/graphql/`,
-    async () => Promise.resolve({ token: getAuthToken() }),
+  const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
+    Promise.resolve({ token: (await getEnvVars()).SALEOR_AUTH_TOKEN })
   );
 
   let privateMetadata;
   switch (request.method!) {
     case "GET":
-      privateMetadata  = (
-        (await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument).toPromise()).data
-      )?.app?.privateMetadata!;
+      privateMetadata = (
+        await client
+          .query<FetchAppDetailsQuery>(FetchAppDetailsDocument)
+          .toPromise()
+      ).data?.app?.privateMetadata!;
 
-      response.json({ success: true, data: prepareResponseFromMetadata(privateMetadata) });
+      response.json({
+        success: true,
+        data: prepareResponseFromMetadata(privateMetadata),
+      });
       break;
     case "POST":
       const appId = (
-        (await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument).toPromise()).data
-      )?.app?.id;
+        await client
+          .query<FetchAppDetailsQuery>(FetchAppDetailsDocument)
+          .toPromise()
+      ).data?.app?.id;
 
       privateMetadata = (
-        (await client.mutation<UpdateAppMetadataMutation>(
-          UpdateAppMetadataDocument,
-          { id: appId, input: prepareMetadataFromRequest(request.body.data) }
-        ).toPromise()).data
-      )?.updatePrivateMetadata?.item?.privateMetadata!;
+        await client
+          .mutation<UpdateAppMetadataMutation>(UpdateAppMetadataDocument, {
+            id: appId,
+            input: prepareMetadataFromRequest(request.body.data),
+          })
+          .toPromise()
+      ).data?.updatePrivateMetadata?.item?.privateMetadata!;
 
-      response.json({ success: true, data: prepareResponseFromMetadata(privateMetadata) });
+      response.json({
+        success: true,
+        data: prepareResponseFromMetadata(privateMetadata),
+      });
       break;
     default:
       response
