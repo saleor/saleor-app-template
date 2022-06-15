@@ -13,7 +13,7 @@ import {
   MetadataItem,
   MetadataInput,
 } from "../../generated/graphql";
-import { withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
+import { withSaleorDomainMatch } from "../../lib/middlewares";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 
 const CONFIGURATION_KEYS = ["NUMBER_OF_ORDERS"];
@@ -82,7 +82,7 @@ const handler: Handler = async (request) => {
 };
 
 export default toNextHandler([
-  withSaleorDomainPresent,
   withJWTVerified,
+  withSaleorDomainMatch,
   handler,
 ]);

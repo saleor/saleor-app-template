@@ -1,8 +1,10 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import jwks, { CertSigningKey, RsaSigningKey } from "jwks-rsa";
 import type { Middleware } from "retes";
+import { compose } from "retes/util";
 import { Response } from "retes/response";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
+import { withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
 
 import { createClient } from "./graphql";
 import { getEnvVars } from "./environment";
@@ -14,6 +16,27 @@ import {
 interface DashboardTokenPayload extends JwtPayload {
   app: string;
 }
+
+export const withSaleorDomainMatch: Middleware = (handler) =>
+  withSaleorDomainPresent(async (request) => {
+    const { SALEOR_DOMAIN } = await getEnvVars();
+
+    if (SALEOR_DOMAIN === undefined) {
+      return Response.InternalServerError({
+        success: false,
+        message: "Missing Saleor domain environment variable.",
+      });
+    }
+
+    if (SALEOR_DOMAIN !== request.headers[SALEOR_DOMAIN_HEADER]) {
+      return Response.BadRequest({
+        success: false,
+        message: "Invalid Saleor domain header.",
+      });
+    }
+
+    return handler(request);
+  });
 
 export const withJWTVerified: Middleware = (handler) => async (request) => {
   const {
