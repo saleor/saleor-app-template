@@ -1,8 +1,9 @@
-import { NextApiHandler } from "next";
+import { toNextHandler } from "retes/adapter";
+import type { Handler } from "retes";
+import { Response } from "retes/response";
 
 import { createClient } from "../../lib/graphql";
-import { domainMiddleware, jwtVerifyMiddleware } from "../../lib/middlewares";
-import MiddlewareError from "../../utils/MiddlewareError";
+import { withJWTVerified } from "../../lib/middlewares";
 import { getEnvVars } from "../../lib/environment";
 import {
   FetchAppDetailsDocument,
@@ -12,6 +13,8 @@ import {
   MetadataItem,
   MetadataInput,
 } from "../../generated/graphql";
+import { withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
+import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 
 const CONFIGURATION_KEYS = ["NUMBER_OF_ORDERS"];
 
@@ -33,21 +36,8 @@ const prepareResponseFromMetadata = (input: MetadataItem[]) => {
   return output.map(({ key, value }) => ({ key, value }));
 };
 
-const handler: NextApiHandler = async (request, response) => {
-  let saleorDomain: string;
-
-  try {
-    saleorDomain = domainMiddleware(request) as string;
-    await jwtVerifyMiddleware(request);
-  } catch (e: unknown) {
-    const error = e as MiddlewareError;
-
-    console.error(error);
-    response
-      .status(error.statusCode)
-      .json({ success: false, message: error.message });
-    return;
-  }
+const handler: Handler = async (request) => {
+  const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
 
   const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
     Promise.resolve({ token: (await getEnvVars()).SALEOR_AUTH_TOKEN })
@@ -62,11 +52,10 @@ const handler: NextApiHandler = async (request, response) => {
           .toPromise()
       ).data?.app?.privateMetadata!;
 
-      response.json({
+      return Response.OK({
         success: true,
         data: prepareResponseFromMetadata(privateMetadata),
       });
-      break;
     case "POST":
       const appId = (
         await client
@@ -78,21 +67,22 @@ const handler: NextApiHandler = async (request, response) => {
         await client
           .mutation<UpdateAppMetadataMutation>(UpdateAppMetadataDocument, {
             id: appId,
-            input: prepareMetadataFromRequest(request.body.data),
+            input: prepareMetadataFromRequest((request.body as any).data),
           })
           .toPromise()
       ).data?.updatePrivateMetadata?.item?.privateMetadata!;
 
-      response.json({
+      return Response.OK({
         success: true,
         data: prepareResponseFromMetadata(privateMetadata),
       });
-      break;
     default:
-      response
-        .status(405)
-        .json({ success: false, message: "Method not allowed." });
+      return Response.MethodNotAllowed();
   }
 };
 
-export default handler;
+export default toNextHandler([
+  withSaleorDomainPresent,
+  withJWTVerified,
+  handler,
+]);
