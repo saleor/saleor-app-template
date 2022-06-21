@@ -82,7 +82,7 @@ const handler: Handler = async (request) => {
 };
 
 export default toNextHandler([
-  withJWTVerified,
   withSaleorDomainMatch,
+  withJWTVerified,
   handler,
 ]);

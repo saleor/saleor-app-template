@@ -24,14 +24,14 @@ export const withSaleorDomainMatch: Middleware = (handler) =>
     if (SALEOR_DOMAIN === undefined) {
       return Response.InternalServerError({
         success: false,
-        message: "Missing Saleor domain environment variable.",
+        message: "Missing SALEOR_DOMAIN environment variable.",
       });
     }
 
     if (SALEOR_DOMAIN !== request.headers[SALEOR_DOMAIN_HEADER]) {
       return Response.BadRequest({
         success: false,
-        message: "Invalid Saleor domain header.",
+        message: `Invalid ${SALEOR_DOMAIN_HEADER} header.`,
       });
     }
 
@@ -43,6 +43,13 @@ export const withJWTVerified: Middleware = (handler) => async (request) => {
     [SALEOR_DOMAIN_HEADER]: saleorDomain,
     "authorization-bearer": token,
   } = request.headers;
+
+  if (token === undefined) {
+    return Response.BadRequest({
+      success: false,
+      message: "Missing token.",
+    });
+  }
 
   let tokenClaims;
   try {
@@ -58,7 +65,7 @@ export const withJWTVerified: Middleware = (handler) => async (request) => {
   if (tokenClaims === null) {
     return Response.BadRequest({
       success: false,
-      message: "Missing token.",
+      message: "Invalid token.",
     });
   }
   if ((tokenClaims as DashboardTokenPayload).iss !== saleorDomain) {

@@ -37,7 +37,7 @@ const Configuration: NextPage = () => {
       fetch("/api/configuration", {
         headers: [
           [SALEOR_DOMAIN_HEADER, appState.domain],
-          ["authorization-bearer", appState.token!],
+          ["authorization-bearer", appState.token],
         ],
       })
         .then((res) => res.json())

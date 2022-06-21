@@ -81,7 +81,7 @@ const Orders: NextPage = () => {
       fetch("/api/configuration/orders", {
         headers: [
           [SALEOR_DOMAIN_HEADER, appState.domain],
-          ["authorization-bearer", appState.token!],
+          ["authorization-bearer", appState.token],
         ],
       })
         .then((res) => res.json())
