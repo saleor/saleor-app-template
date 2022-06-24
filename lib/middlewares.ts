@@ -6,7 +6,7 @@ import * as Constants from "../constants";
 import { createClient } from "./graphql";
 import { getAuthToken } from "./environment";
 import MiddlewareError from "../utils/MiddlewareError";
-import { FetchAppDetailsDocument, FetchAppDetailsQuery } from "../generated/graphql";
+import { FetchAppDetailsDocument } from "../generated/graphql";
 
 interface DashboardTokenPayload extends JwtPayload {
   app: string;
@@ -69,9 +69,8 @@ export const jwtVerifyMiddleware = async (request: NextApiRequest) => {
     `https://${saleorDomain}/graphql/`,
     async () => Promise.resolve({ token: getAuthToken() }),
   );
-  const appId = (
-    (await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument).toPromise()).data
-  )?.app?.id;
+  const appId = (await client.query(FetchAppDetailsDocument).toPromise()).data
+    ?.app?.id;
 
   if ((tokenClaims as DashboardTokenPayload).app !== appId) {
     throw new MiddlewareError("Invalid token.", 400);

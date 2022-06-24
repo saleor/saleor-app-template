@@ -55,12 +55,15 @@
     "urql": "^2.2.1"
   },
   "devDependencies": {
+    "@graphql-codegen/add": "^3.1.1",
     "@graphql-codegen/cli": "2.6.2",
     "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/typed-document-node": "^2.2.13",
     "@graphql-codegen/typescript": "2.4.11",
     "@graphql-codegen/typescript-operations": "2.4.0",
     "@graphql-codegen/typescript-urql": "^3.5.10",
     "@graphql-codegen/urql-introspection": "2.1.1",
+    "@graphql-typed-document-node/core": "^3.1.0",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "17.0.38",
     "@types/react": "18.0.10",

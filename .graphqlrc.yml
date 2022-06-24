@@ -8,5 +8,8 @@ extensions:
         plugins:
           - typescript
           - typescript-operations
-          - urql-introspection
-          - typescript-urql
+          - typescript-urql:
+              documentVariablePrefix: "Untyped"
+          - typed-document-node
+          - add:
+              content: '// @ts-nocheck'
