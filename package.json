@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm generate && next dev",
+    "dev": "pnpm generate && NODE_OPTIONS='--inspect' next dev",
     "build": "pnpm generate && next build",
     "start": "next start",
     "lint": "next lint",
