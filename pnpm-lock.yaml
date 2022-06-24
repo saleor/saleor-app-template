@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   "@graphql-codegen/cli": 2.6.2
   "@graphql-codegen/introspection": 2.1.1
+  "@graphql-codegen/schema-ast": ^2.4.1
   "@graphql-codegen/typescript": 2.4.11
   "@graphql-codegen/typescript-operations": 2.4.0
   "@graphql-codegen/typescript-urql": ^3.5.10
@@ -39,6 +40,7 @@ specifiers:
   urql: ^2.2.1
 
 dependencies:
+  "@graphql-codegen/schema-ast": 2.4.1_graphql@16.5.0
   "@material-ui/core": 4.12.4_4hkwgow5356cdmtz5c5vaxngqm
   "@material-ui/icons": 4.11.3_ezsee3f46vjcybqpfxg524o6n4
   "@material-ui/lab": 4.0.0-alpha.61_ezsee3f46vjcybqpfxg524o6n4
@@ -1007,7 +1009,6 @@ packages:
       import-from: 4.0.0
       lodash: 4.17.21
       tslib: 2.3.1
-    dev: true
 
   /@graphql-codegen/schema-ast/2.4.1_graphql@16.5.0:
     resolution:
@@ -1021,7 +1022,6 @@ packages:
       "@graphql-tools/utils": 8.6.12_graphql@16.5.0
       graphql: 16.5.0
       tslib: 2.3.1
-    dev: true
 
   /@graphql-codegen/typescript-operations/2.4.0_graphql@16.5.0:
     resolution:
@@ -1438,7 +1438,6 @@ packages:
     dependencies:
       graphql: 16.5.0
       tslib: 2.4.0
-    dev: true
 
   /@graphql-tools/wrap/8.4.19_graphql@16.5.0:
     resolution:
@@ -2874,7 +2873,6 @@ packages:
     dependencies:
       pascal-case: 3.1.2
       tslib: 2.4.0
-    dev: true
 
   /camelcase-css/2.0.1:
     resolution:
@@ -2907,7 +2905,6 @@ packages:
       no-case: 3.0.4
       tslib: 2.4.0
       upper-case-first: 2.0.2
-    dev: true
 
   /chalk/1.1.3:
     resolution:
@@ -2973,7 +2970,6 @@ packages:
       title-case: 3.0.3
       upper-case: 2.0.2
       upper-case-first: 2.0.2
-    dev: true
 
   /change-case/4.1.2:
     resolution:
@@ -2993,7 +2989,6 @@ packages:
       sentence-case: 3.0.4
       snake-case: 3.0.4
       tslib: 2.4.0
-    dev: true
 
   /chardet/0.7.0:
     resolution:
@@ -3171,7 +3166,6 @@ packages:
         integrity: sha512-gk/Z852D2Wtb//0I+kRFNKKE9dIIVirjoqPoA1wJU+XePVXZfGeBpk45+A1rKO4Q43prqWBNY/MiIeRLbPWUaA==,
       }
     engines: { node: ">=4.0.0" }
-    dev: true
 
   /compute-scroll-into-view/1.0.17:
     resolution:
@@ -3193,7 +3187,6 @@ packages:
       no-case: 3.0.4
       tslib: 2.4.0
       upper-case: 2.0.2
-    dev: true
 
   /convert-source-map/1.8.0:
     resolution:
@@ -3566,7 +3559,6 @@ packages:
     dependencies:
       no-case: 3.0.4
       tslib: 2.4.0
-    dev: true
 
   /dotenv/16.0.1:
     resolution:
@@ -4724,7 +4716,6 @@ packages:
     dependencies:
       capital-case: 1.0.4
       tslib: 2.4.0
-    dev: true
 
   /hoist-non-react-statics/3.3.2:
     resolution:
@@ -4834,7 +4825,6 @@ packages:
         integrity: sha512-P9J71vT5nLlDeV8FHs5nNxaLbrpfAV5cF5srvbZfpwpcJoM/xZR3hiv+q+SAnuSmuGbXMWud063iIMx/V/EWZQ==,
       }
     engines: { node: ">=12.2" }
-    dev: true
 
   /imurmurhash/0.1.4:
     resolution:
@@ -5060,7 +5050,6 @@ packages:
       }
     dependencies:
       tslib: 2.4.0
-    dev: true
 
   /is-negative-zero/2.0.2:
     resolution:
@@ -5195,7 +5184,6 @@ packages:
       }
     dependencies:
       tslib: 2.4.0
-    dev: true
 
   /is-weakref/1.0.2:
     resolution:
@@ -5779,7 +5767,6 @@ packages:
       }
     dependencies:
       tslib: 2.4.0
-    dev: true
 
   /lower-case/2.0.2:
     resolution:
@@ -5788,7 +5775,6 @@ packages:
       }
     dependencies:
       tslib: 2.4.0
-    dev: true
 
   /lowercase-keys/1.0.1:
     resolution:
@@ -6082,7 +6068,6 @@ packages:
     dependencies:
       lower-case: 2.0.2
       tslib: 2.4.0
-    dev: true
 
   /node-domexception/1.0.0:
     resolution:
@@ -6453,7 +6438,6 @@ packages:
     dependencies:
       dot-case: 3.0.4
       tslib: 2.4.0
-    dev: true
 
   /parent-module/1.0.1:
     resolution:
@@ -6498,7 +6482,6 @@ packages:
     dependencies:
       no-case: 3.0.4
       tslib: 2.4.0
-    dev: true
 
   /path-case/3.0.4:
     resolution:
@@ -6508,7 +6491,6 @@ packages:
     dependencies:
       dot-case: 3.0.4
       tslib: 2.4.0
-    dev: true
 
   /path-exists/3.0.0:
     resolution:
@@ -7247,7 +7229,6 @@ packages:
       no-case: 3.0.4
       tslib: 2.4.0
       upper-case-first: 2.0.2
-    dev: true
 
   /set-blocking/2.0.0:
     resolution: { integrity: sha1-BF+XgtARrppoA93TgrJDkrPYkPc= }
@@ -7318,7 +7299,6 @@ packages:
     dependencies:
       dot-case: 3.0.4
       tslib: 2.4.0
-    dev: true
 
   /source-map-js/1.0.2:
     resolution:
@@ -7352,7 +7332,6 @@ packages:
       }
     dependencies:
       tslib: 2.4.0
-    dev: true
 
   /streamsearch/1.1.0:
     resolution:
@@ -7558,7 +7537,6 @@ packages:
       }
     dependencies:
       tslib: 2.4.0
-    dev: true
 
   /symbol-observable/1.2.0:
     resolution:
@@ -7636,7 +7614,6 @@ packages:
       }
     dependencies:
       tslib: 2.4.0
-    dev: true
 
   /tmp/0.0.33:
     resolution:
@@ -7723,7 +7700,6 @@ packages:
       {
         integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==,
       }
-    dev: true
 
   /tslib/2.4.0:
     resolution:
@@ -7825,7 +7801,6 @@ packages:
       }
     dependencies:
       tslib: 2.4.0
-    dev: true
 
   /upper-case/2.0.2:
     resolution:
@@ -7834,7 +7809,6 @@ packages:
       }
     dependencies:
       tslib: 2.4.0
-    dev: true
 
   /uri-js/4.4.1:
     resolution:

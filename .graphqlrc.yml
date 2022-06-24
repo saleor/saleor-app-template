@@ -13,3 +13,6 @@ extensions:
       ./generated/graphql.schema.json:
         plugins:
           - "introspection"
+      generated/schema.graphql:
+        plugins:
+          - schema-ast
