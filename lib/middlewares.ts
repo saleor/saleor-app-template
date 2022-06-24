@@ -1,12 +1,15 @@
 import { NextApiRequest } from "next";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import jwks , { CertSigningKey, RsaSigningKey } from "jwks-rsa";
+import jwks, { CertSigningKey, RsaSigningKey } from "jwks-rsa";
 
 import * as Constants from "../constants";
 import { createClient } from "./graphql";
 import { getAuthToken } from "./environment";
 import MiddlewareError from "../utils/MiddlewareError";
-import { FetchAppDetailsDocument, FetchAppDetailsQuery } from "../generated/graphql";
+import {
+  FetchAppDetailsDocument,
+  FetchAppDetailsQuery,
+} from "../generated/graphql";
 
 interface DashboardTokenPayload extends JwtPayload {
   app: string;
@@ -47,7 +50,7 @@ export const webhookMiddleware = (
 export const jwtVerifyMiddleware = async (request: NextApiRequest) => {
   const {
     [Constants.SALEOR_DOMAIN_HEADER]: saleorDomain,
-    "authorization-bearer": token
+    "authorization-bearer": token,
   } = request.headers;
 
   let tokenClaims;
@@ -65,19 +68,22 @@ export const jwtVerifyMiddleware = async (request: NextApiRequest) => {
     throw new MiddlewareError("Invalid token.", 400);
   }
 
-  const client = createClient(
-    `https://${saleorDomain}/graphql/`,
-    async () => Promise.resolve({ token: getAuthToken() }),
+  const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
+    Promise.resolve({ token: getAuthToken() })
   );
   const appId = (
-    (await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument).toPromise()).data
-  )?.app?.id;
+    await client
+      .query<FetchAppDetailsQuery>(FetchAppDetailsDocument)
+      .toPromise()
+  ).data?.app?.id;
 
   if ((tokenClaims as DashboardTokenPayload).app !== appId) {
     throw new MiddlewareError("Invalid token.", 400);
   }
 
-  const jwksClient = jwks({ jwksUri: `https://${saleorDomain}/.well-known/jwks.json` });
+  const jwksClient = jwks({
+    jwksUri: `https://${saleorDomain}/.well-known/jwks.json`,
+  });
   const signingKey = await jwksClient.getSigningKey();
   const signingSecret =
     (signingKey as CertSigningKey).publicKey ||

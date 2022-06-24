@@ -28,20 +28,42 @@ const Index: NextPage = () => {
         <div>
           <h2>Next steps:</h2>
           <ul>
-            {!isTunnel && <li>
-              <span>Use Saleor CLI to setup a live tunnel to your Cloud environment:</span><br/>
-              <code>saleor app tunnel</code>
-            </li>}
-            { isTunnel && <li>
-              <span>You are accessing your Saleor App via the tunnel</span><br/>
-              <code>{hostname}</code>
-            </li>}
+            {!isTunnel && (
+              <li>
+                <span>
+                  Use Saleor CLI to setup a live tunnel to your Cloud
+                  environment:
+                </span>
+                <br />
+                <code>saleor app tunnel</code>
+              </li>
+            )}
+            {isTunnel && (
+              <li>
+                <span>You are accessing your Saleor App via the tunnel</span>
+                <br />
+                <code>{hostname}</code>
+              </li>
+            )}
             <li>
-              <span>Write your first webhook:</span><br/>
+              <span>Write your first webhook:</span>
+              <br />
               <code>saleor app generate webhook</code>
             </li>
-            <li><a target="_blank" href="">Go to your App&apos;s Dashboard</a></li>
-            <li><a target="_blank" href={`${process.env.NEXT_PUBLIC_SALEOR_API_URL}`} rel="noreferrer">Explore your GraphQL API</a></li>
+            <li>
+              <a target="_blank" href="">
+                Go to your App&apos;s Dashboard
+              </a>
+            </li>
+            <li>
+              <a
+                target="_blank"
+                href={`${process.env.NEXT_PUBLIC_SALEOR_API_URL}`}
+                rel="noreferrer"
+              >
+                Explore your GraphQL API
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -67,22 +89,23 @@ const Index: NextPage = () => {
               </a>
             </li>
             <li>
-              If you&apos;re new to Next.js make sure to check out <a target="_blank" rel="noopener noreferrer" href="https://nextjs.org/learn">Next.js Tutorial</a></li>
+              If you&apos;re new to Next.js make sure to check out{" "}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://nextjs.org/learn"
+              >
+                Next.js Tutorial
+              </a>
+            </li>
           </ul>
         </div>
-
       </main>
 
       <footer>
-        Powered by{' '}
-        <a
-          href="https://saleor.io"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span>
-            Saleor
-          </span>
+        Powered by{" "}
+        <a href="https://saleor.io" target="_blank" rel="noopener noreferrer">
+          <span>Saleor</span>
         </a>
       </footer>
     </div>

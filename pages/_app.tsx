@@ -12,19 +12,21 @@ const themeOverrides: Partial<Theme> = {
     MuiTableCell: {
       body: {
         paddingBottom: 8,
-        paddingTop: 8
+        paddingTop: 8,
       },
       root: {
         height: 56,
         paddingBottom: 4,
-        paddingTop: 4
-      }
+        paddingTop: 4,
+      },
     },
   },
 };
 
 // That's a hack required by Macaw-UI incompitability with React@18
-const ThemeProvider = MacawUIThemeProvider as React.FC<PropsWithChildren<{ overrides: Partial<Theme>; }>>;
+const ThemeProvider = MacawUIThemeProvider as React.FC<
+  PropsWithChildren<{ overrides: Partial<Theme> }>
+>;
 
 const SaleorApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {

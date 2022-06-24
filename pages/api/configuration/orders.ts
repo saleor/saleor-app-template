@@ -1,6 +1,9 @@
 import { NextApiHandler } from "next";
 
-import { domainMiddleware, jwtVerifyMiddleware } from "../../../lib/middlewares";
+import {
+  domainMiddleware,
+  jwtVerifyMiddleware,
+} from "../../../lib/middlewares";
 import MiddlewareError from "../../../utils/MiddlewareError";
 import { getValue } from "../../../lib/metadata";
 
@@ -9,8 +12,7 @@ const handler: NextApiHandler = async (request, response) => {
   try {
     saleorDomain = domainMiddleware(request) as string;
     await jwtVerifyMiddleware(request);
-  }
-  catch (e: unknown) {
+  } catch (e: unknown) {
     const error = e as MiddlewareError;
 
     console.error(error);
@@ -27,12 +29,9 @@ const handler: NextApiHandler = async (request, response) => {
     const error = e as Error;
 
     console.error(error);
-    response
-      .status(500)
-      .json({ success: false, message: error.message });
+    response.status(500).json({ success: false, message: error.message });
     return;
   }
-
 
   response.json({ success: true, data: { number_of_orders } });
 };
