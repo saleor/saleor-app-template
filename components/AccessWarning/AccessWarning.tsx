@@ -4,7 +4,7 @@ import React from "react";
 const AccessWarning: React.FC = () => (
   <div suppressHydrationWarning>
     <Typography variant="subtitle1">
-      App can't be accessed outside of the Saleor Dashboard
+      App can&apos;t be accessed outside of the Saleor Dashboard
     </Typography>
   </div>
 );
