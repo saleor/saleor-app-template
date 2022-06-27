@@ -6,6 +6,7 @@ import "../styles/globals.css";
 import AppBridgeProvider from "../providers/AppBridgeProvider";
 import GraphQLProvider from "../providers/GraphQLProvider";
 import { AppLayoutProps } from "../types";
+import PageMiddleware from "../components/PageMiddleware/PageMiddleware";
 
 const themeOverrides: Partial<Theme> = {
   overrides: {
@@ -25,11 +26,11 @@ const themeOverrides: Partial<Theme> = {
 
 // That's a hack required by Macaw-UI incompitability with React@18
 const ThemeProvider = MacawUIThemeProvider as React.FC<
-  PropsWithChildren<{ overrides: Partial<Theme> }>
+  PropsWithChildren<{ overrides: Partial<Theme>; ssr: boolean }>
 >;
 
 const SaleorApp = ({ Component, pageProps }: AppLayoutProps) => {
-  const getLayout = Component.getLayout || ((page: ReactNode) => page);
+  const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
 
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
@@ -41,8 +42,11 @@ const SaleorApp = ({ Component, pageProps }: AppLayoutProps) => {
   return (
     <AppBridgeProvider>
       <GraphQLProvider>
-        <ThemeProvider overrides={themeOverrides}>
-          {getLayout(<Component {...pageProps} />)}
+        <ThemeProvider overrides={themeOverrides} ssr={true}>
+          <PageMiddleware
+            Component={getLayout(<Component {...pageProps} />)}
+            pageProps={pageProps}
+          />
         </ThemeProvider>
       </GraphQLProvider>
     </AppBridgeProvider>

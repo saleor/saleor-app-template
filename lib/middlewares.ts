@@ -9,7 +9,7 @@ import { createClient } from "./graphql";
 import { getEnvVars } from "./environment";
 import { FetchAppDetailsDocument } from "../generated/graphql";
 
-interface DashboardTokenPayload extends JwtPayload {
+export interface DashboardTokenPayload extends JwtPayload {
   app: string;
 }
 
