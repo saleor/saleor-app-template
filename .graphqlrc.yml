@@ -1,4 +1,4 @@
-schema: https://vercel.saleor.cloud/graphql/
+schema: ${NEXT_PUBLIC_SALEOR_HOST_URL}/graphql/
 documents: graphql/**/*.graphql
 extensions:
   codegen:
