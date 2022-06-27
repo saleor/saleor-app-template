@@ -7,7 +7,7 @@
     "build": "pnpm generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "graphql-codegen --require dotenv/config --config codegen.yml"
+    "generate": "graphql-codegen --require dotenv/config --config .graphqlrc.yml"
   },
   "saleorApp": {
     "name": "My Saleor App",
