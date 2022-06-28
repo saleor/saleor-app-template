@@ -2,7 +2,6 @@ lockfileVersion: 5.4
 
 specifiers:
   '@graphql-codegen/cli': 2.6.2
-  '@graphql-codegen/introspection': 2.1.1
   '@graphql-codegen/schema-ast': ^2.4.1
   '@graphql-codegen/typescript': 2.4.11
   '@graphql-codegen/typescript-operations': 2.4.0
@@ -63,7 +62,6 @@ dependencies:
 
 devDependencies:
   '@graphql-codegen/cli': 2.6.2_nxaowyp2jfikcgqae4jem4zida
-  '@graphql-codegen/introspection': 2.1.1_graphql@16.5.0
   '@graphql-codegen/typescript': 2.4.11_graphql@16.5.0
   '@graphql-codegen/typescript-operations': 2.4.0_graphql@16.5.0
   '@graphql-codegen/typescript-urql': 3.5.10_ubrtutz2urcxyhwqr2zvlqjzha
@@ -785,16 +783,6 @@ packages:
       '@graphql-codegen/plugin-helpers': 2.4.2_graphql@16.5.0
       '@graphql-tools/schema': 8.3.13_graphql@16.5.0
       '@graphql-tools/utils': 8.6.12_graphql@16.5.0
-      graphql: 16.5.0
-      tslib: 2.3.1
-    dev: true
-
-  /@graphql-codegen/introspection/2.1.1_graphql@16.5.0:
-    resolution: {integrity: sha512-O9zsy0IoFYDo37pBVF4pSvRMDx/AKdgOxyko4R/O+0DHEw9Nya/pQ3dbn+LDLj2n6X+xOXUBUfFvqhODTqU28w==}
-    peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 2.4.2_graphql@16.5.0
       graphql: 16.5.0
       tslib: 2.3.1
     dev: true

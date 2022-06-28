@@ -10,9 +10,6 @@ extensions:
           - typescript-operations
           - urql-introspection
           - typescript-urql
-      ./generated/graphql.schema.json:
-        plugins:
-          - "introspection"
       generated/schema.graphql:
         plugins:
           - schema-ast
