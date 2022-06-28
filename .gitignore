@@ -34,10 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# GraphQL auto-generated
-generated
-!./generated/graphql.schema.json
-
 .auth_token
 
 #editor
