@@ -56,8 +56,15 @@ or
 npm run dev
 ```
 
-### Manual installation
-If you don't want to use our CLI tool, just clone this repository and use standard tools instead. Learn how to [install your app manually](https://docs.saleor.io/docs/3.x/developer/extending/apps/installing-apps#installation-using-graphql-api) at any Saleor instance from our general docs and use tunneling tools like [localtunnel](https://github.com/localtunnel/localtunnel) or [ngrok](https://ngrok.com/) in order to expose it to the external world if needed.
+### Local development without CLI
 
+Add URL of your Saleor instance to the ```.env``` file: 
+```
+NEXT_PUBLIC_SALEOR_HOST_URL=https://your-saleor-instance.com
+```
 
-That's it! 🦄
+Install dependencies ```pnpm install```
+
+Start local server ```npm run dev```
+
+Follow the guide [how install your app](https://docs.saleor.io/docs/3.x/developer/extending/apps/installing-apps#installation-using-graphql-api) and use tunneling tools like [localtunnel](https://github.com/localtunnel/localtunnel) or [ngrok](https://ngrok.com/) in order to expose your local server.
