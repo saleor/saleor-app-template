@@ -51,12 +51,12 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-helmet": "^6.1.0",
-    "retes": "^0.27.1",
+    "retes": "^0.28.0",
     "urql": "^2.2.1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.6.2",
-    "@graphql-codegen/schema-ast": "^2.4.1",
+    "@graphql-codegen/introspection": "2.1.1",
     "@graphql-codegen/typescript": "2.4.11",
     "@graphql-codegen/typescript-operations": "2.4.0",
     "@graphql-codegen/typescript-urql": "^3.5.10",
