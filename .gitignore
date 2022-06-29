@@ -39,3 +39,7 @@ yarn-error.log*
 #editor
 .vscode
 .idea
+
+# GraphQL auto-generated
+generated/*
+!generated/schema.graphql
