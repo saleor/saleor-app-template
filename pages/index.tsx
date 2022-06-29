@@ -1,9 +1,20 @@
-import type { NextPage } from "next";
+import type { NextPage, } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import useApp from "../hooks/useApp";
+
 
 const Index: NextPage = () => {
   const [isBrowser, setIsBrowser] = useState(false);
+  const router = useRouter();
+  const appState = useApp()?.getState();
+
+  useEffect(() => {
+    if (appState?.domain && isBrowser) {
+      router.replace("/configuration", { query: location.search });
+    }
+  }, [isBrowser]);
 
   useEffect(() => {
     setIsBrowser(true);
@@ -11,6 +22,10 @@ const Index: NextPage = () => {
 
   const hostname = isBrowser ? window.location.hostname : undefined;
   const isTunnel = hostname?.includes("saleor.live");
+
+  if (!isBrowser || appState?.domain) {
+    return <p>Loading...</p>
+  }
 
   return (
     <div>
