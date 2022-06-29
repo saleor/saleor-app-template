@@ -1,40 +1,31 @@
-import { NextApiHandler } from "next";
+import { toNextHandler } from "retes/adapter";
+import type { Handler } from "retes";
+import { Response } from "retes/response";
 
-import { domainMiddleware, jwtVerifyMiddleware } from "../../../lib/middlewares";
-import MiddlewareError from "../../../utils/MiddlewareError";
+import { withSaleorDomainMatch, withJWTVerified } from "../../../lib/middlewares";
 import { getValue } from "../../../lib/metadata";
+import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 
-const handler: NextApiHandler = async (request, response) => {
-  let saleorDomain: string;
-  try {
-    saleorDomain = domainMiddleware(request) as string;
-    await jwtVerifyMiddleware(request);
-  }
-  catch (e: unknown) {
-    const error = e as MiddlewareError;
-
-    console.error(error);
-    response
-      .status(error.statusCode)
-      .json({ success: false, message: error.message });
-    return;
-  }
+const handler: Handler = async (request) => {
+  const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
 
   let number_of_orders;
   try {
     number_of_orders = await getValue(saleorDomain, "NUMBER_OF_ORDERS");
   } catch (e: unknown) {
     const error = e as Error;
-
     console.error(error);
-    response
-      .status(500)
-      .json({ success: false, message: error.message });
-    return;
+    return Response.InternalServerError({
+      success: false,
+      message: error.message,
+    });
   }
 
-
-  response.json({ success: true, data: { number_of_orders } });
+  return Response.OK({ success: true, data: { number_of_orders } });
 };
 
-export default handler;
+export default toNextHandler([
+  withSaleorDomainMatch,
+  withJWTVerified,
+  handler,
+]);

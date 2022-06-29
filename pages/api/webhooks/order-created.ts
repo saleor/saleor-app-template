@@ -1,14 +1,12 @@
 import type { Handler } from "retes";
 
-import { Response } from 'retes/response';
+import { Response } from "retes/response";
 import { toNextHandler } from "retes/adapter";
-import { 
-  withSaleorDomainPresent, 
-  withSaleorEventMatch 
-} from "@saleor/app-sdk/middleware";
+import { withSaleorEventMatch } from "@saleor/app-sdk/middleware";
+
+import { withSaleorDomainMatch } from "../../../lib/middlewares";
 
 const handler: Handler = async (request) => {
-
   //
   // Your logic goes here
   //
@@ -17,8 +15,7 @@ const handler: Handler = async (request) => {
 };
 
 export default toNextHandler([
-  withSaleorDomainPresent,
+  withSaleorDomainMatch,
   withSaleorEventMatch("order_created"),
-  handler
+  handler,
 ]);
-
