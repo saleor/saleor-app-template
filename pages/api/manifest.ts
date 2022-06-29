@@ -22,7 +22,7 @@ const handler: Handler = async (request) => {
     version: version,
     name: name,
     permissions: ["MANAGE_ORDERS"],
-    appUrl: `${baseURL}/configuration`,
+    appUrl: baseURL,
     tokenTargetUrl: `${baseURL}/api/register`,
     webhooks,
     extensions: [

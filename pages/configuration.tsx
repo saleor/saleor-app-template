@@ -1,9 +1,13 @@
 import type { NextPage } from "next";
 import { useEffect, useState, ChangeEvent, SyntheticEvent } from "react";
 import { Card, CardHeader, CardContent, TextField } from "@material-ui/core";
-import { ConfirmButton, ConfirmButtonTransitionState, makeStyles } from "@saleor/macaw-ui";
+import {
+  ConfirmButton,
+  ConfirmButtonTransitionState,
+  makeStyles,
+} from "@saleor/macaw-ui";
 
-import { SALEOR_DOMAIN_HEADER } from "../constants";
+import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import useApp from "../hooks/useApp";
 
 interface ConfigurationField {
@@ -24,41 +28,40 @@ const Configuration: NextPage = () => {
   const classes = useStyles();
   const appState = useApp()?.getState();
   const [configuration, setConfiguration] = useState<ConfigurationField[]>();
-  const [transitionState, setTransitionState] = useState<ConfirmButtonTransitionState>("default");
+  const [transitionState, setTransitionState] =
+    useState<ConfirmButtonTransitionState>("default");
 
   useEffect(() => {
-    appState?.domain && appState?.token && fetch(
-        "/api/configuration",
-        { headers: [
+    appState?.domain &&
+      appState?.token &&
+      fetch("/api/configuration", {
+        headers: [
           [SALEOR_DOMAIN_HEADER, appState.domain],
-          ["authorization-bearer", appState.token!],
-        ] },
-      )
+          ["authorization-bearer", appState.token],
+        ],
+      })
         .then((res) => res.json())
-        .then(({ data }) => setConfiguration(data))
+        .then(({ data }) => setConfiguration(data));
   }, [appState]);
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     setTransitionState("loading");
 
-    fetch(
-      "/api/configuration",
-      {
-        method: "POST",
-        headers: [
-          ["content-type", "application/json"],
-          [SALEOR_DOMAIN_HEADER, appState?.domain!],
-          ["authorization-bearer", appState?.token!],
-        ],
-        body: JSON.stringify({ data: configuration }),
-      },
-    ).then(
-      (response) => setTransitionState(response.status === 200 ? "success": "error")
-    ).catch(
-      () => setTransitionState("error")
-    );
-  };;
+    fetch("/api/configuration", {
+      method: "POST",
+      headers: [
+        ["content-type", "application/json"],
+        [SALEOR_DOMAIN_HEADER, appState?.domain!],
+        ["authorization-bearer", appState?.token!],
+      ],
+      body: JSON.stringify({ data: configuration }),
+    })
+      .then((response) =>
+        setTransitionState(response.status === 200 ? "success" : "error")
+      )
+      .catch(() => setTransitionState("error"));
+  };
 
   const onChange = (event: ChangeEvent) => {
     const { name, value } = event.target as HTMLInputElement;
