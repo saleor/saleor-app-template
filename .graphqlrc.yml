@@ -1,4 +1,4 @@
-schema: https://vercel.saleor.cloud/graphql/
+schema: ${NEXT_PUBLIC_SALEOR_HOST_URL}/graphql/
 documents: graphql/**/*.graphql
 extensions:
   codegen:
@@ -10,3 +10,6 @@ extensions:
           - typescript-operations
           - urql-introspection
           - typescript-urql
+      generated/schema.graphql:
+        plugins:
+          - schema-ast
