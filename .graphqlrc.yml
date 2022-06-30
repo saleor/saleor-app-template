@@ -9,7 +9,9 @@ extensions:
           - typescript
           - typescript-operations
           - urql-introspection
-          - typescript-urql
+          - typescript-urql:
+              documentVariablePrefix: "Untyped"
+          - typed-document-node
       generated/schema.graphql:
         plugins:
           - schema-ast

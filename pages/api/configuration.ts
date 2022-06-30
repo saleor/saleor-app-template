@@ -7,9 +7,7 @@ import { withJWTVerified } from "../../lib/middlewares";
 import { getEnvVars } from "../../lib/environment";
 import {
   FetchAppDetailsDocument,
-  FetchAppDetailsQuery,
   UpdateAppMetadataDocument,
-  UpdateAppMetadataMutation,
   MetadataItem,
   MetadataInput,
 } from "../../generated/graphql";
@@ -48,7 +46,7 @@ const handler: Handler = async (request) => {
     case "GET":
       privateMetadata = (
         await client
-          .query<FetchAppDetailsQuery>(FetchAppDetailsDocument)
+          .query(FetchAppDetailsDocument)
           .toPromise()
       ).data?.app?.privateMetadata!;
 
@@ -59,14 +57,14 @@ const handler: Handler = async (request) => {
     case "POST":
       const appId = (
         await client
-          .query<FetchAppDetailsQuery>(FetchAppDetailsDocument)
+          .query(FetchAppDetailsDocument)
           .toPromise()
       ).data?.app?.id;
 
       privateMetadata = (
         await client
-          .mutation<UpdateAppMetadataMutation>(UpdateAppMetadataDocument, {
-            id: appId,
+          .mutation(UpdateAppMetadataDocument, {
+            id: appId as string,
             input: prepareMetadataFromRequest((request.body as any).data),
           })
           .toPromise()
