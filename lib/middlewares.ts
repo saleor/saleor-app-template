@@ -1,7 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import jwks, { CertSigningKey, RsaSigningKey } from "jwks-rsa";
 import type { Middleware } from "retes";
-import { compose } from "retes/util";
 import { Response } from "retes/response";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
@@ -10,7 +9,6 @@ import { createClient } from "./graphql";
 import { getEnvVars } from "./environment";
 import {
   FetchAppDetailsDocument,
-  FetchAppDetailsQuery,
 } from "../generated/graphql";
 
 interface DashboardTokenPayload extends JwtPayload {
@@ -78,11 +76,14 @@ export const withJWTVerified: Middleware = (handler) => async (request) => {
   const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
     Promise.resolve({ token: (await getEnvVars()).SALEOR_AUTH_TOKEN })
   );
-  const appId = (
-    await client
-      .query<FetchAppDetailsQuery>(FetchAppDetailsDocument)
-      .toPromise()
-  ).data?.app?.id;
+
+
+  const appDetails = await client
+      .query(FetchAppDetailsDocument)
+      .toPromise();
+
+  const appId = appDetails?.data?.app?.id;
+
 
   if ((tokenClaims as DashboardTokenPayload).app !== appId) {
     return Response.BadRequest({
