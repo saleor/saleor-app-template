@@ -2,7 +2,10 @@ import { toNextHandler } from "retes/adapter";
 import type { Handler } from "retes";
 import { Response } from "retes/response";
 
-import { withSaleorDomainMatch, withJWTVerified } from "../../../lib/middlewares";
+import {
+  withSaleorDomainMatch,
+  withJWTVerified,
+} from "../../../lib/middlewares";
 import { getValue } from "../../../lib/metadata";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 
@@ -24,8 +27,4 @@ const handler: Handler = async (request) => {
   return Response.OK({ success: true, data: { number_of_orders } });
 };
 
-export default toNextHandler([
-  withSaleorDomainMatch,
-  withJWTVerified,
-  handler,
-]);
+export default toNextHandler([withSaleorDomainMatch, withJWTVerified, handler]);

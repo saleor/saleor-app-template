@@ -7,9 +7,7 @@ import { withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
 
 import { createClient } from "./graphql";
 import { getEnvVars } from "./environment";
-import {
-  FetchAppDetailsDocument,
-} from "../generated/graphql";
+import { FetchAppDetailsDocument } from "../generated/graphql";
 
 interface DashboardTokenPayload extends JwtPayload {
   app: string;
@@ -77,13 +75,9 @@ export const withJWTVerified: Middleware = (handler) => async (request) => {
     Promise.resolve({ token: (await getEnvVars()).SALEOR_AUTH_TOKEN })
   );
 
-
-  const appDetails = await client
-      .query(FetchAppDetailsDocument)
-      .toPromise();
+  const appDetails = await client.query(FetchAppDetailsDocument).toPromise();
 
   const appId = appDetails?.data?.app?.id;
-
 
   if ((tokenClaims as DashboardTokenPayload).app !== appId) {
     return Response.BadRequest({

@@ -45,9 +45,7 @@ const handler: Handler = async (request) => {
   switch (request.method!) {
     case "GET":
       privateMetadata = (
-        await client
-          .query(FetchAppDetailsDocument)
-          .toPromise()
+        await client.query(FetchAppDetailsDocument).toPromise()
       ).data?.app?.privateMetadata!;
 
       return Response.OK({
@@ -55,11 +53,8 @@ const handler: Handler = async (request) => {
         data: prepareResponseFromMetadata(privateMetadata),
       });
     case "POST":
-      const appId = (
-        await client
-          .query(FetchAppDetailsDocument)
-          .toPromise()
-      ).data?.app?.id;
+      const appId = (await client.query(FetchAppDetailsDocument).toPromise())
+        .data?.app?.id;
 
       privateMetadata = (
         await client
@@ -79,8 +74,4 @@ const handler: Handler = async (request) => {
   }
 };
 
-export default toNextHandler([
-  withSaleorDomainMatch,
-  withJWTVerified,
-  handler,
-]);
+export default toNextHandler([withSaleorDomainMatch, withJWTVerified, handler]);

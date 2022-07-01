@@ -10,7 +10,10 @@ interface IAuthState {
   token: string;
 }
 
-export const createClient = (url: string, getAuth: AuthConfig<IAuthState>["getAuth"]) =>
+export const createClient = (
+  url: string,
+  getAuth: AuthConfig<IAuthState>["getAuth"]
+) =>
   urqlCreateClient({
     url,
     exchanges: [
@@ -23,7 +26,7 @@ export const createClient = (url: string, getAuth: AuthConfig<IAuthState>["getAu
           }
 
           const fetchOptions =
-            typeof operation.context.fetchOptions === 'function'
+            typeof operation.context.fetchOptions === "function"
               ? operation.context.fetchOptions()
               : operation.context.fetchOptions || {};
 
@@ -44,5 +47,5 @@ export const createClient = (url: string, getAuth: AuthConfig<IAuthState>["getAu
         getAuth,
       }),
       fetchExchange,
-    ]
+    ],
   });

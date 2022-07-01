@@ -85,4 +85,4 @@ Follow the guide [how install your app](https://docs.saleor.io/docs/3.x/develope
 
 Commands `build` and `dev` would generate schema and typed functions using Saleor's GraphQL endpoint. Commit `generated` folder to your repo as they are necessary for queries and keeping track of the schema changes.
 
-[Learn more](https://www.graphql-code-generator.com/)  about GraphQL code generation.
+[Learn more](https://www.graphql-code-generator.com/) about GraphQL code generation.
