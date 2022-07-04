@@ -1,15 +1,15 @@
+import crypto from "crypto";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import jwks, { CertSigningKey, RsaSigningKey } from "jwks-rsa";
 import type { Middleware } from "retes";
 import { Response } from "retes/response";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
+import * as jose from "jose";
 
 import { createClient } from "./graphql";
 import { getEnvVars } from "./environment";
-import {
-  FetchAppDetailsDocument,
-} from "../generated/graphql";
+import { FetchAppDetailsDocument } from "../generated/graphql";
 
 interface DashboardTokenPayload extends JwtPayload {
   app: string;
@@ -77,13 +77,9 @@ export const withJWTVerified: Middleware = (handler) => async (request) => {
     Promise.resolve({ token: (await getEnvVars()).SALEOR_AUTH_TOKEN })
   );
 
-
-  const appDetails = await client
-      .query(FetchAppDetailsDocument)
-      .toPromise();
+  const appDetails = await client.query(FetchAppDetailsDocument).toPromise();
 
   const appId = appDetails?.data?.app?.id;
-
 
   if ((tokenClaims as DashboardTokenPayload).app !== appId) {
     return Response.BadRequest({
@@ -111,4 +107,50 @@ export const withJWTVerified: Middleware = (handler) => async (request) => {
   }
 
   return handler(request);
+};
+
+export const withWebhookSignatureVerified = (
+  secretKey: string | undefined = undefined
+): Middleware => {
+  return (handler) => async (request) => {
+    const {
+      [SALEOR_DOMAIN_HEADER]: saleorDomain,
+      "saleor-signature": payloadSignature,
+    } = request.headers;
+
+    if (secretKey !== undefined) {
+      const calculatedSignature = crypto
+        .createHmac("sha256", secretKey)
+        .update(request.rawBody)
+        .digest("hex");
+
+      if (calculatedSignature !== payloadSignature) {
+        return Response.BadRequest({
+          success: false,
+          message: "Invalid signature.",
+        });
+      }
+    } else {
+      const jwksClient = jose.createRemoteJWKSet(
+        new URL(`https://${saleorDomain}/.well-known/jwks.json`)
+      );
+      const [header, _, signature] = payloadSignature.split(".");
+      const jws = {
+        protected: header,
+        payload: request.rawBody,
+        signature,
+      };
+
+      try {
+        await jose.flattenedVerify(jws, jwksClient);
+      } catch {
+        return Response.BadRequest({
+          success: false,
+          message: "Invalid signature.",
+        });
+      }
+    }
+
+    return handler(request);
+  };
 };
