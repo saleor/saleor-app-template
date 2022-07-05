@@ -1,4 +1,4 @@
-schema: ${NEXT_PUBLIC_SALEOR_HOST_URL}/graphql/
+schema: graphql/schema.graphql
 documents: graphql/**/*.graphql
 extensions:
   codegen:
