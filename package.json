@@ -7,8 +7,12 @@
     "build": "pnpm generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "fetch-schema": "curl https://raw.githubusercontent.com/saleor/saleor/${npm_package_saleor_schemaVersion}/saleor/graphql/schema.graphql > graphql/schema.graphql",
     "generate": "graphql-codegen --require dotenv/config",
     "prepare": "husky install"
+  },
+  "saleor": {
+    "schemaVersion": "3.4"
   },
   "saleorApp": {
     "name": "My Saleor App",

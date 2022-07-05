@@ -42,5 +42,4 @@ yarn-error.log*
 .idea
 
 # GraphQL auto-generated
-generated/*
-!generated/schema.graphql
+generated/
