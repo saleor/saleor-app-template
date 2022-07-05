@@ -6,7 +6,7 @@ import "../styles/globals.css";
 import AppBridgeProvider from "../providers/AppBridgeProvider";
 import GraphQLProvider from "../providers/GraphQLProvider";
 import { AppLayoutProps } from "../types";
-import PageMiddleware from "../components/PageMiddleware/PageMiddleware";
+import AuthorizedPage from "../components/AuthorizedPage/AuthorizedPage";
 
 const themeOverrides: Partial<Theme> = {
   overrides: {
@@ -43,8 +43,8 @@ const SaleorApp = ({ Component, pageProps }: AppLayoutProps) => {
     <AppBridgeProvider>
       <GraphQLProvider>
         <ThemeProvider overrides={themeOverrides} ssr={true}>
-          <PageMiddleware
-            Component={getLayout(<Component {...pageProps} />)}
+          <AuthorizedPage
+            Component={getLayout(<Component />)}
             pageProps={pageProps}
           />
         </ThemeProvider>

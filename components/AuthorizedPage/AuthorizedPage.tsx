@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import useApp from "../../hooks/useApp";
-import { AppLayoutProps, AppProps } from "../../types";
+import { AppProps } from "../../types";
 import jwt from "jsonwebtoken";
 import { isInIframe } from "../../utils/misc";
 import { DashboardTokenPayload } from "../../lib/middlewares";
 import AccessWarning from "../AccessWarning/AccessWarning";
 
-const PageMiddleware = ({ Component, pageProps }: AppLayoutProps) => {
+const AuthorizedPage = ({ Component, pageProps }: AppProps) => {
   const app = useApp()?.getState();
 
   const tokenClaims = useMemo(() => {
@@ -36,4 +36,4 @@ const PageMiddleware = ({ Component, pageProps }: AppLayoutProps) => {
   return <AccessWarning />;
 };
 
-export default PageMiddleware;
+export default AuthorizedPage;
