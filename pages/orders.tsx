@@ -18,6 +18,7 @@ import useApp from "../hooks/useApp";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { makeStyles, Pill, ResponsiveTable } from "@saleor/macaw-ui";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles(
   (theme) => {
@@ -73,37 +74,34 @@ const useStyles = makeStyles(
 const Orders: NextPage = () => {
   const classes = useStyles();
   const appState = useApp()?.getState();
-  const [numberOfOrders, setNumberOfOrders] = useState<number>(100);
+  const [numberOfOrders, setNumberOfOrders] = useState<number | null>(null);
 
   useEffect(() => {
-    appState?.domain &&
-      appState?.token &&
+    // after #42 I think checking if it's ready will suffice
+    appState?.ready &&
       fetch("/api/configuration/orders", {
         headers: [
-          [SALEOR_DOMAIN_HEADER, appState.domain],
-          ["authorization-bearer", appState.token],
+          [SALEOR_DOMAIN_HEADER, appState.domain!],
+          ["authorization-bearer", appState.token!],
         ],
       })
         .then((res) => res.json())
         .then((json) => {
-          const number_of_orders: string | null = json.data?.number_of_orders;
-          setNumberOfOrders(parseInt(number_of_orders || "100"));
+          const numberOfOrders: string | null = json.data?.number_of_orders;
+
+          if (numberOfOrders) {
+            setNumberOfOrders(parseInt(numberOfOrders));
+          }
         });
   }, [appState]);
 
   const [{ data, error, fetching }] = useFetchVariousNumberOfOrdersQuery({
     variables: { number_of_orders: numberOfOrders as number },
-    pause: numberOfOrders === undefined,
+    pause: !numberOfOrders,
   });
 
   return (
     <div>
-      <style jsx global>{`
-        body {
-          margin: 0;
-          padding: 0;
-        }
-      `}</style>
       <main>
         <div className={classes.pageHeader}>
           <Typography variant="h1">Guest orders</Typography>
@@ -125,7 +123,9 @@ const Orders: NextPage = () => {
             <TableBody>
               {fetching && (
                 <TableRow>
-                  <TableCell colSpan={6}>Loading...</TableCell>
+                  <TableCell colSpan={6}>
+                    <Skeleton />
+                  </TableCell>
                 </TableRow>
               )}
 
