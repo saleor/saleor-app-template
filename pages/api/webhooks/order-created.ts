@@ -23,3 +23,9 @@ export default toNextHandler([
   withWebhookSignatureVerified(),
   handler,
 ]);
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
