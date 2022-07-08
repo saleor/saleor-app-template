@@ -42,7 +42,7 @@ const Configuration: PageWithLayout = () => {
     if (configurationData && !configuration) {
       setConfiguration(configurationData.data);
     }
-  }, [configurationData]);
+  }, [configurationData, configuration]);
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
