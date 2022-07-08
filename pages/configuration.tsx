@@ -9,6 +9,8 @@ import {
 
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import useApp from "../hooks/useApp";
+import useFetch from "../hooks/useFetch";
+import { Skeleton } from "@material-ui/lab";
 
 interface ConfigurationField {
   key: string;
@@ -31,18 +33,15 @@ const Configuration: NextPage = () => {
   const [transitionState, setTransitionState] =
     useState<ConfirmButtonTransitionState>("default");
 
+  const { data: configurationData, loading } = useFetch({
+    url: "/api/configuration",
+  });
+
   useEffect(() => {
-    appState?.domain &&
-      appState?.token &&
-      fetch("/api/configuration", {
-        headers: [
-          [SALEOR_DOMAIN_HEADER, appState.domain],
-          ["authorization-bearer", appState.token],
-        ],
-      })
-        .then((res) => res.json())
-        .then(({ data }) => setConfiguration(data));
-  }, [appState]);
+    if (configurationData && !configuration) {
+      setConfiguration(configurationData.data);
+    }
+  }, [configurationData]);
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
@@ -72,39 +71,41 @@ const Configuration: NextPage = () => {
     );
   };
 
-  if (!appState?.ready || configuration === undefined) {
-    return <div className="text-white">Loading...</div>;
-  }
+  const showLoader = !appState?.ready || loading || configuration === undefined;
 
   return (
     <Card>
       <CardHeader title="Configuration" />
       <CardContent>
-        <form onSubmit={handleSubmit}>
-          {configuration!.map(({ key, value }) => (
-            <div key={key} className={classes.fieldContainer}>
-              <TextField
-                label={key}
-                name={key}
-                fullWidth
-                onChange={onChange}
-                value={value}
+        {showLoader ? (
+          <Skeleton />
+        ) : (
+          <form onSubmit={handleSubmit}>
+            {configuration!.map(({ key, value }) => (
+              <div key={key} className={classes.fieldContainer}>
+                <TextField
+                  label={key}
+                  name={key}
+                  fullWidth
+                  onChange={onChange}
+                  value={value}
+                />
+              </div>
+            ))}
+            <div>
+              <ConfirmButton
+                type="submit"
+                variant="primary"
+                transitionState={transitionState}
+                labels={{
+                  confirm: "Save",
+                  error: "Error",
+                }}
+                className={classes.confirmButton}
               />
             </div>
-          ))}
-          <div>
-            <ConfirmButton
-              type="submit"
-              variant="primary"
-              transitionState={transitionState}
-              labels={{
-                confirm: "Save",
-                error: "Error",
-              }}
-              className={classes.confirmButton}
-            />
-          </div>
-        </form>
+          </form>
+        )}
       </CardContent>
     </Card>
   );

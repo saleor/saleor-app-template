@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import {
   Paper,
@@ -14,11 +13,10 @@ import {
   PaymentChargeStatusEnum,
   useFetchVariousNumberOfOrdersQuery,
 } from "../generated/graphql";
-import useApp from "../hooks/useApp";
-import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { makeStyles, Pill, ResponsiveTable } from "@saleor/macaw-ui";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import { Skeleton } from "@material-ui/lab";
+import useFetch from "../hooks/useFetch";
 
 const useStyles = makeStyles(
   (theme) => {
@@ -73,32 +71,19 @@ const useStyles = makeStyles(
 
 const Orders: NextPage = () => {
   const classes = useStyles();
-  const appState = useApp()?.getState();
-  const [numberOfOrders, setNumberOfOrders] = useState<number | null>(null);
 
-  useEffect(() => {
-    // after #42 I think checking if it's ready will suffice
-    appState?.ready &&
-      fetch("/api/configuration/orders", {
-        headers: [
-          [SALEOR_DOMAIN_HEADER, appState.domain!],
-          ["authorization-bearer", appState.token!],
-        ],
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          const numberOfOrders: string | null = json.data?.number_of_orders;
+  const { data: orderData, loading: orderLoading } = useFetch({
+    url: "/api/configuration/orders",
+  });
 
-          if (numberOfOrders) {
-            setNumberOfOrders(parseInt(numberOfOrders));
-          }
-        });
-  }, [appState]);
+  const numberOfOrders = parseInt(orderData?.data.number_of_orders);
 
   const [{ data, error, fetching }] = useFetchVariousNumberOfOrdersQuery({
     variables: { number_of_orders: numberOfOrders as number },
-    pause: !numberOfOrders,
+    pause: !numberOfOrders || orderLoading,
   });
+
+  const isLoading = orderLoading || fetching;
 
   return (
     <div>
@@ -121,7 +106,7 @@ const Orders: NextPage = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {fetching && (
+              {isLoading && (
                 <TableRow>
                   <TableCell colSpan={6}>
                     <Skeleton />
@@ -129,7 +114,7 @@ const Orders: NextPage = () => {
                 </TableRow>
               )}
 
-              {!fetching &&
+              {!isLoading &&
                 data?.orders?.edges
                   .filter(({ node: order }) => !order.user?.id)
                   .map(
