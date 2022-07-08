@@ -34,12 +34,18 @@ const useFetch = ({ url, options, skip }: UseFetchProps) => {
 
       try {
         const res = await fetch(url, fetchOptions);
+
+        if (!res.ok) {
+          throw `Error status: ${res.status}`;
+        }
+
         const json = await res.json();
         setData(json);
       } catch (error) {
         setError(error as unknown);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     if (appState?.ready && !skip) {
