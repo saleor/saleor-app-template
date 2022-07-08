@@ -11,7 +11,7 @@ interface UseFetchProps {
 }
 
 // This hook is meant to be used mainly for internal API calls
-const useFetch = ({ url, options, skip }: UseFetchProps) => {
+const useAPI = ({ url, options, skip }: UseFetchProps) => {
   const _app = useApp();
   const appState = _app?.getState();
 
@@ -62,4 +62,4 @@ const useFetch = ({ url, options, skip }: UseFetchProps) => {
   return { data, error, loading };
 };
 
-export default useFetch;
+export default useAPI;

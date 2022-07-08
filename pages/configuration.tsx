@@ -9,7 +9,7 @@ import {
 
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import useApp from "../hooks/useApp";
-import useFetch from "../hooks/useFetch";
+import useAPI from "../hooks/useAPI";
 import { Skeleton } from "@material-ui/lab";
 import { PageWithLayout } from "../types";
 
@@ -34,7 +34,7 @@ const Configuration: PageWithLayout = () => {
   const [transitionState, setTransitionState] =
     useState<ConfirmButtonTransitionState>("default");
 
-  const { data: configurationData, error } = useFetch({
+  const { data: configurationData, error } = useAPI({
     url: "/api/configuration",
   });
 

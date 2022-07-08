@@ -16,7 +16,7 @@ import {
 import { makeStyles, Pill, ResponsiveTable } from "@saleor/macaw-ui";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import { Skeleton } from "@material-ui/lab";
-import useFetch from "../hooks/useFetch";
+import useAPI from "../hooks/useAPI";
 
 const useStyles = makeStyles(
   (theme) => {
@@ -72,7 +72,7 @@ const useStyles = makeStyles(
 const Orders: NextPage = () => {
   const classes = useStyles();
 
-  const { data: orderData, loading: orderLoading } = useFetch({
+  const { data: orderData, loading: orderLoading } = useAPI({
     url: "/api/configuration/orders",
   });
 
