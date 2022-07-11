@@ -81,37 +81,37 @@ const Configuration: PageWithLayout = () => {
     return <div>{error as string}</div>;
   }
 
-  if (configuration !== undefined) {
-    return (
-      <form onSubmit={handleSubmit}>
-        {configuration!.map(({ key, value }) => (
-          <div key={key} className={classes.fieldContainer}>
-            <TextField
-              label={key}
-              name={key}
-              fullWidth
-              onChange={onChange}
-              value={value}
-            />
-          </div>
-        ))}
-        <div>
-          <ConfirmButton
-            type="submit"
-            variant="primary"
-            transitionState={transitionState}
-            labels={{
-              confirm: "Save",
-              error: "Error",
-            }}
-            className={classes.confirmButton}
-          />
-        </div>
-      </form>
-    );
+  if (configuration === undefined) {
+    return <Skeleton />;
   }
 
-  return <Skeleton />;
+  return (
+    <form onSubmit={handleSubmit}>
+      {configuration!.map(({ key, value }) => (
+        <div key={key} className={classes.fieldContainer}>
+          <TextField
+            label={key}
+            name={key}
+            fullWidth
+            onChange={onChange}
+            value={value}
+          />
+        </div>
+      ))}
+      <div>
+        <ConfirmButton
+          type="submit"
+          variant="primary"
+          transitionState={transitionState}
+          labels={{
+            confirm: "Save",
+            error: "Error",
+          }}
+          className={classes.confirmButton}
+        />
+      </div>
+    </form>
+  );
 };
 
 Configuration.getLayout = (page) => (
