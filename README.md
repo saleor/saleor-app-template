@@ -9,7 +9,7 @@ Saleor App is the fastest way of extending Saleor with custom logic using [async
 - Writing webhook's code realizing your custom login
 - Developing configuration UI that can be exposed to Saleor Dashboard via specialized view (designated in App's manifest).
 
-### Saleor App features
+### What's included?
 
 - 🚀 Communication between Saleor instance and Saleor App
 - ⚙️ Encapsulated Metadata and Private Metadata handling logic
