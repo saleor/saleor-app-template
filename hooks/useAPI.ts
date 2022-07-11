@@ -1,5 +1,5 @@
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
-import { useEffect, useState } from "React";
+import { useEffect, useState } from "react";
 import useApp from "./useApp";
 
 type Options = Record<string, string>;
