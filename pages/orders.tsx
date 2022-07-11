@@ -16,7 +16,7 @@ import {
 import { makeStyles, Pill, ResponsiveTable } from "@saleor/macaw-ui";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import { Skeleton } from "@material-ui/lab";
-import useAPI from "../hooks/useAPI";
+import useAppApi from "../hooks/useAppApi";
 
 const useStyles = makeStyles(
   (theme) => {
@@ -72,7 +72,7 @@ const useStyles = makeStyles(
 const Orders: NextPage = () => {
   const classes = useStyles();
 
-  const { data: orderData, loading: orderLoading } = useAPI({
+  const { data: orderData, loading: orderLoading } = useAppApi({
     url: "/api/configuration/orders",
   });
 
