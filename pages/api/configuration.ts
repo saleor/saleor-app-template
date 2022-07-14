@@ -1,6 +1,7 @@
 import { toNextHandler } from "retes/adapter";
 import type { Handler } from "retes";
 import { Response } from "retes/response";
+import { withSentry } from "@sentry/nextjs";
 
 import { createClient } from "../../lib/graphql";
 import { withJWTVerified } from "../../lib/middlewares";
@@ -74,4 +75,6 @@ const handler: Handler = async (request) => {
   }
 };
 
-export default toNextHandler([withSaleorDomainMatch, withJWTVerified, handler]);
+export default withSentry(
+  toNextHandler([withSaleorDomainMatch, withJWTVerified, handler])
+);

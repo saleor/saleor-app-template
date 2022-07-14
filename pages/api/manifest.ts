@@ -1,9 +1,9 @@
 import type { Handler } from "retes";
-
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 import { inferWebhooks } from "@saleor/app-sdk";
 import { withBaseURL } from "@saleor/app-sdk/middleware";
+import { withSentry } from "@sentry/nextjs";
 
 import { version, name } from "../../package.json";
 import * as GeneratedGraphQL from "../../generated/graphql";
@@ -39,4 +39,4 @@ const handler: Handler = async (request) => {
   return Response.OK(manifest);
 };
 
-export default toNextHandler([withBaseURL, handler]);
+export default withSentry(toNextHandler([withBaseURL, handler]));

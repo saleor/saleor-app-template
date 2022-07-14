@@ -1,6 +1,7 @@
 import { toNextHandler } from "retes/adapter";
 import type { Handler } from "retes";
 import { Response } from "retes/response";
+import { withSentry } from "@sentry/nextjs";
 
 import {
   withSaleorDomainMatch,
@@ -27,4 +28,6 @@ const handler: Handler = async (request) => {
   return Response.OK({ success: true, data: { number_of_orders } });
 };
 
-export default toNextHandler([withSaleorDomainMatch, withJWTVerified, handler]);
+export default withSentry(
+  toNextHandler([withSaleorDomainMatch, withJWTVerified, handler])
+);
