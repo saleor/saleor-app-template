@@ -6,7 +6,7 @@ Bare-bones boilerplate for writing Saleor Apps with Next.js.
 
 Saleor App is the fastest way of extending Saleor with custom logic using [asynchronous](https://docs.saleor.io/docs/3.x/developer/extending/apps/asynchronous-webhooks) and [synchronous](https://docs.saleor.io/docs/3.x/developer/extending/apps/synchronous-webhooks) webhooks (and vast Saleor's API). In most cases, creating an App consists of two tasks:
 
-- Writing webhook's code realizing your custom login
+- Writing webhook's code realizing your custom logic
 - Developing configuration UI that can be exposed to Saleor Dashboard via specialized view (designated in App's manifest).
 
 ### What's included?
