@@ -8,6 +8,7 @@ import {
 } from "@saleor/app-sdk/middleware";
 
 import { withSaleorDomainMatch } from "../../../lib/middlewares";
+import { WebhookEventTypeEnum } from "../../../generated/graphql";
 
 const handler: Handler = async (request) => {
   //
@@ -19,7 +20,7 @@ const handler: Handler = async (request) => {
 
 export default toNextHandler([
   withSaleorDomainMatch,
-  withSaleorEventMatch("order_created"),
+  withSaleorEventMatch<WebhookEventTypeEnum>("order_created"),
   withWebhookSignatureVerified(),
   handler,
 ]);
