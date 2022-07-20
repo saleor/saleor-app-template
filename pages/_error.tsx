@@ -19,9 +19,10 @@ const MyError = ({
   err,
 }: ErrorPageProps) => {
   if (!hasGetInitialPropsRun && err) {
-    // getInitialProps is not called in case of
-    // https://github.com/vercel/next.js/issues/8592. As a workaround, we pass
-    // err via _app.js so it can be captured
+    // getInitialProps is not called when an exception is thrown
+    // at the top level of a module while it is being loaded.
+    // As a workaround, we pass err via _app.js so it can be captured
+    // Read more: https://github.com/vercel/next.js/issues/8592.
     Sentry.captureException(err);
     // Flushing is not required in this case as it only happens on the client
   }
