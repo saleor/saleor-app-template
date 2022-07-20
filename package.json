@@ -46,6 +46,7 @@
     "@saleor/app-bridge": "^0.1.9",
     "@saleor/app-sdk": "^0.6.1",
     "@saleor/macaw-ui": "^0.6.3",
+    "@sentry/nextjs": "^7.6.0",
     "@urql/exchange-auth": "^0.1.7",
     "graphql": "^16.5.0",
     "graphql-tag": "^2.12.6",

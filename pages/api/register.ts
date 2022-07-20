@@ -3,6 +3,7 @@ import type { Handler } from "retes";
 import { Response } from "retes/response";
 import { toNextHandler } from "retes/adapter";
 import { withMethod } from "retes/middleware";
+import { withSentry } from "@sentry/nextjs";
 
 import { setEnvVars } from "../../lib/environment";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
@@ -29,9 +30,11 @@ const handler: Handler = async (request) => {
   return Response.OK({ success: true });
 };
 
-export default toNextHandler([
-  withMethod("POST"),
-  withSaleorDomainPresent,
-  withAuthTokenRequired,
-  handler,
-]);
+export default withSentry(
+  toNextHandler([
+    withMethod("POST"),
+    withSaleorDomainPresent,
+    withAuthTokenRequired,
+    handler,
+  ])
+);
