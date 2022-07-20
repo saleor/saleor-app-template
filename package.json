@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "fetch-schema": "curl https://raw.githubusercontent.com/saleor/saleor/${npm_package_saleor_schemaVersion}/saleor/graphql/schema.graphql > graphql/schema.graphql",
-    "generate": "graphql-codegen --require dotenv/config",
+    "generate": "graphql-codegen",
     "prepare": "husky install"
   },
   "saleor": {
@@ -74,7 +74,6 @@
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.6",
     "autoprefixer": "^10.4.7",
-    "dotenv": "^16.0.1",
     "eslint": "8.19.0",
     "eslint-config-next": "12.2.0",
     "husky": "^8.0.1",

@@ -5,6 +5,8 @@ extensions:
     overwrite: true
     generates:
       generated/graphql.ts:
+        config:
+          dedupeFragments: true
         plugins:
           - typescript
           - typescript-operations
