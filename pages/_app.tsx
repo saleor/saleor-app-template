@@ -1,11 +1,11 @@
-import React, { useEffect, PropsWithChildren } from "react";
-import type { AppProps } from "next/app";
+import React, { useEffect, PropsWithChildren, ReactNode } from "react";
 import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import { Theme } from "@material-ui/core/styles";
 
 import "../styles/globals.css";
 import AppBridgeProvider from "../providers/AppBridgeProvider";
 import GraphQLProvider from "../providers/GraphQLProvider";
+import { AppLayoutProps } from "../types";
 
 const themeOverrides: Partial<Theme> = {
   overrides: {
@@ -28,7 +28,9 @@ const ThemeProvider = MacawUIThemeProvider as React.FC<
   PropsWithChildren<{ overrides: Partial<Theme> }>
 >;
 
-const SaleorApp = ({ Component, pageProps }: AppProps) => {
+const SaleorApp = ({ Component, pageProps }: AppLayoutProps) => {
+  const getLayout = Component.getLayout || ((page: ReactNode) => page);
+
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
@@ -40,7 +42,7 @@ const SaleorApp = ({ Component, pageProps }: AppProps) => {
     <AppBridgeProvider>
       <GraphQLProvider>
         <ThemeProvider overrides={themeOverrides}>
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </ThemeProvider>
       </GraphQLProvider>
     </AppBridgeProvider>

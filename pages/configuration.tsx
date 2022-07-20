@@ -9,6 +9,9 @@ import {
 
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import useApp from "../hooks/useApp";
+import useAppApi from "../hooks/useAppApi";
+import { Skeleton } from "@material-ui/lab";
+import { PageWithLayout } from "../types";
 
 interface ConfigurationField {
   key: string;
@@ -24,25 +27,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Configuration: NextPage = () => {
+const Configuration: PageWithLayout = () => {
   const classes = useStyles();
   const appState = useApp()?.getState();
   const [configuration, setConfiguration] = useState<ConfigurationField[]>();
   const [transitionState, setTransitionState] =
     useState<ConfirmButtonTransitionState>("default");
 
+  const { data: configurationData, error } = useAppApi({
+    url: "/api/configuration",
+  });
+
   useEffect(() => {
-    appState?.domain &&
-      appState?.token &&
-      fetch("/api/configuration", {
-        headers: [
-          [SALEOR_DOMAIN_HEADER, appState.domain],
-          ["authorization-bearer", appState.token],
-        ],
-      })
-        .then((res) => res.json())
-        .then(({ data }) => setConfiguration(data));
-  }, [appState]);
+    if (configurationData && !configuration) {
+      setConfiguration(configurationData.data);
+    }
+  }, [configurationData, configuration]);
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
@@ -72,42 +72,53 @@ const Configuration: NextPage = () => {
     );
   };
 
-  if (!appState?.ready || configuration === undefined) {
-    return <div className="text-white">Loading...</div>;
+  const hasError = !!error;
+
+  // TODO
+  // We should show errors using Dashboard's hook 'useNotifier'
+  // This logic has to be yet implemented in app-bridge
+  if (hasError) {
+    return <div>{error as string}</div>;
+  }
+
+  if (configuration === undefined) {
+    return <Skeleton />;
   }
 
   return (
-    <Card>
-      <CardHeader title="Configuration" />
-      <CardContent>
-        <form onSubmit={handleSubmit}>
-          {configuration!.map(({ key, value }) => (
-            <div key={key} className={classes.fieldContainer}>
-              <TextField
-                label={key}
-                name={key}
-                fullWidth
-                onChange={onChange}
-                value={value}
-              />
-            </div>
-          ))}
-          <div>
-            <ConfirmButton
-              type="submit"
-              variant="primary"
-              transitionState={transitionState}
-              labels={{
-                confirm: "Save",
-                error: "Error",
-              }}
-              className={classes.confirmButton}
-            />
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+    <form onSubmit={handleSubmit}>
+      {configuration!.map(({ key, value }) => (
+        <div key={key} className={classes.fieldContainer}>
+          <TextField
+            label={key}
+            name={key}
+            fullWidth
+            onChange={onChange}
+            value={value}
+          />
+        </div>
+      ))}
+      <div>
+        <ConfirmButton
+          type="submit"
+          variant="primary"
+          transitionState={transitionState}
+          labels={{
+            confirm: "Save",
+            error: "Error",
+          }}
+          className={classes.confirmButton}
+        />
+      </div>
+    </form>
   );
 };
+
+Configuration.getLayout = (page) => (
+  <Card>
+    <CardHeader title="Configuration" />
+    <CardContent>{page}</CardContent>
+  </Card>
+);
 
 export default Configuration;
