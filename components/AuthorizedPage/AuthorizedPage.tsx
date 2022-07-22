@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { isInIframe } from "../../utils/misc";
 import { DashboardTokenPayload } from "../../lib/middlewares";
 import AccessWarning from "../AccessWarning/AccessWarning";
+import LoadingPage from "../LoadingPage/LoadingPage";
 
 type AuthorizedPageProps = {
   children: ReactNode;
@@ -33,7 +34,7 @@ const AuthorizedPage = ({ children }: AuthorizedPageProps) => {
     tokenClaims && (tokenClaims as DashboardTokenPayload).iss === app?.domain;
 
   if (!mounted) {
-    return null;
+    return <LoadingPage />;
   }
 
   if (iframeCheck) {

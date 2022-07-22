@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import LoadingPage from "../components/LoadingPage/LoadingPage";
 import useApp from "../hooks/useApp";
 
 const Index: NextPage = () => {
@@ -24,7 +25,7 @@ const Index: NextPage = () => {
   const isTunnel = hostname?.includes("saleor.live");
 
   if (!isBrowser || appState?.domain) {
-    return <p>Loading...</p>;
+    return <LoadingPage />;
   }
 
   return (
