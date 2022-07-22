@@ -28,8 +28,7 @@ const AuthorizedPage = ({ children }: AuthorizedPageProps) => {
     }
   }, [app]);
 
-  const iframeCheck = useMemo(() => isInIframe(), []);
-
+  const isIframe = useMemo(() => isInIframe(), []);
   const isTokenValid =
     tokenClaims && (tokenClaims as DashboardTokenPayload).iss === app?.domain;
 
@@ -37,17 +36,22 @@ const AuthorizedPage = ({ children }: AuthorizedPageProps) => {
     return <LoadingPage />;
   }
 
-  if (iframeCheck) {
-    if (app?.token) {
-      if (isTokenValid) {
-        return <>{children}</>;
-      }
-
-      return <AccessWarning />;
-    }
+  if (!isIframe) {
+    console.error("The view can only be displayed in the iframe.");
+    return <AccessWarning />;
   }
 
-  return <AccessWarning />;
+  if (!app?.token) {
+    console.error("App token missing.");
+    return <AccessWarning />;
+  }
+
+  if (!isTokenValid) {
+    console.error("App token is invalid.");
+    return <AccessWarning />;
+  }
+
+  return <>{children}</>;
 };
 
 export default AuthorizedPage;
