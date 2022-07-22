@@ -1,12 +1,11 @@
-import { useMemo } from "react";
+import { PropsWithChildren, useMemo } from "react";
 import useApp from "../../hooks/useApp";
-import { AppProps } from "../../types";
 import jwt from "jsonwebtoken";
 import { isInIframe } from "../../utils/misc";
 import { DashboardTokenPayload } from "../../lib/middlewares";
 import AccessWarning from "../AccessWarning/AccessWarning";
 
-const AuthorizedPage = ({ Component, pageProps }: AppProps) => {
+const AuthorizedPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const app = useApp()?.getState();
 
   const tokenClaims = useMemo(() => {
@@ -26,7 +25,7 @@ const AuthorizedPage = ({ Component, pageProps }: AppProps) => {
   if (iframeCheck) {
     if (app?.token) {
       if (isTokenValid) {
-        return <Component {...pageProps} />;
+        return <>{children}</>;
       }
 
       return <AccessWarning />;

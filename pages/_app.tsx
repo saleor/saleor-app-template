@@ -1,4 +1,4 @@
-import React, { useEffect, PropsWithChildren, ReactNode } from "react";
+import React, { useEffect, PropsWithChildren } from "react";
 import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import { Theme } from "@material-ui/core/styles";
 
@@ -30,7 +30,7 @@ const ThemeProvider = MacawUIThemeProvider as React.FC<
 >;
 
 const SaleorApp = ({ Component, pageProps }: AppLayoutProps) => {
-  const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
@@ -39,14 +39,16 @@ const SaleorApp = ({ Component, pageProps }: AppLayoutProps) => {
     }
   }, []);
 
+  // Next 12.2.3 seems to fix an issue with SSR and hydration
+  // If the issue will resurface we'll need to change how AuthorizedPage works
+  // or use Suspense
   return (
     <AppBridgeProvider>
       <GraphQLProvider>
         <ThemeProvider overrides={themeOverrides} ssr={true}>
-          <AuthorizedPage
-            Component={getLayout(<Component />)}
-            pageProps={pageProps}
-          />
+          <AuthorizedPage>
+            {getLayout(<Component {...pageProps} />)}
+          </AuthorizedPage>
         </ThemeProvider>
       </GraphQLProvider>
     </AppBridgeProvider>

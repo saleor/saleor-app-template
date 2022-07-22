@@ -1,9 +1,9 @@
 import { NextPage } from "next";
 import { NextComponentType, NextPageContext } from "next/types";
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 
-export type PageWithLayout<P = {}> = NextPage<P> & {
-  getLayout?: (page: ReactNode) => ReactNode;
+export type PageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
 };
 
 export type AppProps = {
@@ -11,6 +11,6 @@ export type AppProps = {
   Component: NextComponentType<NextPageContext, any, {}> & { layoutProps: any };
 };
 
-export type AppLayoutProps<P = {}> = AppProps & {
-  Component: PageWithLayout<P>;
+export type AppLayoutProps = AppProps & {
+  Component: PageWithLayout;
 };
