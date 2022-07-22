@@ -1,11 +1,15 @@
-import { PropsWithChildren, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import useApp from "../../hooks/useApp";
 import jwt from "jsonwebtoken";
 import { isInIframe } from "../../utils/misc";
 import { DashboardTokenPayload } from "../../lib/middlewares";
 import AccessWarning from "../AccessWarning/AccessWarning";
 
-const AuthorizedPage: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+type AuthorizedPageProps = {
+  children: ReactNode;
+};
+
+const AuthorizedPage = ({ children }: AuthorizedPageProps) => {
   const app = useApp()?.getState();
 
   // Next and React 18 have issues with hydatation
