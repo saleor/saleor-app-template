@@ -1,4 +1,4 @@
-import React, { useEffect, PropsWithChildren } from "react";
+import React, { useEffect, PropsWithChildren, Suspense } from "react";
 import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import { Theme } from "@material-ui/core/styles";
 
@@ -39,9 +39,6 @@ const SaleorApp = ({ Component, pageProps }: AppLayoutProps) => {
     }
   }, []);
 
-  // Next 12.2.3 seems to fix an issue with SSR and hydration
-  // If the issue will resurface we'll need to change how AuthorizedPage works
-  // or use Suspense
   return (
     <AppBridgeProvider>
       <GraphQLProvider>
