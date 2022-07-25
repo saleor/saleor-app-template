@@ -34,7 +34,7 @@ export const setEnvVars = async (variables: IEnvVar[]) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         token: process.env.SALEOR_DEPLOYMENT_TOKEN,
-        envVars: variables.map(({ key, value }) => ({ key, value })),
+        envs: variables.map(({ key, value }) => ({ key, value })),
       }),
     });
   } else {
