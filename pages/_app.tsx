@@ -1,4 +1,4 @@
-import React, { useEffect, PropsWithChildren, Suspense } from "react";
+import React, { useEffect, PropsWithChildren } from "react";
 import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import { Theme } from "@material-ui/core/styles";
 

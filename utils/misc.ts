@@ -1,6 +1,6 @@
 export const isInIframe = () => {
   try {
-    return document.location.hostname !== window.parent.location.hostname;
+    return document.location !== window.parent.location;
   } catch (e) {
     return true;
   }

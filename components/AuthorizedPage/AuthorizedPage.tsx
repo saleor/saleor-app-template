@@ -38,17 +38,17 @@ const AuthorizedPage = ({ children }: AuthorizedPageProps) => {
 
   if (!isIframe) {
     console.error("The view can only be displayed in the iframe.");
-    return <AccessWarning />;
+    return <AccessWarning cause="iframe" />;
   }
 
   if (!app?.token) {
     console.error("App token missing.");
-    return <AccessWarning />;
+    return <AccessWarning cause="token" />;
   }
 
   if (!isTokenValid) {
     console.error("App token is invalid.");
-    return <AccessWarning />;
+    return <AccessWarning cause="invalid_token" />;
   }
 
   return <>{children}</>;
