@@ -14,7 +14,7 @@ const useApp = () => {
     app?.subscribe("handshake", update);
     app?.subscribe("theme", update);
     app?.subscribe("response", update);
-    app?.subscribe("response", update);
+    app?.subscribe("redirect", update);
   }, []);
 
   return app;
