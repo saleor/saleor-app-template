@@ -1,9 +1,6 @@
-import {
-  FetchAppDetailsDocument,
-  FetchAppDetailsQuery,
-} from "../generated/graphql";
-import { createClient } from "./graphql";
+import { FetchAppDetailsDocument, FetchAppDetailsQuery } from "../generated/graphql";
 import { getEnvVars } from "./environment";
+import { createClient } from "./graphql";
 
 export const getValue = async (saleorDomain: string, key: string) => {
   const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
@@ -11,9 +8,7 @@ export const getValue = async (saleorDomain: string, key: string) => {
   );
 
   const item = (
-    await client
-      .query<FetchAppDetailsQuery>(FetchAppDetailsDocument)
-      .toPromise()
+    await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument).toPromise()
   ).data?.app?.privateMetadata!.find((i) => i.key === key);
 
   if (item === undefined) {

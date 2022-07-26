@@ -1,6 +1,6 @@
+import * as Sentry from "@sentry/nextjs";
 import { NextPageContext } from "next";
 import NextErrorComponent, { ErrorProps } from "next/error";
-import * as Sentry from "@sentry/nextjs";
 
 interface ErrorPageProps {
   err: Error;
@@ -13,11 +13,7 @@ interface AppErrorProps extends ErrorProps {
   hasGetInitialPropsRun?: boolean;
 }
 
-const MyError = ({
-  statusCode,
-  hasGetInitialPropsRun,
-  err,
-}: ErrorPageProps) => {
+function MyError({ statusCode, hasGetInitialPropsRun, err }: ErrorPageProps) {
   if (!hasGetInitialPropsRun && err) {
     // getInitialProps is not called when an exception is thrown
     // at the top level of a module while it is being loaded.
@@ -28,11 +24,10 @@ const MyError = ({
   }
 
   return <NextErrorComponent statusCode={statusCode} />;
-};
+}
 
 MyError.getInitialProps = async (context: NextPageContext) => {
-  const errorInitialProps: AppErrorProps =
-    await NextErrorComponent.getInitialProps(context);
+  const errorInitialProps: AppErrorProps = await NextErrorComponent.getInitialProps(context);
 
   const { res, err, asPath } = context;
 
@@ -71,9 +66,7 @@ MyError.getInitialProps = async (context: NextPageContext) => {
   // If this point is reached, getInitialProps was called without any
   // information about what the error might be. This is unexpected and may
   // indicate a bug introduced in Next.js, so record it in Sentry
-  Sentry.captureException(
-    new Error(`_error.js getInitialProps missing data at path: ${asPath}`)
-  );
+  Sentry.captureException(new Error(`_error.js getInitialProps missing data at path: ${asPath}`));
   await Sentry.flush(2000);
 
   return errorInitialProps;
