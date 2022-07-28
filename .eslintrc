@@ -9,7 +9,15 @@
     "plugin:@typescript-eslint/recommended",
     "prettier" // prettier *has* to be the last one, to avoid conflicting rules
   ],
-  "ignorePatterns": ["pnpm-lock.yaml", "graphql/schema.graphql", "generated"],
+  "ignorePatterns": [
+    "pnpm-lock.yaml",
+    "graphql/schema.graphql",
+    "generated",
+    "next.config.js",
+    "tailwind.config.js",
+    "sentry.client.config.js",
+    "sentry.server.config.js"
+  ],
   "plugins": ["simple-import-sort", "@typescript-eslint"],
   "rules": {
     "quotes": ["error", "double"],
@@ -52,11 +60,12 @@
     "no-restricted-imports": "off",
     "no-restricted-exports": "off",
     "@typescript-eslint/ban-ts-comment": "off",
-    // TO FIX:
-    "import/no-cycle": "off", // pathpidia issue
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-misused-promises": ["error"],
-    "@typescript-eslint/no-floating-promises": ["error"]
+    "@typescript-eslint/no-floating-promises": ["error"],
+    // note you must disable the base rule as it can report incorrect errors
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"]
   },
   "settings": {
     "import/parsers": {

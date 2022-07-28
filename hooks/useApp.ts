@@ -4,7 +4,7 @@ import { AppContext } from "../providers/AppBridgeProvider";
 
 const useApp = () => {
   const { app } = useContext(AppContext);
-  const [_, setState] = useState(0);
+  const [, setState] = useState(0);
 
   const update = () => {
     setState(Math.random());

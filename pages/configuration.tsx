@@ -1,16 +1,11 @@
-import { useEffect, useState, ChangeEvent, SyntheticEvent } from "react";
-import { Card, CardHeader, CardContent, TextField } from "@material-ui/core";
-import {
-  ConfirmButton,
-  ConfirmButtonTransitionState,
-  makeStyles,
-} from "@saleor/macaw-ui";
-
+import { Card, CardContent, CardHeader, TextField } from "@material-ui/core";
+import Skeleton from "@material-ui/lab/Skeleton";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
+import { ConfirmButton, ConfirmButtonTransitionState, makeStyles } from "@saleor/macaw-ui";
+import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+
 import useApp from "../hooks/useApp";
 import useAppApi from "../hooks/useAppApi";
-import { Skeleton } from "@material-ui/lab";
-import { PageWithLayout } from "../types";
 import useDashboardNotifier from "../utils/useDashboardNotifier";
 
 interface ConfigurationField {
@@ -27,13 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Configuration: PageWithLayout = () => {
-  const [notify] = useDashboardNotifier();
+function Configuration() {
   const classes = useStyles();
   const appState = useApp()?.getState();
+  const [notify] = useDashboardNotifier();
   const [configuration, setConfiguration] = useState<ConfigurationField[]>();
-  const [transitionState, setTransitionState] =
-    useState<ConfirmButtonTransitionState>("default");
+  const [transitionState, setTransitionState] = useState<ConfirmButtonTransitionState>("default");
 
   const { data: configurationData, error } = useAppApi({
     url: "/api/configuration",
@@ -58,17 +52,17 @@ const Configuration: PageWithLayout = () => {
       ],
       body: JSON.stringify({ data: configuration }),
     })
-      .then((response) => {
+      .then(async (response) => {
         setTransitionState(response.status === 200 ? "success" : "error");
-        notify({
+        await notify({
           status: "success",
           title: "Success",
           text: "Configuration updated successfully",
         });
       })
-      .catch(() => {
+      .catch(async () => {
         setTransitionState("error");
-        notify({
+        await notify({
           status: "error",
           title: "Configuration update failed",
         });
@@ -78,14 +72,13 @@ const Configuration: PageWithLayout = () => {
   const onChange = (event: ChangeEvent) => {
     const { name, value } = event.target as HTMLInputElement;
     setConfiguration((prev) =>
-      prev!.map((prevField) =>
-        prevField.key === name ? { ...prevField, value } : prevField
-      )
+      prev!.map((prevField) => (prevField.key === name ? { ...prevField, value } : prevField))
     );
   };
 
   useEffect(() => {
     if (error) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       notify({
         status: "error",
         title: "Something went wrong!",
@@ -102,13 +95,7 @@ const Configuration: PageWithLayout = () => {
     <form onSubmit={handleSubmit}>
       {configuration!.map(({ key, value }) => (
         <div key={key} className={classes.fieldContainer}>
-          <TextField
-            label={key}
-            name={key}
-            fullWidth
-            onChange={onChange}
-            value={value}
-          />
+          <TextField label={key} name={key} fullWidth onChange={onChange} value={value} />
         </div>
       ))}
       <div>
@@ -125,9 +112,9 @@ const Configuration: PageWithLayout = () => {
       </div>
     </form>
   );
-};
+}
 
-Configuration.getLayout = (page) => (
+Configuration.getLayout = (page: ReactElement) => (
   <Card>
     <CardHeader title="Configuration" />
     <CardContent>{page}</CardContent>

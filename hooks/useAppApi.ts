@@ -1,5 +1,6 @@
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { useEffect, useState } from "react";
+
 import useApp from "./useApp";
 
 type Options = Record<string, string>;
@@ -36,19 +37,20 @@ const useAppApi = ({ url, options, skip }: UseFetchProps) => {
         const res = await fetch(url, fetchOptions);
 
         if (!res.ok) {
-          throw `Error status: ${res.status}`;
+          throw new Error(`Error status: ${res.status}`);
         }
 
         const json = await res.json();
         setData(json);
-      } catch (error) {
-        setError(error as unknown);
+      } catch (e) {
+        setError(e as unknown);
       } finally {
         setLoading(false);
       }
     };
 
     if (appState?.ready && !skip) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       fetchData();
     }
 

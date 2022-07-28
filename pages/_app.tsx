@@ -1,8 +1,8 @@
 import "../styles/globals.css";
 
-import { Theme , Theme } from "@material-ui/core/styles";
-import { ThemeProvider as MacawUIThemeProvider , ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
-import React, { PropsWithChildren, PropsWithChildren, ReactNode, useEffect , useEffect } from "react";
+import { Theme } from "@material-ui/core/styles";
+import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
+import React, { PropsWithChildren, useEffect } from "react";
 
 import AuthorizedPage from "../components/AuthorizedPage/AuthorizedPage";
 import AppBridgeProvider from "../providers/AppBridgeProvider";

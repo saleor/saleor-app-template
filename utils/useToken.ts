@@ -1,7 +1,8 @@
-import { useMemo } from "react";
 import jwt from "jsonwebtoken";
-import { DashboardTokenPayload } from "../lib/middlewares";
+import { useMemo } from "react";
+
 import useApp from "../hooks/useApp";
+import { DashboardTokenPayload } from "../lib/middlewares";
 
 interface TokenProps {
   isTokenValid: boolean;

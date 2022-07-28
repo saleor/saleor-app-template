@@ -1,19 +1,20 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
 import LoadingPage from "../components/LoadingPage/LoadingPage";
 import useApp from "../hooks/useApp";
 
-const Index: NextPage = () => {
+function Index() {
   const [isBrowser, setIsBrowser] = useState(false);
   const router = useRouter();
   const appState = useApp()?.getState();
   const domain = appState?.domain;
-
   useEffect(() => {
+    // If the homepage is rendered at dashboard, redirect to the configuration
     if (domain && isBrowser) {
-      router.replace("/configuration", { query: location.search });
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      router.replace("/configuration", { query: window.location.search });
     }
   }, [isBrowser, domain]);
 
@@ -46,10 +47,7 @@ const Index: NextPage = () => {
           <ul>
             {!isTunnel && (
               <li>
-                <span>
-                  Use Saleor CLI to setup a live tunnel to your Cloud
-                  environment:
-                </span>
+                <span>Use Saleor CLI to setup a live tunnel to your Cloud environment:</span>
                 <br />
                 <code>saleor app tunnel</code>
               </li>
@@ -66,20 +64,6 @@ const Index: NextPage = () => {
               <br />
               <code>saleor app generate webhook</code>
             </li>
-            <li>
-              <a target="_blank" href="">
-                Go to your App&apos;s Dashboard
-              </a>
-            </li>
-            <li>
-              <a
-                target="_blank"
-                href={`${process.env.NEXT_PUBLIC_SALEOR_API_URL}`}
-                rel="noreferrer"
-              >
-                Explore your GraphQL API
-              </a>
-            </li>
           </ul>
         </div>
 
@@ -92,7 +76,7 @@ const Index: NextPage = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Saleor Asynchrnous Webhooks
+                Saleor Asynchronous Webhooks
               </a>
             </li>
             <li>
@@ -101,16 +85,12 @@ const Index: NextPage = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Saleor Synchrnous Webhooks
+                Saleor Synchronous Webhooks
               </a>
             </li>
             <li>
               If you&apos;re new to Next.js make sure to check out{" "}
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://nextjs.org/learn"
-              >
+              <a target="_blank" rel="noopener noreferrer" href="https://nextjs.org/learn">
                 Next.js Tutorial
               </a>
             </li>
@@ -126,6 +106,6 @@ const Index: NextPage = () => {
       </footer>
     </div>
   );
-};
+}
 
 export default Index;

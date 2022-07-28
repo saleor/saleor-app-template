@@ -18,15 +18,17 @@ const warnings: Record<WarningCause, string> = {
   unknown_cause: "Something went wrong.",
 };
 
-const AccessWarning = ({ cause = "unknown_cause" }: AccessWarningProps) => (
-  <div suppressHydrationWarning>
-    <Typography variant="subtitle1">
-      App can&apos;t be accessed outside of the Saleor Dashboard
-    </Typography>
-    <Typography variant="subtitle2" style={{ marginTop: "2rem" }}>
-      ❌ {warnings[cause]}
-    </Typography>
-  </div>
-);
+function AccessWarning({ cause = "unknown_cause" }: AccessWarningProps) {
+  return (
+    <div suppressHydrationWarning>
+      <Typography variant="subtitle1">
+        App can&apos;t be accessed outside of the Saleor Dashboard
+      </Typography>
+      <Typography variant="subtitle2" style={{ marginTop: "2rem" }}>
+        ❌ {warnings[cause]}
+      </Typography>
+    </div>
+  );
+}
 
 export default AccessWarning;

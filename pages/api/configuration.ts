@@ -1,19 +1,18 @@
-import { toNextHandler } from "retes/adapter";
-import type { Handler } from "retes";
-import { Response } from "retes/response";
+import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { withSentry } from "@sentry/nextjs";
+import type { Handler } from "retes";
+import { toNextHandler } from "retes/adapter";
+import { Response } from "retes/response";
 
-import { createClient } from "../../lib/graphql";
-import { withJWTVerified } from "../../lib/middlewares";
-import { getEnvVars } from "../../lib/environment";
 import {
   FetchAppDetailsDocument,
-  UpdateAppMetadataDocument,
-  MetadataItem,
   MetadataInput,
+  MetadataItem,
+  UpdateAppMetadataDocument,
 } from "../../generated/graphql";
-import { withSaleorDomainMatch } from "../../lib/middlewares";
-import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
+import { getEnvVars } from "../../lib/environment";
+import { createClient } from "../../lib/graphql";
+import { withJWTVerified, withSaleorDomainMatch } from "../../lib/middlewares";
 
 const CONFIGURATION_KEYS = ["NUMBER_OF_ORDERS"];
 
@@ -45,17 +44,15 @@ const handler: Handler = async (request) => {
   let privateMetadata;
   switch (request.method!) {
     case "GET":
-      privateMetadata = (
-        await client.query(FetchAppDetailsDocument).toPromise()
-      ).data?.app?.privateMetadata!;
+      privateMetadata = (await client.query(FetchAppDetailsDocument).toPromise()).data?.app
+        ?.privateMetadata!;
 
       return Response.OK({
         success: true,
         data: prepareResponseFromMetadata(privateMetadata),
       });
-    case "POST":
-      const appId = (await client.query(FetchAppDetailsDocument).toPromise())
-        .data?.app?.id;
+    case "POST": {
+      const appId = (await client.query(FetchAppDetailsDocument).toPromise()).data?.app?.id;
 
       privateMetadata = (
         await client
@@ -70,11 +67,10 @@ const handler: Handler = async (request) => {
         success: true,
         data: prepareResponseFromMetadata(privateMetadata),
       });
+    }
     default:
       return Response.MethodNotAllowed();
   }
 };
 
-export default withSentry(
-  toNextHandler([withSaleorDomainMatch, withJWTVerified, handler])
-);
+export default withSentry(toNextHandler([withSaleorDomainMatch, withJWTVerified, handler]));

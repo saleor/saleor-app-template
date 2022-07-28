@@ -1,5 +1,5 @@
 import { App, createApp } from "@saleor/app-bridge";
-import { createContext, useMemo, PropsWithChildren } from "react";
+import { createContext, PropsWithChildren, useMemo } from "react";
 
 interface IAppContext {
   app?: App;
@@ -7,14 +7,15 @@ interface IAppContext {
 
 export const AppContext = createContext<IAppContext>({ app: undefined });
 
-const AppBridgeProvider: React.FC<PropsWithChildren<{}>> = (props) => {
-  const app = useMemo(() => {
+function AppBridgeProvider(props: PropsWithChildren<{}>) {
+  const value = useMemo(() => {
     if (typeof window !== "undefined") {
-      return createApp();
+      return { app: createApp() };
     }
+    return { app: undefined };
   }, []);
 
-  return <AppContext.Provider value={{ app }} {...props} />;
-};
+  return <AppContext.Provider value={value} {...props} />;
+}
 
 export default AppBridgeProvider;
