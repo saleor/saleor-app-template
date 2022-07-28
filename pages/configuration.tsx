@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import { useEffect, useState, ChangeEvent, SyntheticEvent } from "react";
 import { Card, CardHeader, CardContent, TextField } from "@material-ui/core";
 import {
