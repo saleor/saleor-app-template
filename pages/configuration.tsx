@@ -11,6 +11,7 @@ import useApp from "../hooks/useApp";
 import useAppApi from "../hooks/useAppApi";
 import { Skeleton } from "@material-ui/lab";
 import { PageWithLayout } from "../types";
+import useDashboardNotifier from "../utils/useDashboardNotifier";
 
 interface ConfigurationField {
   key: string;
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Configuration: PageWithLayout = () => {
+  const [notify] = useDashboardNotifier();
   const classes = useStyles();
   const appState = useApp()?.getState();
   const [configuration, setConfiguration] = useState<ConfigurationField[]>();
@@ -56,10 +58,21 @@ const Configuration: PageWithLayout = () => {
       ],
       body: JSON.stringify({ data: configuration }),
     })
-      .then((response) =>
-        setTransitionState(response.status === 200 ? "success" : "error")
-      )
-      .catch(() => setTransitionState("error"));
+      .then((response) => {
+        setTransitionState(response.status === 200 ? "success" : "error");
+        notify({
+          status: "success",
+          title: "Success",
+          text: "Configuration updated successfully",
+        });
+      })
+      .catch(() => {
+        setTransitionState("error");
+        notify({
+          status: "error",
+          title: "Configuration update failed",
+        });
+      });
   };
 
   const onChange = (event: ChangeEvent) => {
@@ -71,14 +84,15 @@ const Configuration: PageWithLayout = () => {
     );
   };
 
-  const hasError = !!error;
-
-  // TODO
-  // We should show errors using Dashboard's hook 'useNotifier'
-  // This logic has to be yet implemented in app-bridge
-  if (hasError) {
-    return <div>{error as string}</div>;
-  }
+  useEffect(() => {
+    if (error) {
+      notify({
+        status: "error",
+        title: "Something went wrong!",
+        text: "Couldn't fetch configuration data",
+      });
+    }
+  }, [error]);
 
   if (configuration === undefined) {
     return <Skeleton />;
