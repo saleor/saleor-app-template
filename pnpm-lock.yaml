@@ -12,7 +12,7 @@ specifiers:
   '@material-ui/core': ^4.12.4
   '@material-ui/icons': ^4.11.3
   '@material-ui/lab': 4.0.0-alpha.61
-  '@saleor/app-bridge': ^0.1.9
+  '@saleor/app-bridge': github:saleor/app-bridge#c09916c
   '@saleor/app-sdk': ^0.6.1
   '@saleor/macaw-ui': ^0.6.3
   '@sentry/nextjs': ^7.6.0
@@ -45,7 +45,7 @@ dependencies:
   '@material-ui/core': 4.12.4_twyhzqqpkwvvgrmyeapdo6i4my
   '@material-ui/icons': 4.11.3_xfab57qepcdrxdxif4xlv2kdgm
   '@material-ui/lab': 4.0.0-alpha.61_xfab57qepcdrxdxif4xlv2kdgm
-  '@saleor/app-bridge': 0.1.9
+  '@saleor/app-bridge': github.com/saleor/app-bridge/e4b81c2
   '@saleor/app-sdk': 0.6.1
   '@saleor/macaw-ui': 0.6.3_5j6zkq4mzir5org5dcu2pr43hm
   '@sentry/nextjs': 7.7.0_next@12.2.3+react@18.2.0
@@ -1618,13 +1618,6 @@ packages:
   /@rushstack/eslint-patch/1.1.4:
     resolution: {integrity: sha512-LwzQKA4vzIct1zNZzBmRKI9QuNpLgTQMEjsQLf3BXuGYb3QPTP4Yjf6mkdX+X1mYttZ808QpOwAzZjv28kq7DA==}
     dev: true
-
-  /@saleor/app-bridge/0.1.9:
-    resolution: {integrity: sha512-p0+rXVAyOMrW6IfSrQg91UA330yO8xcCdSI73VcPpwFQb7es9i4Iqr/eFC4UsHTsQn/qZYp8Mnw+6TMnh4YjTQ==}
-    engines: {node: '>=10'}
-    dependencies:
-      uuid: 8.3.2
-    dev: false
 
   /@saleor/app-sdk/0.6.1:
     resolution: {integrity: sha512-Qbsf6sjylia18LW+jWcLDFqv1p2InIJlsCXrV0ePhzXdsOdLYWtFa+fXNU9yUp30dM6d9KOMlhOO5UqAZAMALA==}
@@ -6161,3 +6154,14 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  github.com/saleor/app-bridge/e4b81c2:
+    resolution: {tarball: https://codeload.github.com/saleor/app-bridge/tar.gz/e4b81c2}
+    name: '@saleor/app-bridge'
+    version: 0.1.9
+    engines: {node: '>=10'}
+    prepare: true
+    requiresBuild: true
+    dependencies:
+      uuid: 8.3.2
+    dev: false
