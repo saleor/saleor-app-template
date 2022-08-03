@@ -3,23 +3,17 @@ import { withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
 import type { Middleware } from "retes";
 import { Response } from "retes/response";
 
-import { getEnvVars } from "./environment";
+import { getConfiguration } from "./configuration";
 
 export const withSaleorDomainMatch: Middleware = (handler) =>
   withSaleorDomainPresent(async (request) => {
-    const { SALEOR_DOMAIN } = await getEnvVars();
-
-    if (SALEOR_DOMAIN === undefined) {
-      return Response.InternalServerError({
-        success: false,
-        message: "Missing SALEOR_DOMAIN environment variable.",
-      });
-    }
-
-    if (SALEOR_DOMAIN !== request.headers[SALEOR_DOMAIN_HEADER]) {
+    const requestDomain = request.headers[SALEOR_DOMAIN_HEADER];
+    try {
+      getConfiguration(requestDomain);
+    } catch {
       return Response.BadRequest({
         success: false,
-        message: `Invalid ${SALEOR_DOMAIN_HEADER} header.`,
+        message: `App is not registered for ${requestDomain}`,
       });
     }
 

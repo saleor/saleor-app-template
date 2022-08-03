@@ -11,10 +11,9 @@ import {
   MetadataItem,
   UpdateAppMetadataDocument,
 } from "../../generated/graphql";
-import { getEnvVars } from "../../lib/environment";
-import { createClient } from "../../lib/graphql";
 import { withSaleorDomainMatch } from "../../lib/middlewares";
 import { getAppIdFromApi } from "../../lib/utils";
+import { saleorApiClient } from "../../lib/configuration";
 
 const CONFIGURATION_KEYS = ["NUMBER_OF_ORDERS"];
 
@@ -38,10 +37,7 @@ const prepareResponseFromMetadata = (input: MetadataItem[]) => {
 
 const handler: Handler = async (request) => {
   const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
-
-  const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
-    Promise.resolve({ token: (await getEnvVars()).SALEOR_AUTH_TOKEN })
-  );
+  const client = saleorApiClient(saleorDomain);
 
   let privateMetadata;
   switch (request.method!) {
