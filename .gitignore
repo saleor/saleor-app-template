@@ -46,3 +46,6 @@ generated/
 
 # Sentry
 .sentryclirc
+
+# Prisma
+prisma/dev.db
