@@ -1,16 +1,12 @@
+import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
+import { withAuthTokenRequired, withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
+import { withSentry } from "@sentry/nextjs";
 import type { Handler } from "retes";
-
-import { Response } from "retes/response";
 import { toNextHandler } from "retes/adapter";
 import { withMethod } from "retes/middleware";
-import { withSentry } from "@sentry/nextjs";
+import { Response } from "retes/response";
 
 import { setEnvVars } from "../../lib/environment";
-import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
-import {
-  withAuthTokenRequired,
-  withSaleorDomainPresent,
-} from "@saleor/app-sdk/middleware";
 
 const handler: Handler = async (request) => {
   const authToken = request.params.auth_token;
@@ -31,10 +27,5 @@ const handler: Handler = async (request) => {
 };
 
 export default withSentry(
-  toNextHandler([
-    withMethod("POST"),
-    withSaleorDomainPresent,
-    withAuthTokenRequired,
-    handler,
-  ])
+  toNextHandler([withMethod("POST"), withSaleorDomainPresent, withAuthTokenRequired, handler])
 );

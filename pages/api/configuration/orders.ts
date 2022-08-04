@@ -1,21 +1,18 @@
-import { toNextHandler } from "retes/adapter";
-import type { Handler } from "retes";
-import { Response } from "retes/response";
-import { withSentry } from "@sentry/nextjs";
-
-import {
-  withSaleorDomainMatch,
-  withJWTVerified,
-} from "../../../lib/middlewares";
-import { getValue } from "../../../lib/metadata";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
+import { withSentry } from "@sentry/nextjs";
+import type { Handler } from "retes";
+import { toNextHandler } from "retes/adapter";
+import { Response } from "retes/response";
+
+import { getValue } from "../../../lib/metadata";
+import { withJWTVerified, withSaleorDomainMatch } from "../../../lib/middlewares";
 
 const handler: Handler = async (request) => {
   const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
 
-  let number_of_orders;
+  let numberOfOrders;
   try {
-    number_of_orders = await getValue(saleorDomain, "NUMBER_OF_ORDERS");
+    numberOfOrders = await getValue(saleorDomain, "NUMBER_OF_ORDERS");
   } catch (e: unknown) {
     const error = e as Error;
     console.error(error);
@@ -25,9 +22,7 @@ const handler: Handler = async (request) => {
     });
   }
 
-  return Response.OK({ success: true, data: { number_of_orders } });
+  return Response.OK({ success: true, data: { number_of_orders: numberOfOrders } });
 };
 
-export default withSentry(
-  toNextHandler([withSaleorDomainMatch, withJWTVerified, handler])
-);
+export default withSentry(toNextHandler([withSaleorDomainMatch, withJWTVerified, handler]));

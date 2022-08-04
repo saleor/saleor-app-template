@@ -1,2 +1,5 @@
-/generated/schema.graphql
+.next
+saleor/api.tsx
 pnpm-lock.yaml
+graphql/schema.graphql
+generated

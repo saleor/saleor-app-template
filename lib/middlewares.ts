@@ -1,13 +1,13 @@
+import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
+import { withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import jwks, { CertSigningKey, RsaSigningKey } from "jwks-rsa";
 import type { Middleware } from "retes";
 import { Response } from "retes/response";
-import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
-import { withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
 
-import { createClient } from "./graphql";
-import { getEnvVars } from "./environment";
 import { FetchAppDetailsDocument } from "../generated/graphql";
+import { getEnvVars } from "./environment";
+import { createClient } from "./graphql";
 
 export interface DashboardTokenPayload extends JwtPayload {
   app: string;
@@ -35,10 +35,7 @@ export const withSaleorDomainMatch: Middleware = (handler) =>
   });
 
 export const withJWTVerified: Middleware = (handler) => async (request) => {
-  const {
-    [SALEOR_DOMAIN_HEADER]: saleorDomain,
-    "authorization-bearer": token,
-  } = request.headers;
+  const { [SALEOR_DOMAIN_HEADER]: saleorDomain, "authorization-bearer": token } = request.headers;
 
   if (token === undefined) {
     return Response.BadRequest({
@@ -91,8 +88,7 @@ export const withJWTVerified: Middleware = (handler) => async (request) => {
   });
   const signingKey = await jwksClient.getSigningKey();
   const signingSecret =
-    (signingKey as CertSigningKey).publicKey ||
-    (signingKey as RsaSigningKey).rsaPublicKey;
+    (signingKey as CertSigningKey).publicKey || (signingKey as RsaSigningKey).rsaPublicKey;
 
   try {
     jwt.verify(token as string, signingSecret);

@@ -1,8 +1,9 @@
 import { CircularProgress, Typography } from "@material-ui/core";
 import React from "react";
+
 import { useStyles } from "./styles";
 
-const LoadingPage: React.FC = ({}) => {
+function LoadingPage() {
   const classes = useStyles();
 
   return (
@@ -14,6 +15,6 @@ const LoadingPage: React.FC = ({}) => {
       </Typography>
     </div>
   );
-};
+}
 
 export default LoadingPage;

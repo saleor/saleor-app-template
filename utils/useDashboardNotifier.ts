@@ -1,4 +1,5 @@
 import { actions, NotificationPayload } from "@saleor/app-bridge";
+
 import useApp from "../hooks/useApp";
 
 const useDashboardNotifier = () => {

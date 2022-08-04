@@ -1,22 +1,127 @@
-import type { NextPage } from "next";
-import {
-  Paper,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@material-ui/core";
+import { Paper, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import { CSSProperties } from "@material-ui/core/styles/withStyles";
+import { Skeleton } from "@material-ui/lab";
+import { makeStyles, Pill, ResponsiveTable } from "@saleor/macaw-ui";
 
 import {
   OrderStatus,
   PaymentChargeStatusEnum,
   useFetchVariousNumberOfOrdersQuery,
 } from "../generated/graphql";
-import { makeStyles, Pill, ResponsiveTable } from "@saleor/macaw-ui";
-import { CSSProperties } from "@material-ui/core/styles/withStyles";
-import { Skeleton } from "@material-ui/lab";
 import useAppApi from "../hooks/useAppApi";
+
+enum StatusType {
+  INFO = "info",
+  ERROR = "error",
+  WARNING = "warning",
+  SUCCESS = "success",
+}
+
+const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+
+const transformPaymentStatus = (status: string): { localized: string; status: StatusType } => {
+  const localized = capitalize(status.replace("_", " ").toLowerCase());
+
+  switch (status) {
+    case PaymentChargeStatusEnum.PartiallyCharged:
+      return {
+        localized,
+        status: StatusType.ERROR,
+      };
+    case PaymentChargeStatusEnum.FullyCharged:
+      return {
+        localized,
+        status: StatusType.SUCCESS,
+      };
+    case PaymentChargeStatusEnum.PartiallyRefunded:
+      return {
+        localized,
+        status: StatusType.INFO,
+      };
+    case PaymentChargeStatusEnum.FullyRefunded:
+      return {
+        localized,
+        status: StatusType.INFO,
+      };
+    case PaymentChargeStatusEnum.Pending:
+      return {
+        localized,
+        status: StatusType.WARNING,
+      };
+    case PaymentChargeStatusEnum.Refused:
+      return {
+        localized,
+        status: StatusType.ERROR,
+      };
+    case PaymentChargeStatusEnum.Cancelled:
+      return {
+        localized,
+        status: StatusType.ERROR,
+      };
+    case PaymentChargeStatusEnum.NotCharged:
+      return {
+        localized,
+        status: StatusType.ERROR,
+      };
+    default:
+      return {
+        localized,
+        status: StatusType.ERROR,
+      };
+  }
+};
+
+const transformOrderStatus = (status: string): { localized: string; status: StatusType } => {
+  const localized = capitalize(status.replace("_", " ").toLowerCase());
+
+  switch (status) {
+    case OrderStatus.Fulfilled:
+      return {
+        localized,
+        status: StatusType.SUCCESS,
+      };
+    case OrderStatus.PartiallyFulfilled:
+      return {
+        localized,
+        status: StatusType.WARNING,
+      };
+    case OrderStatus.Unfulfilled:
+      return {
+        localized,
+        status: StatusType.ERROR,
+      };
+    case OrderStatus.Canceled:
+      return {
+        localized,
+        status: StatusType.ERROR,
+      };
+    case OrderStatus.Draft:
+      return {
+        localized,
+        status: StatusType.INFO,
+      };
+    case OrderStatus.Unconfirmed:
+      return {
+        localized,
+        status: StatusType.INFO,
+      };
+    case OrderStatus.PartiallyReturned:
+      return {
+        localized,
+        status: StatusType.INFO,
+      };
+    case OrderStatus.Returned:
+      return {
+        localized,
+        status: StatusType.INFO,
+      };
+    default:
+      return {
+        localized,
+        status: StatusType.ERROR,
+      };
+  }
+};
 
 const useStyles = makeStyles(
   (theme) => {
@@ -69,14 +174,14 @@ const useStyles = makeStyles(
   { name: "OrderList" }
 );
 
-const Orders: NextPage = () => {
+function Orders() {
   const classes = useStyles();
 
   const { data: orderData, loading: orderLoading } = useAppApi({
     url: "/api/configuration/orders",
   });
 
-  const numberOfOrders = parseInt(orderData?.data.number_of_orders);
+  const numberOfOrders = parseInt(orderData?.data.number_of_orders, 10);
 
   const [{ data, error, fetching }] = useFetchVariousNumberOfOrdersQuery({
     variables: { number_of_orders: numberOfOrders as number },
@@ -120,13 +225,9 @@ const Orders: NextPage = () => {
                   .map(
                     ({ node: order }) => (
                       <TableRow hover key={order.id}>
-                        <TableCell className={classes.colNumber}>
-                          {`#${order.number}`}
-                        </TableCell>
+                        <TableCell className={classes.colNumber}>{`#${order.number}`}</TableCell>
                         <TableCell className={classes.colDate}>
-                          {new Intl.DateTimeFormat("en-US").format(
-                            Date.parse(order.created)
-                          )}
+                          {new Intl.DateTimeFormat("en-US").format(Date.parse(order.created))}
                         </TableCell>
                         <TableCell className={classes.colCustomer}>
                           {order.billingAddress?.firstName}
@@ -136,13 +237,8 @@ const Orders: NextPage = () => {
                         <TableCell className={classes.colPayment}>
                           <Pill
                             className={classes.pill}
-                            color={
-                              transformPaymentStatus(order.paymentStatus).status
-                            }
-                            label={
-                              transformPaymentStatus(order.paymentStatus)
-                                .localized
-                            }
+                            color={transformPaymentStatus(order.paymentStatus).status}
+                            label={transformPaymentStatus(order.paymentStatus).localized}
                             css=""
                           />
                         </TableCell>
@@ -156,9 +252,7 @@ const Orders: NextPage = () => {
                         </TableCell>
                         <TableCell className={classes.colTotal} align="right">
                           <>
-                            <span className={classes.currency}>
-                              {order.total.gross.currency}
-                            </span>
+                            <span className={classes.currency}>{order.total.gross.currency}</span>
                             {order.total.gross.amount}
                           </>
                         </TableCell>
@@ -166,7 +260,7 @@ const Orders: NextPage = () => {
                     ),
                     () => (
                       <TableRow>
-                        <TableCell colSpan={6}></TableCell>
+                        <TableCell colSpan={6} />
                       </TableRow>
                     )
                   )}
@@ -176,122 +270,6 @@ const Orders: NextPage = () => {
       </main>
     </div>
   );
-};
-
-export default Orders;
-
-const transformPaymentStatus = (
-  status: string
-): { localized: string; status: StatusType } => {
-  const localized = capitalize(status.replace("_", " ").toLowerCase());
-
-  switch (status) {
-    case PaymentChargeStatusEnum.PartiallyCharged:
-      return {
-        localized,
-        status: StatusType.ERROR,
-      };
-    case PaymentChargeStatusEnum.FullyCharged:
-      return {
-        localized,
-        status: StatusType.SUCCESS,
-      };
-    case PaymentChargeStatusEnum.PartiallyRefunded:
-      return {
-        localized,
-        status: StatusType.INFO,
-      };
-    case PaymentChargeStatusEnum.FullyRefunded:
-      return {
-        localized,
-        status: StatusType.INFO,
-      };
-    case PaymentChargeStatusEnum.Pending:
-      return {
-        localized,
-        status: StatusType.WARNING,
-      };
-    case PaymentChargeStatusEnum.Refused:
-      return {
-        localized,
-        status: StatusType.ERROR,
-      };
-    case PaymentChargeStatusEnum.Cancelled:
-      return {
-        localized,
-        status: StatusType.ERROR,
-      };
-    case PaymentChargeStatusEnum.NotCharged:
-      return {
-        localized,
-        status: StatusType.ERROR,
-      };
-  }
-  return {
-    localized: localized,
-    status: StatusType.ERROR,
-  };
-};
-
-const transformOrderStatus = (
-  status: string
-): { localized: string; status: StatusType } => {
-  const localized = capitalize(status.replace("_", " ").toLowerCase());
-
-  switch (status) {
-    case OrderStatus.Fulfilled:
-      return {
-        localized,
-        status: StatusType.SUCCESS,
-      };
-    case OrderStatus.PartiallyFulfilled:
-      return {
-        localized,
-        status: StatusType.WARNING,
-      };
-    case OrderStatus.Unfulfilled:
-      return {
-        localized,
-        status: StatusType.ERROR,
-      };
-    case OrderStatus.Canceled:
-      return {
-        localized,
-        status: StatusType.ERROR,
-      };
-    case OrderStatus.Draft:
-      return {
-        localized,
-        status: StatusType.INFO,
-      };
-    case OrderStatus.Unconfirmed:
-      return {
-        localized,
-        status: StatusType.INFO,
-      };
-    case OrderStatus.PartiallyReturned:
-      return {
-        localized,
-        status: StatusType.INFO,
-      };
-    case OrderStatus.Returned:
-      return {
-        localized,
-        status: StatusType.INFO,
-      };
-  }
-  return {
-    localized,
-    status: StatusType.ERROR,
-  };
-};
-
-enum StatusType {
-  INFO = "info",
-  ERROR = "error",
-  WARNING = "warning",
-  SUCCESS = "success",
 }
 
-const capitalize = (value: string) =>
-  value.charAt(0).toUpperCase() + value.slice(1);
+export default Orders;

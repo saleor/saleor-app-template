@@ -21,12 +21,12 @@ export const getEnvVars = async () => {
     }
   }
 
-  console.log("Using environment variables: ", variables);
+  console.debug("Using environment variables: ", variables);
   return variables;
 };
 
 export const setEnvVars = async (variables: IEnvVar[]) => {
-  console.log("Setting environment variables: ", variables);
+  console.debug("Setting environment variables: ", variables);
 
   if (process.env.VERCEL === "1") {
     await fetch(process.env.SALEOR_MARKETPLACE_REGISTER_URL as string, {
@@ -50,10 +50,7 @@ export const setEnvVars = async (variables: IEnvVar[]) => {
       ENVFILE,
       JSON.stringify({
         ...currentEnvVars,
-        ...variables.reduce(
-          (acc, cur) => ({ ...acc, [cur.key]: cur.value }),
-          {}
-        ),
+        ...variables.reduce((acc, cur) => ({ ...acc, [cur.key]: cur.value }), {}),
       })
     );
   }

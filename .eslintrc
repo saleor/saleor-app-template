@@ -1,0 +1,80 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "tsconfigRootDir": "./",
+    "project": ["./tsconfig.json"]
+  },
+  "extends": [
+    "airbnb",
+    "plugin:@typescript-eslint/recommended",
+    "prettier" // prettier *has* to be the last one, to avoid conflicting rules
+  ],
+  "ignorePatterns": [
+    "pnpm-lock.yaml",
+    "graphql/schema.graphql",
+    "generated",
+    "next.config.js",
+    "tailwind.config.js",
+    "sentry.client.config.js",
+    "sentry.server.config.js"
+  ],
+  "plugins": ["simple-import-sort", "@typescript-eslint"],
+  "rules": {
+    "quotes": ["error", "double"],
+    "react/react-in-jsx-scope": "off", // next does not require react imports
+    "import/extensions": "off", // file extension not required when importing
+    "react/jsx-filename-extension": "off",
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "ForInStatement",
+        "message": "for ... in disallowed, use for ... of instead"
+      }
+    ],
+
+    "no-underscore-dangle": "off",
+    "no-await-in-loop": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn",
+    "import/first": "warn",
+    "import/newline-after-import": "warn",
+    "import/no-duplicates": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "@typescript-eslint/ban-types": "off",
+    "no-console": [
+      "error",
+      {
+        "allow": ["warn", "error", "debug"]
+      }
+    ],
+    "no-continue": "off",
+    "operator-linebreak": "off",
+    "max-len": "off",
+    "array-callback-return": "off",
+    "implicit-arrow-linebreak": "off",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "no-restricted-imports": "off",
+    "no-restricted-exports": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-misused-promises": ["error"],
+    "@typescript-eslint/no-floating-promises": ["error"],
+    // note you must disable the base rule as it can report incorrect errors
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"]
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+      }
+    }
+  }
+}
