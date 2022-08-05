@@ -1,10 +1,10 @@
+import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
+import { withJWTVerified } from "@saleor/app-sdk/middleware";
 import { withSentry } from "@sentry/nextjs";
 import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
-import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
-import { withJWTVerified } from "@saleor/app-sdk/middleware";
-import { createClient } from "../../lib/graphql";
+
 import {
   FetchAppDetailsDocument,
   MetadataInput,
@@ -12,6 +12,7 @@ import {
   UpdateAppMetadataDocument,
 } from "../../generated/graphql";
 import { getEnvVars } from "../../lib/environment";
+import { createClient } from "../../lib/graphql";
 import { withSaleorDomainMatch } from "../../lib/middlewares";
 import { getAppId } from "../../lib/utils";
 

@@ -1,8 +1,9 @@
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
+import { Request } from "retes";
+
 import { FetchAppDetailsDocument } from "../generated/graphql";
 import { getEnvVars } from "./environment";
 import { createClient } from "./graphql";
-import { Request } from "retes";
 
 export async function getAppId(request: Request) {
   // Get installed App ID from the Saleor API based on request

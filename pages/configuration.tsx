@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, TextField } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
-import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
+import { SALEOR_AUTHORIZATION_BEARER_HEADER, SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { ConfirmButton, ConfirmButtonTransitionState, makeStyles } from "@saleor/macaw-ui";
 import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 
@@ -48,7 +48,7 @@ function Configuration() {
       headers: [
         ["content-type", "application/json"],
         [SALEOR_DOMAIN_HEADER, appState?.domain!],
-        ["authorization-bearer", appState?.token!],
+        [SALEOR_AUTHORIZATION_BEARER_HEADER, appState?.token!],
       ],
       body: JSON.stringify({ data: configuration }),
     })
