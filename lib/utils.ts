@@ -5,7 +5,7 @@ import { FetchAppDetailsDocument } from "../generated/graphql";
 import { getEnvVars } from "./environment";
 import { createClient } from "./graphql";
 
-export async function getAppId(request: Request) {
+export async function getAppIdFromApi(request: Request) {
   // Get installed App ID from the Saleor API based on request
   const { [SALEOR_DOMAIN_HEADER]: saleorDomain } = request.headers;
   const client = createClient(`https://${saleorDomain}/graphql/`, async () =>

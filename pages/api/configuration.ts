@@ -14,7 +14,7 @@ import {
 import { getEnvVars } from "../../lib/environment";
 import { createClient } from "../../lib/graphql";
 import { withSaleorDomainMatch } from "../../lib/middlewares";
-import { getAppId } from "../../lib/utils";
+import { getAppIdFromApi } from "../../lib/utils";
 
 const CONFIGURATION_KEYS = ["NUMBER_OF_ORDERS"];
 
@@ -76,5 +76,5 @@ const handler: Handler = async (request) => {
 };
 
 export default withSentry(
-  toNextHandler([withSaleorDomainMatch, withJWTVerified(getAppId), handler])
+  toNextHandler([withSaleorDomainMatch, withJWTVerified(getAppIdFromApi), handler])
 );

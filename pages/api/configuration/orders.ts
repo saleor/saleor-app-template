@@ -7,7 +7,7 @@ import { Response } from "retes/response";
 
 import { getValue } from "../../../lib/metadata";
 import { withSaleorDomainMatch } from "../../../lib/middlewares";
-import { getAppId } from "../../../lib/utils";
+import { getAppIdFromApi } from "../../../lib/utils";
 
 const handler: Handler = async (request) => {
   const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
@@ -28,5 +28,5 @@ const handler: Handler = async (request) => {
 };
 
 export default withSentry(
-  toNextHandler([withSaleorDomainMatch, withJWTVerified(getAppId), handler])
+  toNextHandler([withSaleorDomainMatch, withJWTVerified(getAppIdFromApi), handler])
 );
