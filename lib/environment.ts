@@ -29,12 +29,12 @@ export const setEnvVars = async (variables: IEnvVar[]) => {
   console.debug("Setting environment variables: ", variables);
 
   if (process.env.VERCEL === "1") {
-    await fetch(process.env.SALEOR_MARKETPLACE_REGISTER_URL as string, {
+    await fetch(process.env.SALEOR_REGISTER_APP_URL as string, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        marketplace_token: process.env.SALEOR_MARKETPLACE_TOKEN,
-        envVars: variables.map(({ key, value }) => ({ key, value })),
+        token: process.env.SALEOR_DEPLOYMENT_TOKEN,
+        envs: variables.map(({ key, value }) => ({ key, value })),
       }),
     });
   } else {
