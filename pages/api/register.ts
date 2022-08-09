@@ -12,17 +12,23 @@ const handler: Handler = async (request) => {
   const authToken = request.params.auth_token;
   const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
 
-  await setEnvVars([
-    {
-      key: "SALEOR_AUTH_TOKEN",
-      value: authToken,
-    },
-    {
-      key: "SALEOR_DOMAIN",
-      value: saleorDomain,
-    },
-  ]);
-
+  try {
+    await setEnvVars([
+      {
+        key: "SALEOR_AUTH_TOKEN",
+        value: authToken,
+      },
+      {
+        key: "SALEOR_DOMAIN",
+        value: saleorDomain,
+      },
+    ]);
+  } catch {
+    return Response.InternalServerError({
+      success: false,
+      message: "Registration failed: could not save the data.",
+    });
+  }
   return Response.OK({ success: true });
 };
 

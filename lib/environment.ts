@@ -29,7 +29,7 @@ export const setEnvVars = async (variables: IEnvVar[]) => {
   console.debug("Setting environment variables: ", variables);
 
   if (process.env.VERCEL === "1") {
-    await fetch(process.env.SALEOR_REGISTER_APP_URL as string, {
+    const response = await fetch(process.env.SALEOR_REGISTER_APP_URL as string, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -37,6 +37,11 @@ export const setEnvVars = async (variables: IEnvVar[]) => {
         envs: variables.map(({ key, value }) => ({ key, value })),
       }),
     });
+    if (response.status !== 200) {
+      const errorMessage = `Setting up the environment variables failed. The API responded with status ${response.status}.`;
+      console.error(errorMessage);
+      throw new Error(errorMessage);
+    }
   } else {
     let currentEnvVars;
     try {
