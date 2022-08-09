@@ -1,9 +1,11 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { useMemo } from "react";
 
 import useApp from "../hooks/useApp";
-import { DashboardTokenPayload } from "../lib/middlewares";
 
+interface DashboardTokenPayload extends JwtPayload {
+  app: string;
+}
 interface TokenProps {
   isTokenValid: boolean;
   hasAppToken: boolean;
