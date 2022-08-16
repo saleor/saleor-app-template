@@ -1,9 +1,9 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
+import * as jose from "jose";
 import { useMemo } from "react";
 
 import useApp from "../hooks/useApp";
 
-interface DashboardTokenPayload extends JwtPayload {
+interface DashboardTokenPayload extends jose.JWTPayload {
   app: string;
 }
 interface TokenProps {
@@ -17,12 +17,14 @@ const useToken = (): TokenProps => {
 
   const tokenClaims = useMemo(() => {
     try {
-      return jwt.decode(app?.token as string) as DashboardTokenPayload;
+      if (app?.token) {
+        return jose.decodeJwt(app?.token) as DashboardTokenPayload;
+      }
     } catch (e) {
       console.error(e);
-      return null;
     }
-  }, [app]);
+    return null;
+  }, [app?.token]);
 
   const isTokenValid = tokenClaims ? tokenClaims.iss === app?.domain : false;
 
