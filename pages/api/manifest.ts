@@ -6,7 +6,7 @@ import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
 import * as GeneratedGraphQL from "../../generated/graphql";
-import { name, version } from "../../package.json";
+import packageInfo from "../../package.json";
 
 const handler: Handler = async (request) => {
   const { baseURL } = request.context;
@@ -15,8 +15,8 @@ const handler: Handler = async (request) => {
 
   const manifest = {
     id: "saleor.app",
-    version,
-    name,
+    version: packageInfo.version,
+    name: packageInfo.name,
     permissions: ["MANAGE_ORDERS"],
     appUrl: baseURL,
     tokenTargetUrl: `${baseURL}/api/register`,
