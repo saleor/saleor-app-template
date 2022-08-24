@@ -1,21 +1,9 @@
-import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
-import { withAuthTokenRequired, withSaleorDomainPresent } from "@saleor/app-sdk/middleware";
-import { withSentry } from "@sentry/nextjs";
-import { setConfiguration } from "./../../lib/configuration";
-import type { Handler } from "retes";
-import { toNextHandler } from "retes/adapter";
-import { withMethod } from "retes/middleware";
-import { Response } from "retes/response";
+import { SaleorAppConfig } from "../../lib/saleorApp";
 
-const handler: Handler = async (request) => {
-  const authToken = request.params.auth_token;
-  const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
+export default SaleorAppConfig.registerHandler;
 
-  await setConfiguration({ domain: saleorDomain, token: authToken });
-
-  return Response.OK({ success: true });
+export const config = {
+  api: {
+    bodyParser: false,
+  },
 };
-
-export default withSentry(
-  toNextHandler([withMethod("POST"), withSaleorDomainPresent, withAuthTokenRequired, handler])
-);

@@ -21,7 +21,6 @@ export const getEnvVars = async () => {
     }
   }
 
-  console.debug("Using environment variables: ", variables);
   return variables;
 };
 

@@ -5,65 +5,70 @@ import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
-import {
-  FetchAppDetailsDocument,
-  MetadataInput,
-  MetadataItem,
-  UpdateAppMetadataDocument,
-} from "../../generated/graphql";
-import { withSaleorDomainMatch } from "../../lib/middlewares";
-import { getAppIdFromApi } from "../../lib/utils";
-import { saleorApiClient } from "../../lib/configuration";
+import { MetadataInput, MetadataItem } from "../../generated/graphql";
+import { fetchPrivateMetadata, mutatePrivateMetadata } from "../../lib/metadata";
+import { SaleorAppConfig } from "../../lib/saleorApp";
+import { saleorApiClient } from "../../lib/serverSideClient";
+import { fetchAppId, getAppIdFromApi } from "../../lib/utils";
 
 const CONFIGURATION_KEYS = ["NUMBER_OF_ORDERS"];
 
-const prepareMetadataFromRequest = (input: MetadataInput[] | MetadataItem[]) =>
-  input
-    .filter(({ key }) => CONFIGURATION_KEYS.includes(key))
-    .map(({ key, value }) => ({ key, value }));
-
-const prepareResponseFromMetadata = (input: MetadataItem[]) => {
-  const output: MetadataInput[] = [];
-  for (const configurationKey of CONFIGURATION_KEYS) {
-    output.push(
+// Returns set of specified metadata.
+// If the key is not yet existing in the private metadata, will return object with an empty value.
+const prepareMetadata = (input: MetadataInput[] | MetadataItem[]) =>
+  CONFIGURATION_KEYS.map(
+    (configurationKey) =>
       input.find(({ key }) => key === configurationKey) ?? {
         key: configurationKey,
         value: "",
       }
-    );
-  }
-  return output.map(({ key, value }) => ({ key, value }));
-};
+  );
 
+// REST endpoint for getting and setting specified metadata
 const handler: Handler = async (request) => {
+  console.debug("Configuration API handler.");
+
+  // todo: the handler should use
+  // await SaleorAppConfig.restrictedPaths.process(req, res);
+
   const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
-  const client = saleorApiClient(saleorDomain);
 
-  let privateMetadata;
+  const auth = await SaleorAppConfig.auth.get(saleorDomain);
+  if (!auth) {
+    return Response.Forbidden({
+      success: false,
+    });
+  }
+  const client = saleorApiClient(saleorDomain, auth.token);
+
   switch (request.method!) {
-    case "GET":
-      privateMetadata = (await client.query(FetchAppDetailsDocument).toPromise()).data?.app
-        ?.privateMetadata!;
+    case "GET": {
+      const privateMetadata = await fetchPrivateMetadata(client);
 
       return Response.OK({
         success: true,
-        data: prepareResponseFromMetadata(privateMetadata),
+        data: prepareMetadata(privateMetadata),
       });
+    }
     case "POST": {
-      const appId = (await client.query(FetchAppDetailsDocument).toPromise()).data?.app?.id;
+      const newMetadata = prepareMetadata((request.body as any).data);
 
-      privateMetadata = (
-        await client
-          .mutation(UpdateAppMetadataDocument, {
-            id: appId as string,
-            input: prepareMetadataFromRequest((request.body as any).data),
-          })
-          .toPromise()
-      ).data?.updatePrivateMetadata?.item?.privateMetadata!;
+      const appId = await fetchAppId(client);
 
+      if (!appId) {
+        return Response.InternalServerError({
+          success: false,
+          message: "Could not fetch App ID.",
+        });
+      }
+
+      const mutationErrors = await mutatePrivateMetadata(client, appId, newMetadata);
+      if (mutationErrors) {
+        return Response.InternalServerError({ success: false, message: mutationErrors.message });
+      }
       return Response.OK({
         success: true,
-        data: prepareResponseFromMetadata(privateMetadata),
+        data: newMetadata,
       });
     }
     default:
@@ -72,5 +77,6 @@ const handler: Handler = async (request) => {
 };
 
 export default withSentry(
-  toNextHandler([withSaleorDomainMatch, withJWTVerified(getAppIdFromApi), handler])
+  // toNextHandler([withSaleorDomainMatch, withJWTVerified(getAppIdFromApi), handler])
+  toNextHandler([withJWTVerified(getAppIdFromApi), handler])
 );

@@ -4,8 +4,6 @@ import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
-import { withSaleorDomainMatch } from "../../../lib/middlewares";
-
 const handler: Handler = async (request) => {
   //
   // Your logic goes here
@@ -17,12 +15,7 @@ const handler: Handler = async (request) => {
 };
 
 export default withSentry(
-  toNextHandler([
-    withSaleorDomainMatch,
-    withSaleorEventMatch("order_created"),
-    withWebhookSignatureVerified(),
-    handler,
-  ])
+  toNextHandler([withSaleorEventMatch("order_created"), withWebhookSignatureVerified(), handler])
 );
 
 export const config = {
