@@ -6,23 +6,14 @@ import { toNextHandler } from "retes/adapter";
 import { withMethod } from "retes/middleware";
 import { Response } from "retes/response";
 
-import { setEnvVars } from "../../lib/environment";
+import { apl } from "../../lib/saleorApp";
 
 const handler: Handler = async (request) => {
   const authToken = request.params.auth_token;
   const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
 
   try {
-    await setEnvVars([
-      {
-        key: "SALEOR_AUTH_TOKEN",
-        value: authToken,
-      },
-      {
-        key: "SALEOR_DOMAIN",
-        value: saleorDomain,
-      },
-    ]);
+    await apl.set({ domain: saleorDomain, token: authToken });
   } catch {
     return Response.InternalServerError({
       success: false,
