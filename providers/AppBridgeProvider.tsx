@@ -1,8 +1,11 @@
-import { App, createApp } from "@saleor/app-bridge";
+/**
+ * TODO Fix import in app-sdk, why it points to /dist/?
+ */
+import { AppBridge } from "@saleor/app-sdk/dist/app-bridge";
 import { createContext, PropsWithChildren } from "react";
 
 interface IAppContext {
-  app?: App;
+  app?: AppBridge;
 }
 
 export const AppContext = createContext<IAppContext>({ app: undefined });
@@ -11,7 +14,7 @@ let saleorAppBridgeInstance: IAppContext = { app: undefined };
 
 if (typeof window !== "undefined") {
   saleorAppBridgeInstance = {
-    app: createApp(),
+    app: new AppBridge(),
   };
 }
 
