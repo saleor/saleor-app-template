@@ -1,7 +1,4 @@
-/**
- * TODO Fix import in app-sdk, why it points to /dist/?
- */
-import { AppBridge } from "@saleor/app-sdk/dist/app-bridge";
+import { AppBridge } from "@saleor/app-sdk/app-bridge";
 import { createContext, PropsWithChildren } from "react";
 
 interface IAppContext {
