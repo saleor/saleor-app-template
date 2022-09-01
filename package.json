@@ -43,7 +43,7 @@
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "4.0.0-alpha.61",
-    "@saleor/app-sdk": "~0.9.0-4",
+    "@saleor/app-sdk": "~0.9.1",
     "@saleor/macaw-ui": "^0.6.3",
     "@sentry/nextjs": "^7.6.0",
     "@urql/exchange-auth": "^0.1.7",
