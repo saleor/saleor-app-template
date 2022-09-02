@@ -1,4 +1,4 @@
-import { actions, NotificationPayload } from "@saleor/app-bridge";
+import { actions, NotificationPayload } from "@saleor/app-sdk/app-bridge";
 
 import useApp from "../hooks/useApp";
 

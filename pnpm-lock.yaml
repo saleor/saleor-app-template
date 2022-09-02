@@ -12,8 +12,7 @@ specifiers:
   '@material-ui/core': ^4.12.4
   '@material-ui/icons': ^4.11.3
   '@material-ui/lab': 4.0.0-alpha.61
-  '@saleor/app-bridge': 0.1.10
-  '@saleor/app-sdk': 0.8.0
+  '@saleor/app-sdk': ~0.9.1
   '@saleor/macaw-ui': ^0.6.3
   '@sentry/nextjs': ^7.6.0
   '@types/node': 18.0.1
@@ -53,8 +52,7 @@ dependencies:
   '@material-ui/core': 4.12.4_twyhzqqpkwvvgrmyeapdo6i4my
   '@material-ui/icons': 4.11.3_xfab57qepcdrxdxif4xlv2kdgm
   '@material-ui/lab': 4.0.0-alpha.61_xfab57qepcdrxdxif4xlv2kdgm
-  '@saleor/app-bridge': 0.1.10
-  '@saleor/app-sdk': 0.8.0
+  '@saleor/app-sdk': 0.9.1
   '@saleor/macaw-ui': 0.6.3_5j6zkq4mzir5org5dcu2pr43hm
   '@sentry/nextjs': 7.7.0_next@12.2.3+react@18.2.0
   '@urql/exchange-auth': 0.1.7_graphql@16.5.0
@@ -1632,20 +1630,17 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /@saleor/app-bridge/0.1.10:
-    resolution: {integrity: sha512-ULQohMC/uZQWc4JeKzNOB8T9SkM5NwnvRw3YSAWj+WEeD+vil9hfGqml+2E8jjT5RsVCl3Dx9frgvvWPqnnrUw==}
-    engines: {node: '>=10'}
+  /@saleor/app-sdk/0.9.1:
+    resolution: {integrity: sha512-p+/qvl2tk0gowdLSK9szXLSVYNaIr1QQF0panqnuT+GYXOEtwysBvr/TUq0b1GLKZsxlmgjE46NNsqBIVJdnpQ==}
     dependencies:
-      uuid: 8.3.2
-    dev: false
-
-  /@saleor/app-sdk/0.8.0:
-    resolution: {integrity: sha512-42x4qLIxcVxSX6J3GcJjYVm14Fe7czRaGRKVXQyBQ+Npa+goKjm5xsn3v4VkSdL690H4VfBl8jfi0XsFwU8fww==}
-    dependencies:
+      debug: 4.3.4
       fast-glob: 3.2.11
       graphql: 16.5.0
       jose: 4.8.3
-      retes: 0.29.4
+      retes: 0.32.0
+      uuid: 8.3.2
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@saleor/macaw-ui/0.6.3_5j6zkq4mzir5org5dcu2pr43hm:
@@ -5568,6 +5563,12 @@ packages:
 
   /retes/0.29.4:
     resolution: {integrity: sha512-c6Ji2oGfXN/abuLRVLUT0/eklLuAlargjBR0Ru/FAhgmL2TtEhNl2OQ3UnFSUYXa8a6v9qrEb6UvIp0A6KlJ5w==}
+    dependencies:
+      busboy: 1.6.0
+    dev: false
+
+  /retes/0.32.0:
+    resolution: {integrity: sha512-pCz9SdztBaU4QMX/YA3A5tfEVgHdLwGdc7hJOJHF+XTJzHJksiwQTquZuz32DeJ4KRgo2P8h5sdPnyi+v4AzwQ==}
     dependencies:
       busboy: 1.6.0
     dev: false
