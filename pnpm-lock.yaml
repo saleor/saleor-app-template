@@ -12,7 +12,7 @@ specifiers:
   '@material-ui/core': ^4.12.4
   '@material-ui/icons': ^4.11.3
   '@material-ui/lab': 4.0.0-alpha.61
-  '@saleor/app-sdk': 0.10.0-1
+  '@saleor/app-sdk': 0.10.0-2
   '@saleor/macaw-ui': ^0.6.3
   '@sentry/nextjs': ^7.6.0
   '@types/node': 18.0.1
@@ -52,7 +52,7 @@ dependencies:
   '@material-ui/core': 4.12.4_twyhzqqpkwvvgrmyeapdo6i4my
   '@material-ui/icons': 4.11.3_xfab57qepcdrxdxif4xlv2kdgm
   '@material-ui/lab': 4.0.0-alpha.61_xfab57qepcdrxdxif4xlv2kdgm
-  '@saleor/app-sdk': 0.10.0-1
+  '@saleor/app-sdk': 0.10.0-2
   '@saleor/macaw-ui': 0.6.3_5j6zkq4mzir5org5dcu2pr43hm
   '@sentry/nextjs': 7.7.0_next@12.2.3+react@18.2.0
   '@urql/exchange-auth': 0.1.7_graphql@16.5.0
@@ -1630,8 +1630,8 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /@saleor/app-sdk/0.10.0-1:
-    resolution: {integrity: sha512-Dg/0rywoZOL/YPZydX75cZ6F+TI8fo5kZ8ofavvG0BAJbm0VvJZG8kkZZ/EmkhTBxWRy/pWRXB0RzWpv+Dg6DQ==}
+  /@saleor/app-sdk/0.10.0-2:
+    resolution: {integrity: sha512-NVaJeT8jO+FqgkjnFjeqp7WpC4YoVA0KKTHMQgi/PQw5WTtP5u2Ck7EUiXV5CAdmGaZjof9uBOYAy8SFun0NRQ==}
     dependencies:
       debug: 4.3.4
       fast-glob: 3.2.11
