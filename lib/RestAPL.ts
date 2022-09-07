@@ -3,72 +3,73 @@ import { APL, AuthData } from "@saleor/app-sdk/APL";
 import fetch from "node-fetch";
 
 export type RestAPLConfig = {
-  setURL: string;
-  getURL: string;
-  deleteURL: string;
-  getAllURL: string;
+  url: string;
   headers?: Record<string, string>;
 };
 export class RestAPL implements APL {
-  private setURL: string;
-
-  private getURL: string;
-
-  private deleteURL: string;
-
-  private getAllURL: string;
+  private url: string;
 
   private headers?: Record<string, string>;
 
   constructor(config: RestAPLConfig) {
-    this.setURL = config.setURL;
-    this.getURL = config.getURL;
-    this.deleteURL = config.deleteURL;
-    this.getAllURL = config.getAllURL;
+    this.url = config.url;
     this.headers = config.headers;
+  }
+
+  private urlForDomain(domain: string) {
+    return `${this.url}/${domain}`;
   }
 
   async get(domain: string) {
     console.debug("Getting data from Rest");
+    let response;
     try {
-      const response = await fetch(this.getURL, {
+      response = await fetch(this.urlForDomain(domain), {
         method: "GET",
         headers: { "Content-Type": "application/json", ...this.headers },
-        body: JSON.stringify({
-          domain,
-        }),
       });
-      console.debug(`Get responded with ${response.status} code`);
-
-      const parsed = await response.json();
-      if (parsed?.domain && parsed.token) {
-        return { domain: parsed.domain, token: parsed.token };
-      }
     } catch (error) {
-      console.debug("Error during getting the data:", error);
+      throw new Error(`Attempt in fetch the data resulted with error: ${error}`);
     }
+
+    if (response.status < 200 || response.status >= 400) {
+      throw new Error(`Fetch returned with non 200 status code ${response.status}`);
+    }
+
+    const parsed = (await response.json()) as any;
+    if (parsed?.domain && parsed.token) {
+      return { domain: parsed.domain, token: parsed.token };
+    }
+    console.debug("Response had no domain and token.");
     return undefined;
   }
 
   async set(authData: AuthData) {
     console.debug("Saving data to Rest");
+    let response;
     try {
-      const response = await fetch(this.setURL, {
+      response = await fetch(this.url, {
         method: "POST",
         headers: { "Content-Type": "application/json", ...this.headers },
         body: JSON.stringify(authData),
       });
-      console.debug(`Set responded with ${response.status} code`);
     } catch (error) {
-      console.debug("Error during saving the data:", error);
+      throw new Error(`Error during saving the data: ${error}`);
     }
+
+    if (response.status < 200 || response.status >= 400) {
+      throw new Error(`Set response returned with non 200 status code ${response.status}`);
+    }
+
+    console.debug("Set command finished successfully");
+    return undefined;
   }
 
   async delete(domain: string) {
     console.debug("Deleting data from Rest");
     try {
-      const response = await fetch(this.deleteURL, {
-        method: "POST",
+      const response = await fetch(this.urlForDomain(domain), {
+        method: "DELETE",
         headers: { "Content-Type": "application/json", ...this.headers },
         body: JSON.stringify({ domain }),
       });
@@ -81,7 +82,7 @@ export class RestAPL implements APL {
   async getAll() {
     console.debug("Get all data from Rest");
     try {
-      const response = await fetch(this.getAllURL, {
+      const response = await fetch(this.url, {
         method: "GET",
         headers: { "Content-Type": "application/json", ...this.headers },
       });
