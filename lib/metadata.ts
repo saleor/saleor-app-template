@@ -5,7 +5,7 @@ import { apl } from "./saleorApp";
 export const getValue = async (saleorDomain: string, key: string) => {
   const authData = await apl.get(saleorDomain);
   if (!authData) {
-    throw Error("Unknown domain.");
+    throw Error(`Couldn't find auth data for domain ${saleorDomain}`);
   }
 
   const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
