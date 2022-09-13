@@ -17,7 +17,9 @@ const handler: Handler = async (request) => {
   } catch {
     return Response.InternalServerError({
       success: false,
-      message: "Registration failed: could not save the data.",
+      error: {
+        message: "Registration failed: could not save the auth data.",
+      },
     });
   }
   return Response.OK({ success: true });
