@@ -36,7 +36,7 @@ const prepareResponseFromMetadata = (input: MetadataItem[]) => {
 };
 
 const handler: Handler = async (request) => {
-  const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
+  const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER] as string;
   const authData = await apl.get(saleorDomain);
   if (!authData) {
     console.debug(`Could not find auth data for the domain ${saleorDomain}.`);
@@ -50,7 +50,7 @@ const handler: Handler = async (request) => {
   let privateMetadata;
   switch (request.method!) {
     case "GET":
-      privateMetadata = (await client.query(FetchAppDetailsDocument).toPromise()).data?.app
+      privateMetadata = (await client.query(FetchAppDetailsDocument, {}).toPromise()).data?.app
         ?.privateMetadata!;
 
       return Response.OK({
@@ -58,7 +58,7 @@ const handler: Handler = async (request) => {
         data: prepareResponseFromMetadata(privateMetadata),
       });
     case "POST": {
-      const appId = (await client.query(FetchAppDetailsDocument).toPromise()).data?.app?.id;
+      const appId = (await client.query(FetchAppDetailsDocument, {}).toPromise()).data?.app?.id;
 
       privateMetadata = (
         await client

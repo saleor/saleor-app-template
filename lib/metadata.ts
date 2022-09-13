@@ -13,7 +13,7 @@ export const getValue = async (saleorDomain: string, key: string) => {
   );
 
   const item = (
-    await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument).toPromise()
+    await client.query<FetchAppDetailsQuery>(FetchAppDetailsDocument, {}).toPromise()
   ).data?.app?.privateMetadata!.find((i) => i.key === key);
 
   if (item === undefined) {

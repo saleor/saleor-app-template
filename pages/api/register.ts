@@ -10,7 +10,7 @@ import { apl } from "../../lib/saleorApp";
 
 const handler: Handler = async (request) => {
   const authToken = request.params.auth_token;
-  const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
+  const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER] as string;
 
   try {
     await apl.set({ domain: saleorDomain, token: authToken });

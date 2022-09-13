@@ -10,7 +10,7 @@ import { apl } from "../../../lib/saleorApp";
 import { getAppIdFromApi } from "../../../lib/utils";
 
 const handler: Handler = async (request) => {
-  const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER];
+  const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER] as string;
 
   let numberOfOrders;
   try {

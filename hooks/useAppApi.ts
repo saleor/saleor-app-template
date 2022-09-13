@@ -20,7 +20,7 @@ const useAppApi = ({ url, options, skip }: UseFetchProps) => {
   const [error, setError] = useState<unknown>();
   const [loading, setLoading] = useState(false);
 
-  const fetchOptions = {
+  const fetchOptions: RequestInit = {
     ...options,
     headers: [
       [SALEOR_DOMAIN_HEADER, appState?.domain!],
