@@ -1,9 +1,9 @@
+import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import LoadingPage from "../components/LoadingPage/LoadingPage";
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 
 function Index() {
   const { appBridgeState } = useAppBridge();

@@ -1,6 +1,6 @@
+import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import * as jose from "jose";
 import { useMemo } from "react";
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 
 interface DashboardTokenPayload extends jose.JWTPayload {
   app: string;

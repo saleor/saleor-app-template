@@ -1,6 +1,6 @@
+import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { useEffect, useState } from "react";
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 
 type Options = Record<string, string>;
 
@@ -11,10 +11,10 @@ interface UseFetchProps {
 }
 
 // This hook is meant to be used mainly for internal API calls
-const useAppApi = ({ url, options, skip }: UseFetchProps) => {
+const useAppApi = <D>({ url, options, skip }: UseFetchProps) => {
   const { appBridgeState } = useAppBridge();
 
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<D>();
   const [error, setError] = useState<unknown>();
   const [loading, setLoading] = useState(false);
 

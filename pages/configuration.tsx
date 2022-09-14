@@ -1,11 +1,12 @@
 import { Card, CardContent, CardHeader, TextField } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
+import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { SALEOR_AUTHORIZATION_BEARER_HEADER, SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { ConfirmButton, ConfirmButtonTransitionState, makeStyles } from "@saleor/macaw-ui";
 import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+
 import useAppApi from "../hooks/useAppApi";
 import useDashboardNotifier from "../utils/useDashboardNotifier";
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 
 interface ConfigurationField {
   key: string;
@@ -28,7 +29,7 @@ function Configuration() {
   const [configuration, setConfiguration] = useState<ConfigurationField[]>();
   const [transitionState, setTransitionState] = useState<ConfirmButtonTransitionState>("default");
 
-  const { data: configurationData, error } = useAppApi({
+  const { data: configurationData, error } = useAppApi<{ data: ConfigurationField[] }>({
     url: "/api/configuration",
   });
 
