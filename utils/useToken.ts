@@ -1,7 +1,6 @@
 import * as jose from "jose";
 import { useMemo } from "react";
-
-import useApp from "../hooks/useApp";
+import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 
 interface DashboardTokenPayload extends jose.JWTPayload {
   app: string;
@@ -12,26 +11,29 @@ interface TokenProps {
   tokenClaims: DashboardTokenPayload | null;
 }
 
+/**
+ * TODO: Move to sdk
+ */
 const useToken = (): TokenProps => {
-  const app = useApp()?.getState();
+  const { appBridgeState } = useAppBridge();
 
   const tokenClaims = useMemo(() => {
     try {
-      if (app?.token) {
-        return jose.decodeJwt(app?.token) as DashboardTokenPayload;
+      if (appBridgeState?.token) {
+        return jose.decodeJwt(appBridgeState?.token) as DashboardTokenPayload;
       }
     } catch (e) {
       console.error(e);
     }
     return null;
-  }, [app?.token]);
+  }, [appBridgeState?.token]);
 
-  const isTokenValid = tokenClaims ? tokenClaims.iss === app?.domain : false;
+  const isTokenValid = tokenClaims ? tokenClaims.iss === appBridgeState?.domain : false;
 
   return {
     isTokenValid,
     tokenClaims,
-    hasAppToken: !!app?.token,
+    hasAppToken: !!appBridgeState?.token,
   };
 };
 
