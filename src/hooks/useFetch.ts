@@ -2,20 +2,22 @@ import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { useEffect, useState } from "react";
 
-type Options = Record<string, string>;
-
 interface UseFetchProps {
   url: string;
-  options?: Options;
+  options?: RequestInit;
   skip?: boolean;
 }
 
-// This hook is meant to be used mainly for internal API calls
-const useAppApi = <D>({ url, options, skip }: UseFetchProps) => {
+/**
+ * This is a simple API client that wraps Fetch API and stores it in local state.
+ *
+ * In larger app this can be replaced with swr or react-query
+ */
+export const useFetch = <D>({ url, options, skip }: UseFetchProps) => {
   const { appBridgeState } = useAppBridge();
 
   const [data, setData] = useState<D>();
-  const [error, setError] = useState<unknown>();
+  const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState(false);
 
   const fetchOptions: RequestInit = {
@@ -41,7 +43,7 @@ const useAppApi = <D>({ url, options, skip }: UseFetchProps) => {
         const json = await res.json();
         setData(json);
       } catch (e) {
-        setError(e as unknown);
+        setError(e as Error);
       } finally {
         setLoading(false);
       }
@@ -61,5 +63,3 @@ const useAppApi = <D>({ url, options, skip }: UseFetchProps) => {
 
   return { data, error, loading };
 };
-
-export default useAppApi;

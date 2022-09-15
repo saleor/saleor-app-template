@@ -8,7 +8,7 @@ import {
   PaymentChargeStatusEnum,
   useFetchVariousNumberOfOrdersQuery,
 } from "../../generated/graphql";
-import useAppApi from "../hooks/useAppApi";
+import { useFetch } from "../hooks/useFetch";
 
 enum StatusType {
   INFO = "info",
@@ -177,7 +177,7 @@ const useStyles = makeStyles(
 function Orders() {
   const classes = useStyles();
 
-  const { data: orderData, loading: orderLoading } = useAppApi<{
+  const { data: orderData, loading: orderLoading } = useFetch<{
     data: { number_of_orders: string };
   }>({
     url: "/api/configuration/orders",

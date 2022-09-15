@@ -5,7 +5,7 @@ import { SALEOR_AUTHORIZATION_BEARER_HEADER, SALEOR_DOMAIN_HEADER } from "@saleo
 import { ConfirmButton, ConfirmButtonTransitionState, makeStyles } from "@saleor/macaw-ui";
 import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 
-import useAppApi from "../hooks/useAppApi";
+import { useFetch } from "../hooks/useFetch";
 import useDashboardNotifier from "../utils/useDashboardNotifier";
 
 interface ConfigurationField {
@@ -29,7 +29,7 @@ function Configuration() {
   const [configuration, setConfiguration] = useState<ConfigurationField[]>();
   const [transitionState, setTransitionState] = useState<ConfirmButtonTransitionState>("default");
 
-  const { data: configurationData, error } = useAppApi<{ data: ConfigurationField[] }>({
+  const { data: configurationData, error } = useFetch<{ data: ConfigurationField[] }>({
     url: "/api/configuration",
   });
 
