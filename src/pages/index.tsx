@@ -3,9 +3,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import LoadingPage from "../components/LoadingPage/LoadingPage";
+import { LoadingPage } from "../components/LoadingPage/LoadingPage";
+import { NextPage } from "next";
 
-function Index() {
+const IndexPage: NextPage = () => {
   const { appBridgeState } = useAppBridge();
   const [isBrowser, setIsBrowser] = useState(false);
   const router = useRouter();
@@ -108,6 +109,6 @@ function Index() {
       </footer>
     </div>
   );
-}
+};
 
-export default Index;
+export default IndexPage;

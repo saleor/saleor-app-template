@@ -5,7 +5,7 @@ import { AppBridge, AppBridgeProvider } from "@saleor/app-sdk/app-bridge";
 import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import React, { PropsWithChildren, useEffect } from "react";
 
-import AuthorizedPage from "../components/AuthorizedPage/AuthorizedPage";
+import { AuthorizedPage } from "../components/AuthorizedPage/AuthorizedPage";
 import GraphQLProvider from "../providers/GraphQLProvider";
 import { AppLayoutProps } from "../../types";
 

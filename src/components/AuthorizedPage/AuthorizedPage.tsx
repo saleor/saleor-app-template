@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 
-import { isInIframe } from "../../utils/misc";
+import { isInIframe } from "../../utils/is-in-iframe";
 import useIsMounted from "../../hooks/useIsMounted";
 import useToken from "../../hooks/useToken";
-import AccessWarning from "../AccessWarning/AccessWarning";
-import LoadingPage from "../LoadingPage/LoadingPage";
+import { AccessWarning } from "../AccessWarning/AccessWarning";
+import { LoadingPage } from "../LoadingPage/LoadingPage";
 
 type AuthorizedPageProps = {
   children: ReactNode;
