@@ -4,9 +4,9 @@ import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
-import { getAppMetadataValue } from "../../../lib/metadata";
-import { apl } from "../../../lib/saleorApp";
-import { getAppIdFromApi } from "../../../lib/utils";
+import { getAppMetadataValue } from "../../../lib/get-app-metadata-value";
+import { apl } from "../../../lib/apl";
+import { getAppIdFromApi } from "../../../lib/get-app-id-from-api";
 
 const handler: Handler = async (request) => {
   const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER] as string;

@@ -10,9 +10,9 @@ import {
   MetadataItem,
   UpdateAppMetadataDocument,
 } from "../../../generated/graphql";
-import { createClient } from "../../lib/graphql";
-import { apl } from "../../lib/saleorApp";
-import { getAppIdFromApi } from "../../lib/utils";
+import { apl } from "../../lib/apl";
+import { getAppIdFromApi } from "../../lib/get-app-id-from-api";
+import { createGraphQlClient } from "../../lib/create-graphql-client";
 
 const CONFIGURATION_KEYS = ["NUMBER_OF_ORDERS"];
 
@@ -42,7 +42,7 @@ const handler: Handler = async (request) => {
     return Response.Forbidden();
   }
 
-  const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
+  const client = createGraphQlClient(`https://${saleorDomain}/graphql/`, async () =>
     Promise.resolve({ token: authData.token })
   );
 

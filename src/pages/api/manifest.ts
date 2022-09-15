@@ -6,13 +6,14 @@ import { Response } from "retes/response";
 
 import * as GeneratedGraphQL from "../../../generated/graphql";
 import packageJson from "../../../package.json";
+import { AppManifest } from "@saleor/app-sdk/types";
 
 const handler: Handler = async (request) => {
   const { baseURL } = request.context;
 
   const webhooks = await inferWebhooks(baseURL, `${__dirname}/webhooks`, GeneratedGraphQL);
 
-  const manifest = {
+  const manifest: AppManifest = {
     id: "saleor.app",
     version: packageJson.version,
     name: packageJson.name,

@@ -5,7 +5,7 @@ import { toNextHandler } from "retes/adapter";
 import { withMethod } from "retes/middleware";
 import { Response } from "retes/response";
 
-import { apl } from "../../lib/saleorApp";
+import { apl } from "../../lib/apl";
 
 const handler: Handler = async (request) => {
   const authToken = request.params.auth_token;

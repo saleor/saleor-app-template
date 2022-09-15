@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 import { LoadingPage } from "../components/LoadingPage/LoadingPage";
 import { NextPage } from "next";
 
+/**
+ * This is example page by Saleor. Feel free to replace it with your own implementation.
+ * This page will be opened by Dashboard inside an iframe
+ */
 const IndexPage: NextPage = () => {
   const { appBridgeState } = useAppBridge();
   const [isBrowser, setIsBrowser] = useState(false);

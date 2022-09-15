@@ -7,7 +7,7 @@ import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
-import { apl } from "../../../lib/saleorApp";
+import { apl } from "../../../lib/apl";
 
 const handler: Handler = async (request) => {
   //
