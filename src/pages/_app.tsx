@@ -50,7 +50,7 @@ function SaleorApp({ Component, pageProps }: AppLayoutProps) {
     <AppBridgeProvider appBridgeInstance={appBridgeInstance}>
       <GraphQLProvider>
         <ThemeProvider overrides={themeOverrides} ssr>
-          <AuthorizedPage>{getLayout(<Component {...pageProps} />)}</AuthorizedPage>
+          {getLayout(<Component {...pageProps} />)}
         </ThemeProvider>
       </GraphQLProvider>
     </AppBridgeProvider>

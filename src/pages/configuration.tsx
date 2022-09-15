@@ -7,6 +7,7 @@ import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useState } from "
 
 import { useFetch } from "../hooks/useFetch";
 import useDashboardNotifier from "../hooks/useDashboardNotifier";
+import { withDashboardRequired } from "../lib/with-dashboard-required";
 
 interface ConfigurationField {
   key: string;
@@ -121,4 +122,4 @@ Configuration.getLayout = (page: ReactElement) => (
   </Card>
 );
 
-export default Configuration;
+export default withDashboardRequired(Configuration);

@@ -9,6 +9,7 @@ import {
   useFetchVariousNumberOfOrdersQuery,
 } from "../../generated/graphql";
 import { useFetch } from "../hooks/useFetch";
+import { withDashboardRequired } from "../lib/with-dashboard-required";
 
 enum StatusType {
   INFO = "info",
@@ -274,4 +275,4 @@ function Orders() {
   );
 }
 
-export default Orders;
+export default withDashboardRequired(Orders);
