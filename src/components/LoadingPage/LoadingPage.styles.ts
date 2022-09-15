@@ -1,6 +1,6 @@
 import { makeStyles } from "@saleor/macaw-ui";
 
-const useStyles = makeStyles((theme) => ({
+export const useLoadingPageStyles = makeStyles((theme) => ({
   loaderContainer: {
     display: "flex",
     flexDirection: "column",
@@ -10,5 +10,3 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
   },
 }));
-
-export { useStyles };

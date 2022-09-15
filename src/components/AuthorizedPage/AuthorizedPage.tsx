@@ -10,7 +10,7 @@ type AuthorizedPageProps = {
   children: ReactNode;
 };
 
-function AuthorizedPage({ children }: AuthorizedPageProps) {
+export function AuthorizedPage({ children }: AuthorizedPageProps) {
   // Next and React 18 have issues with hydration
   // GH Issue: https://github.com/vercel/next.js/discussions/35773
   // To be fixed once a proper solution is available
@@ -39,5 +39,3 @@ function AuthorizedPage({ children }: AuthorizedPageProps) {
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{children}</>;
 }
-
-export default AuthorizedPage;

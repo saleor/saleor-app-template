@@ -1,9 +1,9 @@
 import { CircularProgress, Typography } from "@material-ui/core";
 import React from "react";
 
-import { useStyles } from "./styles";
+import { useLoadingPageStyles as useStyles } from "./LoadingPage.styles";
 
-function LoadingPage() {
+export function LoadingPage() {
   const classes = useStyles();
 
   return (
@@ -16,5 +16,3 @@ function LoadingPage() {
     </div>
   );
 }
-
-export default LoadingPage;
