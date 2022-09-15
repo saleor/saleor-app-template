@@ -6,7 +6,7 @@ import { ConfirmButton, ConfirmButtonTransitionState, makeStyles } from "@saleor
 import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 
 import { useFetch } from "../hooks/useFetch";
-import useDashboardNotifier from "../utils/useDashboardNotifier";
+import useDashboardNotifier from "../hooks/useDashboardNotifier";
 
 interface ConfigurationField {
   key: string;

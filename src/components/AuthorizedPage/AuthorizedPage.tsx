@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
 import { isInIframe } from "../../utils/misc";
-import useIsMounted from "../../utils/useIsMounted";
-import useToken from "../../utils/useToken";
+import useIsMounted from "../../hooks/useIsMounted";
+import useToken from "../../hooks/useToken";
 import AccessWarning from "../AccessWarning/AccessWarning";
 import LoadingPage from "../LoadingPage/LoadingPage";
 
