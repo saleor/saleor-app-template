@@ -1,11 +1,13 @@
-/** @type {import('next').NextConfig} */
-
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const isSentryPropertiesInEnvironment =
   process.env.SENTRY_AUTH_TOKEN && process.env.SENTRY_PROJECT && process.env.SENTRY_ORG;
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   reactStrictMode: true,
   sentry: {
     disableServerWebpackPlugin: !isSentryPropertiesInEnvironment,

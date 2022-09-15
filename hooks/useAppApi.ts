@@ -1,7 +1,6 @@
+import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { useEffect, useState } from "react";
-
-import useApp from "./useApp";
 
 type Options = Record<string, string>;
 
@@ -12,19 +11,18 @@ interface UseFetchProps {
 }
 
 // This hook is meant to be used mainly for internal API calls
-const useAppApi = ({ url, options, skip }: UseFetchProps) => {
-  const _app = useApp();
-  const appState = _app?.getState();
+const useAppApi = <D>({ url, options, skip }: UseFetchProps) => {
+  const { appBridgeState } = useAppBridge();
 
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<D>();
   const [error, setError] = useState<unknown>();
   const [loading, setLoading] = useState(false);
 
   const fetchOptions: RequestInit = {
     ...options,
     headers: [
-      [SALEOR_DOMAIN_HEADER, appState?.domain!],
-      ["authorization-bearer", appState?.token!],
+      [SALEOR_DOMAIN_HEADER, appBridgeState?.domain!],
+      ["authorization-bearer", appBridgeState?.token!],
     ],
   };
 
@@ -49,7 +47,7 @@ const useAppApi = ({ url, options, skip }: UseFetchProps) => {
       }
     };
 
-    if (appState?.ready && !skip) {
+    if (appBridgeState?.ready && !skip) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       fetchData();
     }

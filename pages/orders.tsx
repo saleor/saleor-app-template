@@ -177,11 +177,13 @@ const useStyles = makeStyles(
 function Orders() {
   const classes = useStyles();
 
-  const { data: orderData, loading: orderLoading } = useAppApi({
+  const { data: orderData, loading: orderLoading } = useAppApi<{
+    data: { number_of_orders: string };
+  }>({
     url: "/api/configuration/orders",
   });
 
-  const numberOfOrders = parseInt(orderData?.data.number_of_orders, 10);
+  const numberOfOrders = parseInt(orderData?.data.number_of_orders as string, 10);
 
   const [{ data, error, fetching }] = useFetchVariousNumberOfOrdersQuery({
     variables: { number_of_orders: numberOfOrders as number },

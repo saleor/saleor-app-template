@@ -1,15 +1,17 @@
+import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import LoadingPage from "../components/LoadingPage/LoadingPage";
-import useApp from "../hooks/useApp";
 
 function Index() {
+  const { appBridgeState } = useAppBridge();
   const [isBrowser, setIsBrowser] = useState(false);
   const router = useRouter();
-  const appState = useApp()?.getState();
-  const domain = appState?.domain;
+
+  const domain = appBridgeState?.domain;
+
   useEffect(() => {
     // If the homepage is rendered at dashboard, redirect to the configuration
     if (domain && isBrowser) {
@@ -25,7 +27,7 @@ function Index() {
   const hostname = isBrowser ? window.location.hostname : undefined;
   const isTunnel = hostname?.includes("saleor.live");
 
-  if (!isBrowser || appState?.domain) {
+  if (!isBrowser || appBridgeState?.domain) {
     return <LoadingPage />;
   }
 

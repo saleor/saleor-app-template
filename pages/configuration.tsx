@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader, TextField } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
+import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { SALEOR_AUTHORIZATION_BEARER_HEADER, SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { ConfirmButton, ConfirmButtonTransitionState, makeStyles } from "@saleor/macaw-ui";
 import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 
-import useApp from "../hooks/useApp";
 import useAppApi from "../hooks/useAppApi";
 import useDashboardNotifier from "../utils/useDashboardNotifier";
 
@@ -24,12 +24,12 @@ const useStyles = makeStyles((theme) => ({
 
 function Configuration() {
   const classes = useStyles();
-  const appState = useApp()?.getState();
+  const { appBridgeState } = useAppBridge();
   const [notify] = useDashboardNotifier();
   const [configuration, setConfiguration] = useState<ConfigurationField[]>();
   const [transitionState, setTransitionState] = useState<ConfirmButtonTransitionState>("default");
 
-  const { data: configurationData, error } = useAppApi({
+  const { data: configurationData, error } = useAppApi<{ data: ConfigurationField[] }>({
     url: "/api/configuration",
   });
 
@@ -47,8 +47,8 @@ function Configuration() {
       method: "POST",
       headers: [
         ["content-type", "application/json"],
-        [SALEOR_DOMAIN_HEADER, appState?.domain!],
-        [SALEOR_AUTHORIZATION_BEARER_HEADER, appState?.token!],
+        [SALEOR_DOMAIN_HEADER, appBridgeState?.domain!],
+        [SALEOR_AUTHORIZATION_BEARER_HEADER, appBridgeState?.token!],
       ],
       body: JSON.stringify({ data: configuration }),
     })
