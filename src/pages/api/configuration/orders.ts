@@ -4,7 +4,7 @@ import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
-import { getValue } from "../../../lib/metadata";
+import { getAppMetadataValue } from "../../../lib/metadata";
 import { apl } from "../../../lib/saleorApp";
 import { getAppIdFromApi } from "../../../lib/utils";
 
@@ -13,7 +13,7 @@ const handler: Handler = async (request) => {
 
   let numberOfOrders;
   try {
-    numberOfOrders = await getValue(saleorDomain, "NUMBER_OF_ORDERS");
+    numberOfOrders = await getAppMetadataValue(saleorDomain, "NUMBER_OF_ORDERS");
   } catch (e: unknown) {
     const error = e as Error;
     console.error(error);

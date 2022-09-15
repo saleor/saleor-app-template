@@ -1,14 +1,18 @@
 import { FetchAppDetailsDocument, FetchAppDetailsQuery } from "../../generated/graphql";
-import { createClient } from "./graphql";
+import { createGraphQlClient } from "./graphql-client";
 import { apl } from "./saleorApp";
 
-export const getValue = async (saleorDomain: string, key: string) => {
+/**
+ * TODO - Create MetadataManager in app-sdk
+ */
+export const getAppMetadataValue = async (saleorDomain: string, key: string) => {
   const authData = await apl.get(saleorDomain);
+
   if (!authData) {
     throw Error(`Couldn't find auth data for domain ${saleorDomain}`);
   }
 
-  const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
+  const client = createGraphQlClient(`https://${saleorDomain}/graphql/`, async () =>
     Promise.resolve({ token: authData.token })
   );
 

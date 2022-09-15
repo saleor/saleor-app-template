@@ -10,7 +10,7 @@ interface IAuthState {
   token: string;
 }
 
-export const createClient = (url: string, getAuth: AuthConfig<IAuthState>["getAuth"]) =>
+export const createGraphQlClient = (url: string, getAuth: AuthConfig<IAuthState>["getAuth"]) =>
   urqlCreateClient({
     url,
     exchanges: [
