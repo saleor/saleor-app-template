@@ -3,7 +3,6 @@ import {
   withSaleorEventMatch,
   withWebhookSignatureVerified,
 } from "@saleor/app-sdk/middleware";
-import { withSentry } from "@sentry/nextjs";
 import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
@@ -20,14 +19,12 @@ const handler: Handler = async (request) => {
   return Response.OK({ success: true });
 };
 
-export default withSentry(
-  toNextHandler([
-    withRegisteredSaleorDomainHeader({ apl }),
-    withSaleorEventMatch("order_created"),
-    withWebhookSignatureVerified(),
-    handler,
-  ])
-);
+export default toNextHandler([
+  withRegisteredSaleorDomainHeader({ apl }),
+  withSaleorEventMatch("order_created"),
+  withWebhookSignatureVerified(),
+  handler,
+]);
 
 export const config = {
   api: {

@@ -1,6 +1,5 @@
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { withJWTVerified, withRegisteredSaleorDomainHeader } from "@saleor/app-sdk/middleware";
-import { withSentry } from "@sentry/nextjs";
 import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
@@ -79,10 +78,8 @@ const handler: Handler = async (request) => {
   }
 };
 
-export default withSentry(
-  toNextHandler([
-    withRegisteredSaleorDomainHeader({ apl }),
-    withJWTVerified(getAppIdFromApi),
-    handler,
-  ])
-);
+export default toNextHandler([
+  withRegisteredSaleorDomainHeader({ apl }),
+  withJWTVerified(getAppIdFromApi),
+  handler,
+]);

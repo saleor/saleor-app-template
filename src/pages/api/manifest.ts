@@ -1,6 +1,5 @@
 import { inferWebhooks } from "@saleor/app-sdk";
 import { withBaseURL } from "@saleor/app-sdk/middleware";
-import { withSentry } from "@sentry/nextjs";
 import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
@@ -35,4 +34,4 @@ const handler: Handler = async (request) => {
   return Response.OK(manifest);
 };
 
-export default withSentry(toNextHandler([withBaseURL, handler]));
+export default toNextHandler([withBaseURL, handler]);

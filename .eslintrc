@@ -14,9 +14,7 @@
     "graphql/schema.graphql",
     "generated",
     "next.config.js",
-    "tailwind.config.js",
-    "sentry.client.config.js",
-    "sentry.server.config.js"
+    "tailwind.config.js"
   ],
   "plugins": ["simple-import-sort", "@typescript-eslint"],
   "rules": {
