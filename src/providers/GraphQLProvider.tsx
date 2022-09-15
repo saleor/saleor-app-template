@@ -2,7 +2,7 @@ import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { PropsWithChildren } from "react";
 import { Provider } from "urql";
 
-import { createGraphQlClient } from "../lib/graphql-client";
+import { createGraphQlClient } from "../lib/create-graphql-client";
 
 /**
  * Saleor uses graphQL api, so app-sdk is shipped with an urql client.

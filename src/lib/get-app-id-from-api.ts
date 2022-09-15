@@ -2,8 +2,8 @@ import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { Request } from "retes";
 
 import { FetchAppDetailsDocument } from "../../generated/graphql";
-import { createClient } from "./graphql";
-import { apl } from "./saleorApp";
+import { createGraphQlClient } from "./create-graphql-client";
+import { apl } from "./apl";
 
 export async function getAppIdFromApi(request: Request): Promise<string | undefined> {
   // Get installed App ID from the Saleor API based on request
@@ -15,7 +15,7 @@ export async function getAppIdFromApi(request: Request): Promise<string | undefi
   if (!authData) {
     return undefined;
   }
-  const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
+  const client = createGraphQlClient(`https://${saleorDomain}/graphql/`, async () =>
     Promise.resolve({ token: authData?.token })
   );
 
