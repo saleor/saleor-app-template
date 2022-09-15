@@ -7,7 +7,7 @@ import {
   OrderStatus,
   PaymentChargeStatusEnum,
   useFetchVariousNumberOfOrdersQuery,
-} from "../generated/graphql";
+} from "../../generated/graphql";
 import useAppApi from "../hooks/useAppApi";
 
 enum StatusType {

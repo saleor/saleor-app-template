@@ -36,7 +36,7 @@ function Index() {
       <Head>
         <title>Saleor App Boilerplate</title>
         <meta name="description" content="Extend Saleor with Apps with ease." />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/public/favicon.ico" />
       </Head>
 
       <main>

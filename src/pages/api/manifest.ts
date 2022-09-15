@@ -5,8 +5,8 @@ import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
-import * as GeneratedGraphQL from "../../generated/graphql";
-import packageJson from "../../package.json";
+import * as GeneratedGraphQL from "../../../generated/graphql";
+import packageJson from "../../../package.json";
 
 const handler: Handler = async (request) => {
   const { baseURL } = request.context;

@@ -1,5 +1,5 @@
-schema: graphql/schema.graphql
-documents: graphql/**/*.graphql
+schema: src/graphql/schema.graphql
+documents: src/graphql/**/*.graphql
 extensions:
   codegen:
     overwrite: true

@@ -1,4 +1,4 @@
-import { FetchAppDetailsDocument, FetchAppDetailsQuery } from "../generated/graphql";
+import { FetchAppDetailsDocument, FetchAppDetailsQuery } from "../../generated/graphql";
 import { createClient } from "./graphql";
 import { apl } from "./saleorApp";
 

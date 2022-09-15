@@ -1,7 +1,7 @@
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { Request } from "retes";
 
-import { FetchAppDetailsDocument } from "../generated/graphql";
+import { FetchAppDetailsDocument } from "../../generated/graphql";
 import { createClient } from "./graphql";
 import { apl } from "./saleorApp";
 
