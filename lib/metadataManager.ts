@@ -49,13 +49,12 @@ const serializeSettingsToMetadata = ({
 export class MetadataManager implements SettingsManager {
   private client: Client;
 
-  private settings: SettingsValueWithEnv[];
+  private settings: SettingsValueWithEnv[] = [];
 
   private appId?: string;
 
   constructor(client: Client) {
     this.client = client;
-    this.settings = [];
   }
 
   private async fetchAllMetadata() {
@@ -81,7 +80,9 @@ export class MetadataManager implements SettingsManager {
 
       if (idQueryError) {
         debug("Could not fetch the app id: ", idQueryError);
-        throw new Error("Could not fetch the app id");
+        throw new Error(
+          "Could not fetch the app id. Please check if auth data for the client are valid."
+        );
       }
 
       const appId = idQueryData?.app?.id;

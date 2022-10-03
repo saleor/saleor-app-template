@@ -11,8 +11,8 @@ import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
 import { createClient } from "../../lib/graphql";
-import { MetadataManager } from "../../lib/metadataManager";
-import { SettingsManager } from "../../lib/saleorApp";
+import { MetadataManager, SettingsManager } from "../../lib/metadataManager";
+import { SettingsManagerClass } from "../../lib/saleorApp";
 import { getAppIdFromApi } from "../../lib/utils";
 import { saleorApp } from "../../saleor-app";
 
@@ -34,10 +34,10 @@ const prepareResponseData = async (settings: MetadataManager, domain: string) =>
   ],
 });
 
-const saveRequestData = async (
+const saveRequestData = async <T extends SettingsManager>(
   body: IncomingMessage,
   domain: string,
-  settings: MetadataManager
+  settings: T
 ) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const submittedData = body as unknown as { data: { key: string; value: string }[] };
@@ -64,7 +64,7 @@ const handler: Handler = async (request) => {
     Promise.resolve({ token: authData.token })
   );
 
-  const settings = new SettingsManager(client);
+  const settings = new SettingsManagerClass(client);
 
   switch (request.method!) {
     case "GET":
