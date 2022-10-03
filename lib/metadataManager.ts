@@ -16,7 +16,7 @@ export type SettingsValueWithEnv = {
 
 export interface SettingsManager {
   get: (key: string, domain?: string) => Promise<string | undefined>;
-  set: (settings: SettingsValueWithEnv[]) => Promise<void>;
+  set: (settings: SettingsValueWithEnv[] | SettingsValueWithEnv) => Promise<void>;
 }
 
 const deserializeMetadata = (key: string, value: string): SettingsValueWithEnv => {
@@ -123,8 +123,13 @@ export class MetadataManager implements SettingsManager {
     return setting?.value;
   }
 
-  async set(settings: SettingsValueWithEnv[]) {
-    const serializedMetadata = settings.map((md) => serializeSettingsToMetadata(md));
+  async set(settings: SettingsValueWithEnv[] | SettingsValueWithEnv) {
+    let serializedMetadata = [];
+    if (Array.isArray(settings)) {
+      serializedMetadata = settings.map((md) => serializeSettingsToMetadata(md));
+    } else {
+      serializedMetadata = [serializeSettingsToMetadata(settings)];
+    }
     // changes should update cache
     this.settings = await this.mutateMetadata(serializedMetadata);
   }
