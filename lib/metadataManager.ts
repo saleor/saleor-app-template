@@ -14,7 +14,7 @@ export type SettingsValueWithEnv = {
   domain?: string;
 };
 
-export interface SettingsManagerInterface {
+export interface SettingsManager {
   get: (key: string, domain?: string) => Promise<string | undefined>;
   set: (settings: SettingsValueWithEnv[]) => Promise<void>;
 }
@@ -46,7 +46,7 @@ const serializeSettingsToMetadata = ({
   };
 };
 
-export class MetadataManager implements SettingsManagerInterface {
+export class MetadataManager implements SettingsManager {
   private client: Client;
 
   private settings: SettingsValueWithEnv[];
