@@ -14,6 +14,7 @@ import useDashboardNotifier from "../utils/useDashboardNotifier";
 import AccessWarning from "../components/AccessWarning/AccessWarning";
 
 interface ConfigurationField {
+  label: string;
   key: string;
   value: string;
 }
@@ -48,18 +49,22 @@ function Configuration({ isVercel, appReady }: PageProps) {
   const classes = useStyles();
   const { appBridgeState } = useAppBridge();
   const [notify] = useDashboardNotifier();
-  const [configuration, setConfiguration] = useState<ConfigurationField[]>();
+  const [configuration, setConfiguration] = useState<ConfigurationField[]>([]);
   const [transitionState, setTransitionState] = useState<ConfirmButtonTransitionState>("default");
 
-  const { data: configurationData, error } = useAppApi<{ data: ConfigurationField[] }>({
+  const {
+    data: configurationQuery,
+    error,
+    loading,
+  } = useAppApi<{ data: ConfigurationField[] }>({
     url: "/api/configuration",
   });
 
   useEffect(() => {
-    if (configurationData && !configuration) {
-      setConfiguration(configurationData.data);
+    if (!loading) {
+      setConfiguration(configurationQuery?.data || []);
     }
-  }, [configurationData, configuration]);
+  }, [JSON.stringify(configurationQuery), loading]);
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
@@ -72,7 +77,9 @@ function Configuration({ isVercel, appReady }: PageProps) {
         [SALEOR_DOMAIN_HEADER, appBridgeState?.domain!],
         [SALEOR_AUTHORIZATION_BEARER_HEADER, appBridgeState?.token!],
       ],
-      body: JSON.stringify({ data: configuration }),
+      body: JSON.stringify({
+        data: configuration?.map((field) => ({ key: field.key, value: field.value })),
+      }),
     })
       .then(async (response) => {
         setTransitionState(response.status === 200 ? "success" : "error");
@@ -103,15 +110,15 @@ function Configuration({ isVercel, appReady }: PageProps) {
     return <ConfigurationError appReady={appReady} isVercel={isVercel} />;
   }
 
-  if (configuration === undefined) {
+  if (loading) {
     return <Skeleton />;
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      {configuration!.map(({ key, value }) => (
+      {configuration.map(({ label, key, value }) => (
         <div key={key} className={classes.fieldContainer}>
-          <TextField label={key} name={key} fullWidth onChange={onChange} value={value} />
+          <TextField label={label} name={key} fullWidth onChange={onChange} value={value} />
         </div>
       ))}
       <div>

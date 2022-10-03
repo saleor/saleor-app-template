@@ -5,38 +5,51 @@ import {
   withSaleorApp,
 } from "@saleor/app-sdk/middleware";
 import { withSentry } from "@sentry/nextjs";
+import { IncomingMessage } from "http";
 import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
-import {
-  FetchAppDetailsDocument,
-  MetadataInput,
-  MetadataItem,
-  UpdateAppMetadataDocument,
-} from "../../generated/graphql";
 import { createClient } from "../../lib/graphql";
+import { MetadataManager } from "../../lib/metadataManager";
+import { SettingsManager } from "../../lib/saleorApp";
 import { getAppIdFromApi } from "../../lib/utils";
 import { saleorApp } from "../../saleor-app";
 
-const CONFIGURATION_KEYS = ["NUMBER_OF_ORDERS"];
+const prepareResponseData = async (settings: MetadataManager, domain: string) => ({
+  data: [
+    { label: "Example input 1", key: "input_1", value: await settings.get("input_1") },
+    { label: "Example input 2", key: "input_2", value: await settings.get("input_2") },
+    {
+      label: "Example input 3, domain specific",
+      key: "input_3",
+      value: await settings.get("input_3", domain),
+    },
+    // it's only to test if domain specific getter is working right
+    {
+      label: "Example input 3, but with wrong domain",
+      key: "input_3",
+      value: await settings.get("input_3", "example.com"),
+    },
+  ],
+});
 
-const prepareMetadataFromRequest = (input: MetadataInput[] | MetadataItem[]) =>
-  input
-    .filter(({ key }) => CONFIGURATION_KEYS.includes(key))
-    .map(({ key, value }) => ({ key, value }));
-
-const prepareResponseFromMetadata = (input: MetadataItem[]) => {
-  const output: MetadataInput[] = [];
-  for (const configurationKey of CONFIGURATION_KEYS) {
-    output.push(
-      input.find(({ key }) => key === configurationKey) ?? {
-        key: configurationKey,
-        value: "",
-      }
-    );
-  }
-  return output.map(({ key, value }) => ({ key, value }));
+const saveRequestData = async (
+  body: IncomingMessage,
+  domain: string,
+  settings: MetadataManager
+) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const submittedData = body as unknown as { data: { key: string; value: string }[] };
+  // submittedData.data as ;
+  const input1 = submittedData.data.find((entry) => entry.key === "input_1")?.value || "";
+  const input2 = submittedData.data.find((entry) => entry.key === "input_2")?.value || "";
+  const input3 = submittedData.data.find((entry) => entry.key === "input_3")?.value || "";
+  await settings.set([
+    { key: "input_1", value: input1 },
+    { key: "input_2", value: input2 },
+    { key: "input_3", value: input3, domain },
+  ]);
 };
 
 const handler: Handler = async (request) => {
@@ -51,32 +64,20 @@ const handler: Handler = async (request) => {
     Promise.resolve({ token: authData.token })
   );
 
-  let privateMetadata;
+  const settings = new SettingsManager(client);
+
   switch (request.method!) {
     case "GET":
-      privateMetadata = (await client.query(FetchAppDetailsDocument, {}).toPromise()).data?.app
-        ?.privateMetadata!;
-
-      return Response.OK({
-        success: true,
-        data: prepareResponseFromMetadata(privateMetadata),
-      });
+      return Response.OK(await prepareResponseData(settings, saleorDomain));
     case "POST": {
-      const appId = (await client.query(FetchAppDetailsDocument, {}).toPromise()).data?.app?.id;
-
-      privateMetadata = (
-        await client
-          .mutation(UpdateAppMetadataDocument, {
-            id: appId as string,
-            input: prepareMetadataFromRequest((request.body as any).data),
-          })
-          .toPromise()
-      ).data?.updatePrivateMetadata?.item?.privateMetadata!;
-
-      return Response.OK({
-        success: true,
-        data: prepareResponseFromMetadata(privateMetadata),
-      });
+      try {
+        await saveRequestData(request.body, saleorDomain, settings);
+      } catch (e) {
+        return Response.InternalServerError({
+          error: e,
+        });
+      }
+      return Response.OK(await prepareResponseData(settings, saleorDomain));
     }
     default:
       return Response.MethodNotAllowed();
