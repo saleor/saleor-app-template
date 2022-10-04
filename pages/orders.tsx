@@ -241,7 +241,6 @@ function Orders() {
                             className={classes.pill}
                             color={transformPaymentStatus(order.paymentStatus).status}
                             label={transformPaymentStatus(order.paymentStatus).localized}
-                            css=""
                           />
                         </TableCell>
                         <TableCell className={classes.colFulfillment}>
@@ -249,7 +248,6 @@ function Orders() {
                             className={classes.pill}
                             color={transformOrderStatus(order.status).status}
                             label={transformOrderStatus(order.status).localized}
-                            css=""
                           />
                         </TableCell>
                         <TableCell className={classes.colTotal} align="right">
