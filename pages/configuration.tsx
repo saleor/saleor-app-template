@@ -76,16 +76,34 @@ function Configuration() {
     );
   };
 
-  useEffect(() => {
-    if (error) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      notify({
-        status: "error",
-        title: "Something went wrong!",
-        text: "Couldn't fetch configuration data",
-      });
-    }
-  }, [error]);
+  if (error) {
+    console.error("Can't establish connection with the App API: ", error);
+    return (
+      <div>
+        <h1>⚠️ Can&apos;t connect with the App API</h1>
+        You may see this error because:
+        <ul>
+          <li>Internet connection has been lost</li>
+          <li>
+            Application installation process is still in progress. If you use Vercel, you may need
+            to wait for redeployment of the app - try again in a minute.
+          </li>
+          <li>
+            Application is misconfigured. If you would like to know more how auth configuration is
+            kept,{" "}
+            <a
+              href="https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md"
+              target="_blank"
+              rel="noreferrer"
+            >
+              go to APL documentation
+            </a>
+            .
+          </li>
+        </ul>
+      </div>
+    );
+  }
 
   if (configuration === undefined) {
     return <Skeleton />;
