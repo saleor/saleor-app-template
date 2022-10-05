@@ -1,5 +1,4 @@
-//todo - fix import, not exported from SDK
-import { createAppRegisterHandler } from "@app-sdk/handlers/next";
+import { createAppRegisterHandler } from "@saleor/app-sdk/handlers/next";
 import { withSentry } from "@sentry/nextjs";
 
 import { apl } from "../../lib/saleorApp";
