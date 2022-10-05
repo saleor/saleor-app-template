@@ -12,7 +12,7 @@ specifiers:
   '@material-ui/core': ^4.12.4
   '@material-ui/icons': ^4.11.3
   '@material-ui/lab': 4.0.0-alpha.61
-  '@saleor/app-sdk': 0.11.0
+  '@saleor/app-sdk': 0.12.0-1
   '@saleor/macaw-ui': ^0.6.5
   '@sentry/nextjs': ^7.14.1
   '@types/node': ^18.8.1
@@ -52,7 +52,7 @@ dependencies:
   '@material-ui/core': 4.12.4_rj7ozvcq3uehdlnj3cbwzbi5ce
   '@material-ui/icons': 4.11.3_3mlwvtnnvz4efep55wa5m5dc4e
   '@material-ui/lab': 4.0.0-alpha.61_3mlwvtnnvz4efep55wa5m5dc4e
-  '@saleor/app-sdk': 0.11.0_biqbaboplfbrettd7655fr4n2y
+  '@saleor/app-sdk': 0.12.0-1_azq6kxkn3od7qdylwkyksrwopy
   '@saleor/macaw-ui': 0.6.5_gyeockywcq4rm6q2xgr7o2cczq
   '@sentry/nextjs': 7.14.1_next@12.3.1+react@18.2.0
   '@urql/exchange-auth': 1.0.0_graphql@16.6.0
@@ -1674,9 +1674,10 @@ packages:
       picomatch: 2.3.1
     dev: false
 
-  /@saleor/app-sdk/0.11.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-nQe2Gb0z9iuLJg23AaXxNC6dxiCOafN3mNtS3DlChPv87pEoFU3ZRewRvqloL2rZpc2z0lfPaNNaDFNvkMLvHQ==}
+  /@saleor/app-sdk/0.12.0-1_azq6kxkn3od7qdylwkyksrwopy:
+    resolution: {integrity: sha512-1yAv67w5KHBZnY6AWg4PcpRynOXW8PVgK1mYPfmFE1y0eRcSdAaEKsaseJLPjw2kjsGJijtqFrNky2xopwRw5A==}
     peerDependencies:
+      next: ^12
       react: '>=17'
       react-dom: '>=17'
     dependencies:
@@ -1684,10 +1685,11 @@ packages:
       fast-glob: 3.2.12
       graphql: 16.6.0
       jose: 4.10.0
+      next: 12.3.1_biqbaboplfbrettd7655fr4n2y
       node-fetch: 3.2.10
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      retes: 0.32.0
+      retes: 0.33.0
       uuid: 8.3.2
     transitivePeerDependencies:
       - supports-color
@@ -5509,12 +5511,6 @@ packages:
       onetime: 5.1.2
       signal-exit: 3.0.7
     dev: true
-
-  /retes/0.32.0:
-    resolution: {integrity: sha512-pCz9SdztBaU4QMX/YA3A5tfEVgHdLwGdc7hJOJHF+XTJzHJksiwQTquZuz32DeJ4KRgo2P8h5sdPnyi+v4AzwQ==}
-    dependencies:
-      busboy: 1.6.0
-    dev: false
 
   /retes/0.33.0:
     resolution: {integrity: sha512-I6V1G2JkJ2JFIFSVuultNXepf7BW8SCaSUOq5IETM2fDjFim5Dg5F1zU/QbplNW0mqkk8QCw+I722v3nPkpRlA==}
