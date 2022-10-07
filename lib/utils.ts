@@ -3,7 +3,7 @@ import { Request } from "retes";
 
 import { FetchAppDetailsDocument } from "../generated/graphql";
 import { createClient } from "./graphql";
-import { apl } from "./saleorApp";
+import { saleorApp } from "../saleor-app";
 
 export async function getAppIdFromApi(request: Request): Promise<string | undefined> {
   // Get installed App ID from the Saleor API based on request
@@ -11,7 +11,7 @@ export async function getAppIdFromApi(request: Request): Promise<string | undefi
   if (!saleorDomain) {
     return undefined;
   }
-  const authData = await apl.get(saleorDomain as string);
+  const authData = await saleorApp.apl.get(saleorDomain as string);
   if (!authData) {
     return undefined;
   }

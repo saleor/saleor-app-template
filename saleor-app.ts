@@ -1,3 +1,4 @@
+import { SaleorApp } from "@saleor/app-sdk";
 import { FileAPL, VercelAPL } from "@saleor/app-sdk/APL";
 
 /**
@@ -8,3 +9,8 @@ import { FileAPL, VercelAPL } from "@saleor/app-sdk/APL";
  * [APL documentation](https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md)
  */
 export const apl = process.env.VERCEL === "1" ? new VercelAPL() : new FileAPL();
+
+// todo add validation for vercel
+export const saleorApp = new SaleorApp({
+  apl,
+});

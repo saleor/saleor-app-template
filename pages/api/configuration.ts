@@ -1,5 +1,9 @@
 import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
-import { withJWTVerified, withRegisteredSaleorDomainHeader } from "@saleor/app-sdk/middleware";
+import {
+  withJWTVerified,
+  withRegisteredSaleorDomainHeader,
+  withSaleorApp,
+} from "@saleor/app-sdk/middleware";
 import { withSentry } from "@sentry/nextjs";
 import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
@@ -12,8 +16,8 @@ import {
   UpdateAppMetadataDocument,
 } from "../../generated/graphql";
 import { createClient } from "../../lib/graphql";
-import { apl } from "../../lib/saleorApp";
 import { getAppIdFromApi } from "../../lib/utils";
+import { saleorApp } from "../../saleor-app";
 
 const CONFIGURATION_KEYS = ["NUMBER_OF_ORDERS"];
 
@@ -37,7 +41,7 @@ const prepareResponseFromMetadata = (input: MetadataItem[]) => {
 
 const handler: Handler = async (request) => {
   const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER] as string;
-  const authData = await apl.get(saleorDomain);
+  const authData = await saleorApp.apl.get(saleorDomain);
   if (!authData) {
     console.debug(`Could not find auth data for the domain ${saleorDomain}.`);
     return Response.Forbidden();
@@ -81,7 +85,8 @@ const handler: Handler = async (request) => {
 
 export default withSentry(
   toNextHandler([
-    withRegisteredSaleorDomainHeader({ apl }),
+    withSaleorApp(saleorApp),
+    withRegisteredSaleorDomainHeader,
     withJWTVerified(getAppIdFromApi),
     handler,
   ])
