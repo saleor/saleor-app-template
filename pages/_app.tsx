@@ -34,7 +34,7 @@ const ThemeProvider = MacawUIThemeProvider as React.FC<
   PropsWithChildren<{ overrides: Partial<Theme>; ssr: boolean }>
 >;
 
-function SaleorApp({ Component, pageProps }: AppLayoutProps) {
+function NextApp({ Component, pageProps }: AppLayoutProps) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   useEffect(() => {
@@ -55,4 +55,4 @@ function SaleorApp({ Component, pageProps }: AppLayoutProps) {
   );
 }
 
-export default SaleorApp;
+export default NextApp;
