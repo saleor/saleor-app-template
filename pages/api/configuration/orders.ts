@@ -4,21 +4,39 @@ import {
   withRegisteredSaleorDomainHeader,
   withSaleorApp,
 } from "@saleor/app-sdk/middleware";
+import { MetadataManager } from "@saleor/app-sdk/settings-manager";
 import { withSentry } from "@sentry/nextjs";
 import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
 import { getValue } from "../../../lib/metadata";
+import { createClient } from "../../../lib/graphql";
+import { fetchAllMetadata, mutateMetadata } from "../../../lib/metadata";
+import { apl } from "../../../lib/saleorApp";
 import { getAppIdFromApi } from "../../../lib/utils";
 import { saleorApp } from "../../../saleor-app";
 
 const handler: Handler = async (request) => {
   const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER] as string;
+  const authData = await apl.get(saleorDomain);
+  if (!authData) {
+    console.debug(`Could not find auth data for the domain ${saleorDomain}.`);
+    return Response.Forbidden();
+  }
 
-  let numberOfOrders;
+  const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
+    Promise.resolve({ token: authData.token })
+  );
+
+  const settings = new MetadataManager({
+    fetchMetadata: () => fetchAllMetadata(client),
+    mutateMetadata: (md) => mutateMetadata(client, md),
+  });
+
+  let numberOfOrders: string;
   try {
-    numberOfOrders = await getValue(saleorDomain, "NUMBER_OF_ORDERS");
+    numberOfOrders = (await settings.get("NUMBER_OF_ORDERS")) || "10";
   } catch (e: unknown) {
     const error = e as Error;
     console.error(error);

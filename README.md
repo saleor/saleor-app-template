@@ -24,7 +24,6 @@
   <a href="https://githubbox.com/saleor/saleor-app-template">🔎 Explore Code</a>
 </div>
 
-
 ## About
 
 ### What is Saleor App
@@ -106,11 +105,13 @@ NEXT_PUBLIC_SALEOR_HOST_URL=https://your-saleor-instance.com
 ```
 
 Install the dependencies by running:
+
 ```
 pnpm install
 ```
 
 Start the local server with:
+
 ```
 pnpm run dev
 ```
