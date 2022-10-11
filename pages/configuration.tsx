@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, TextField } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
+import { useAppBridge, withAuthorization } from "@saleor/app-sdk/app-bridge";
 import { SALEOR_AUTHORIZATION_BEARER_HEADER, SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { ConfirmButton, ConfirmButtonTransitionState, makeStyles } from "@saleor/macaw-ui";
 import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
@@ -139,4 +139,4 @@ Configuration.getLayout = (page: ReactElement) => (
   </Card>
 );
 
-export default Configuration;
+export default withAuthorization({})(Configuration);

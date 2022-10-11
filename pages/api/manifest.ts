@@ -1,38 +1,39 @@
-import { inferWebhooks } from "@saleor/app-sdk";
-import { withBaseURL } from "@saleor/app-sdk/middleware";
+import { AppManifest, inferWebhooks } from "@saleor/app-sdk";
+import { createManifestHandler } from "@saleor/app-sdk/handlers/next";
 import { withSentry } from "@sentry/nextjs";
-import type { Handler } from "retes";
-import { toNextHandler } from "retes/adapter";
-import { Response } from "retes/response";
 
 import * as GeneratedGraphQL from "../../generated/graphql";
 import packageJson from "../../package.json";
 
-const handler: Handler = async (request) => {
-  const { baseURL } = request.context;
+const handler = createManifestHandler({
+  async manifestFactory(context) {
+    const webhooks = await inferWebhooks(
+      context.appBaseUrl,
+      `${__dirname}/webhooks`,
+      GeneratedGraphQL
+    );
 
-  const webhooks = await inferWebhooks(baseURL, `${__dirname}/webhooks`, GeneratedGraphQL);
+    const manifest: AppManifest = {
+      name: packageJson.name,
+      tokenTargetUrl: `${context.appBaseUrl}/api/register`,
+      appUrl: context.appBaseUrl,
+      permissions: ["MANAGE_ORDERS"],
+      id: "saleor.app",
+      version: packageJson.version,
+      webhooks,
+      extensions: [
+        {
+          label: "Guest orders",
+          mount: "NAVIGATION_ORDERS",
+          target: "APP_PAGE",
+          permissions: ["MANAGE_ORDERS"],
+          url: "/orders",
+        },
+      ],
+    };
 
-  const manifest = {
-    id: "saleor.app",
-    version: packageJson.version,
-    name: packageJson.name,
-    permissions: ["MANAGE_ORDERS"],
-    appUrl: baseURL,
-    tokenTargetUrl: `${baseURL}/api/register`,
-    webhooks,
-    extensions: [
-      {
-        label: "Guest orders",
-        mount: "NAVIGATION_ORDERS",
-        target: "APP_PAGE",
-        permissions: ["MANAGE_ORDERS"],
-        url: "/orders",
-      },
-    ],
-  };
+    return manifest;
+  },
+});
 
-  return Response.OK(manifest);
-};
-
-export default withSentry(toNextHandler([withBaseURL, handler]));
+export default withSentry(handler);

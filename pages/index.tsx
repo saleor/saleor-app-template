@@ -1,4 +1,4 @@
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
+import { useAppBridge, withAuthorization } from "@saleor/app-sdk/app-bridge";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -110,4 +110,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default withAuthorization({})(Index);
