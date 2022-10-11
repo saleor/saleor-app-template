@@ -11,6 +11,7 @@ import { ConfigurationError } from "../components/ConfigurationError/Configurati
 import useAppApi from "../hooks/useAppApi";
 import { saleorApp } from "../saleor-app";
 import useDashboardNotifier from "../utils/useDashboardNotifier";
+import AccessWarning from "../components/AccessWarning/AccessWarning";
 
 interface ConfigurationField {
   key: string;
@@ -136,4 +137,9 @@ Configuration.getLayout = (page: ReactElement) => (
   </Card>
 );
 
-export default withAuthorization({})(Configuration);
+export default withAuthorization({
+  notIframe: <AccessWarning cause="not_in_iframe" />,
+  unmounted: null,
+  noDashboardToken: <AccessWarning cause="missing_access_token" />,
+  dashboardTokenInvalid: <AccessWarning cause="invalid_access_token" />,
+})(Configuration);

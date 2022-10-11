@@ -6,6 +6,7 @@ import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import React, { PropsWithChildren, useEffect } from "react";
 import GraphQLProvider from "../providers/GraphQLProvider";
 import { AppLayoutProps } from "../types";
+import { ThemeSynchronizer } from "../hooks/theme-synchronizer";
 
 const themeOverrides: Partial<Theme> = {
   overrides: {
@@ -48,6 +49,7 @@ function NextApp({ Component, pageProps }: AppLayoutProps) {
     <AppBridgeProvider appBridgeInstance={appBridgeInstance}>
       <GraphQLProvider>
         <ThemeProvider overrides={themeOverrides} ssr>
+          <ThemeSynchronizer />
           {getLayout(<Component {...pageProps} />)}
         </ThemeProvider>
       </GraphQLProvider>
