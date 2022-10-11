@@ -13,6 +13,15 @@ const nextConfig = {
     disableServerWebpackPlugin: !isSentryPropertiesInEnvironment,
     disableClientWebpackPlugin: !isSentryPropertiesInEnvironment,
   },
+  redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/configuration",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 const sentryWebpackPluginOptions = {
