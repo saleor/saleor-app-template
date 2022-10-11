@@ -1,9 +1,9 @@
 import { FetchAppDetailsDocument, FetchAppDetailsQuery } from "../generated/graphql";
 import { createClient } from "./graphql";
-import { apl } from "./saleorApp";
+import { saleorApp } from "../saleor-app";
 
 export const getValue = async (saleorDomain: string, key: string) => {
-  const authData = await apl.get(saleorDomain);
+  const authData = await saleorApp.apl.get(saleorDomain);
   if (!authData) {
     throw Error(`Couldn't find auth data for domain ${saleorDomain}`);
   }

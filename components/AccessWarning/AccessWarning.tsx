@@ -18,6 +18,10 @@ const warnings: Record<WarningCause, string> = {
   unknown_cause: "Something went wrong.",
 };
 
+/**
+ * Example of error component that provides basic messages.
+ * Can be safely deleted and other, custom error UIs can be introduced
+ */
 function AccessWarning({ cause = "unknown_cause" }: AccessWarningProps) {
   return (
     <div suppressHydrationWarning>

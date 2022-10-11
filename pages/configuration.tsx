@@ -1,12 +1,17 @@
 import { Card, CardContent, CardHeader, TextField } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
+import { AplReadyResult, VercelAPL } from "@saleor/app-sdk/APL";
 import { useAppBridge, withAuthorization } from "@saleor/app-sdk/app-bridge";
 import { SALEOR_AUTHORIZATION_BEARER_HEADER, SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { ConfirmButton, ConfirmButtonTransitionState, makeStyles } from "@saleor/macaw-ui";
+import { GetServerSideProps } from "next";
 import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 
+import { ConfigurationError } from "../components/ConfigurationError/ConfigurationError";
 import useAppApi from "../hooks/useAppApi";
+import { saleorApp } from "../saleor-app";
 import useDashboardNotifier from "../utils/useDashboardNotifier";
+import AccessWarning from "../components/AccessWarning/AccessWarning";
 
 interface ConfigurationField {
   key: string;
@@ -22,7 +27,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Configuration() {
+type PageProps = {
+  isVercel: boolean;
+  appReady: AplReadyResult;
+};
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+  const isVercel = saleorApp.apl instanceof VercelAPL;
+  const isAppReady = await saleorApp.isReady();
+
+  return {
+    props: {
+      isVercel,
+      appReady: isAppReady,
+    },
+  };
+};
+
+function Configuration({ isVercel, appReady }: PageProps) {
   const classes = useStyles();
   const { appBridgeState } = useAppBridge();
   const [notify] = useDashboardNotifier();
@@ -78,31 +100,7 @@ function Configuration() {
 
   if (error) {
     console.error("Can't establish connection with the App API: ", error);
-    return (
-      <div>
-        <h1>⚠️ Can&apos;t connect with the App API</h1>
-        You may see this error because:
-        <ul>
-          <li>Internet connection has been lost</li>
-          <li>
-            Application installation process is still in progress. If you use Vercel, you may need
-            to wait for redeployment of the app - try again in a minute.
-          </li>
-          <li>
-            Application is misconfigured. If you would like to know more how auth configuration is
-            kept,{" "}
-            <a
-              href="https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md"
-              target="_blank"
-              rel="noreferrer"
-            >
-              go to APL documentation
-            </a>
-            .
-          </li>
-        </ul>
-      </div>
-    );
+    return <ConfigurationError appReady={appReady} isVercel={isVercel} />;
   }
 
   if (configuration === undefined) {
@@ -139,4 +137,9 @@ Configuration.getLayout = (page: ReactElement) => (
   </Card>
 );
 
-export default withAuthorization({})(Configuration);
+export default withAuthorization({
+  notIframe: <AccessWarning cause="not_in_iframe" />,
+  unmounted: null,
+  noDashboardToken: <AccessWarning cause="missing_access_token" />,
+  dashboardTokenInvalid: <AccessWarning cause="invalid_access_token" />,
+})(Configuration);

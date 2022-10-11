@@ -14,36 +14,11 @@
   "saleor": {
     "schemaVersion": "3.4"
   },
-  "saleorApp": {
-    "name": "My Saleor App",
-    "logo": "/public/logo.png",
-    "shortDescription": "Bare-bones boilerplate for writing Saleor Apps with Next.js & MacawUI",
-    "sourceUrl": "https://github.com/",
-    "vendor": "Saleor Commerce",
-    "links": [
-      {
-        "type": "developerWebsite",
-        "href": "https://saleor.io/"
-      },
-      {
-        "type": "mailContact",
-        "href": "mailto:info@saleor.io"
-      },
-      {
-        "type": "privacyPolicy",
-        "href": "https://saleor.io/legal/privacy/"
-      }
-    ],
-    "description": "Saleor App is the fastest way of extending Saleor with custom logic using asynchronous and synchronous webhooks (and vast Saleor's API).",
-    "images": [
-      "/public/image.png"
-    ]
-  },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "4.0.0-alpha.61",
-    "@saleor/app-sdk": "0.12.2",
+    "@saleor/app-sdk": "0.13.1",
     "@saleor/macaw-ui": "^0.6.5",
     "@sentry/nextjs": "^7.14.1",
     "@urql/exchange-auth": "^1.0.0",

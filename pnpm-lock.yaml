@@ -12,7 +12,7 @@ specifiers:
   '@material-ui/core': ^4.12.4
   '@material-ui/icons': ^4.11.3
   '@material-ui/lab': 4.0.0-alpha.61
-  '@saleor/app-sdk': 0.12.2
+  '@saleor/app-sdk': 0.13.1
   '@saleor/macaw-ui': ^0.6.5
   '@sentry/nextjs': ^7.14.1
   '@types/node': ^18.8.1
@@ -52,7 +52,7 @@ dependencies:
   '@material-ui/core': 4.12.4_rj7ozvcq3uehdlnj3cbwzbi5ce
   '@material-ui/icons': 4.11.3_3mlwvtnnvz4efep55wa5m5dc4e
   '@material-ui/lab': 4.0.0-alpha.61_3mlwvtnnvz4efep55wa5m5dc4e
-  '@saleor/app-sdk': 0.12.2_azq6kxkn3od7qdylwkyksrwopy
+  '@saleor/app-sdk': 0.13.1_azq6kxkn3od7qdylwkyksrwopy
   '@saleor/macaw-ui': 0.6.5_gyeockywcq4rm6q2xgr7o2cczq
   '@sentry/nextjs': 7.14.1_next@12.3.1+react@18.2.0
   '@urql/exchange-auth': 1.0.0_graphql@16.6.0
@@ -1674,8 +1674,8 @@ packages:
       picomatch: 2.3.1
     dev: false
 
-  /@saleor/app-sdk/0.12.2_azq6kxkn3od7qdylwkyksrwopy:
-    resolution: {integrity: sha512-9yGr9280kDRsRlL8xn5vg47lQgLc+Pn0O/EKsQG3g/cCefEpU5TBGSdsa8bi3Peoh2tA0AMjMEr6bSjq/I/q3A==}
+  /@saleor/app-sdk/0.13.1_azq6kxkn3od7qdylwkyksrwopy:
+    resolution: {integrity: sha512-6WSiMmKWWoTqFGPedzoO6NYmIW6pbvJT7PdBNHbzxbVNVJJhDOvAbwTqvRbnUrv5KNzRyquGKUE0ADSYzc0G9w==}
     peerDependencies:
       next: ^12
       react: '>=17'
