@@ -5,7 +5,7 @@ const vercelInfo = (
   <div>
     <Alert variant="warning" title="Vercel detected">
       <p>
-        App detected Vercel hosting. Check if vercel is currently redeploying your app and try again
+        App detected Vercel hosting. Check if Vercel is currently redeploying your app and try again
         in few minutes
       </p>
     </Alert>
