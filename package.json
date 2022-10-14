@@ -1,6 +1,6 @@
 {
   "name": "saleor-app-template",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "pnpm generate && NODE_OPTIONS='--inspect' next dev",
@@ -12,7 +12,7 @@
     "prepare": "husky install"
   },
   "saleor": {
-    "schemaVersion": "3.4"
+    "schemaVersion": "3.7"
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
@@ -20,17 +20,12 @@
     "@material-ui/lab": "4.0.0-alpha.61",
     "@saleor/app-sdk": "0.13.2",
     "@saleor/macaw-ui": "^0.6.5",
-    "@sentry/nextjs": "^7.14.1",
     "@urql/exchange-auth": "^1.0.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
-    "jose": "^4.10.0",
     "next": "12.3.1",
-    "node-fetch": "^3.2.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-helmet": "^6.1.0",
-    "retes": "^0.33.0",
     "urql": "^3.0.3"
   },
   "devDependencies": {
@@ -48,7 +43,6 @@
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
     "autoprefixer": "^10.4.12",
-    "clean-publish": "^4.0.1",
     "eslint": "^8.24.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.5.0",
