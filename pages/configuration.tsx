@@ -7,11 +7,11 @@ import { ConfirmButton, ConfirmButtonTransitionState, makeStyles } from "@saleor
 import { GetServerSideProps } from "next";
 import { ChangeEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 
+import AccessWarning from "../components/AccessWarning/AccessWarning";
 import { ConfigurationError } from "../components/ConfigurationError/ConfigurationError";
 import useAppApi from "../hooks/useAppApi";
 import { saleorApp } from "../saleor-app";
 import useDashboardNotifier from "../utils/useDashboardNotifier";
-import AccessWarning from "../components/AccessWarning/AccessWarning";
 
 interface ConfigurationField {
   label: string;

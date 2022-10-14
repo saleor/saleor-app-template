@@ -1,6 +1,5 @@
 import { SaleorApp } from "@saleor/app-sdk";
 import { FileAPL, VercelAPL } from "@saleor/app-sdk/APL";
-import { MetadataManager } from "./metadataManager";
 
 const isVercel = process.env.VERCEL === "1";
 
@@ -16,4 +15,3 @@ export const apl = isVercel ? new VercelAPL() : new FileAPL();
 export const saleorApp = new SaleorApp({
   apl,
 });
-export const SettingsManager = MetadataManager;

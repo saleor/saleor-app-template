@@ -10,16 +10,14 @@ import type { Handler } from "retes";
 import { toNextHandler } from "retes/adapter";
 import { Response } from "retes/response";
 
-import { getValue } from "../../../lib/metadata";
 import { createClient } from "../../../lib/graphql";
 import { fetchAllMetadata, mutateMetadata } from "../../../lib/metadata";
-import { apl } from "../../../lib/saleorApp";
 import { getAppIdFromApi } from "../../../lib/utils";
 import { saleorApp } from "../../../saleor-app";
 
 const handler: Handler = async (request) => {
   const saleorDomain = request.headers[SALEOR_DOMAIN_HEADER] as string;
-  const authData = await apl.get(saleorDomain);
+  const authData = await saleorApp.apl.get(saleorDomain);
   if (!authData) {
     console.debug(`Could not find auth data for the domain ${saleorDomain}.`);
     return Response.Forbidden();

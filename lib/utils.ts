@@ -2,8 +2,8 @@ import { SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
 import { Request } from "retes";
 
 import { FetchAppDetailsDocument } from "../generated/graphql";
-import { createClient } from "./graphql";
 import { saleorApp } from "../saleor-app";
+import { createClient } from "./graphql";
 
 export async function getAppIdFromApi(request: Request): Promise<string | undefined> {
   // Get installed App ID from the Saleor API based on request

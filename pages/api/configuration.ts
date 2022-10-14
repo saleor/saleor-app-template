@@ -16,27 +16,42 @@ import { fetchAllMetadata, mutateMetadata } from "../../lib/metadata";
 import { getAppIdFromApi } from "../../lib/utils";
 import { saleorApp } from "../../saleor-app";
 
-const prepareResponseData = async (settings: SettingsManager) => ({
-  data: [
-    {
-      label: "Number of orders",
-      key: "NUMBER_OF_ORDERS",
-      value: await settings.get("NUMBER_OF_ORDERS"),
-    },
-  ],
-});
+type ConfigurationField = {
+  label: string;
+  key: string;
+};
 
-const saveRequestData = async (
-  body: IncomingMessage,
-  domain: string,
-  settings: SettingsManager
-) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const submittedData = body as unknown as { data: { key: string; value: string }[] };
-  // submittedData.data as ;
-  const numberOfOrders =
-    submittedData.data.find((entry) => entry.key === "NUMBER_OF_ORDERS")?.value || "";
-  await settings.set({ key: "input_1", value: numberOfOrders });
+type RequestData = {
+  data: { key: string; value: string }[];
+};
+
+type ResponseData = {
+  data: { key: string; value: string; label: string }[];
+};
+
+const CONFIGURATION_FIELDS: ConfigurationField[] = [
+  { label: "Number of orders", key: "NUMBER_OF_ORDERS" },
+];
+
+const prepareResponseData = async (settings: SettingsManager): Promise<ResponseData> => {
+  const data = [];
+  for (const field of CONFIGURATION_FIELDS) {
+    data.push({
+      ...field,
+      value: (await settings.get(field.key)) || "",
+    });
+  }
+  return {
+    data,
+  };
+};
+
+const saveRequestData = async (body: IncomingMessage, settings: SettingsManager) => {
+  const submittedData = body as unknown as RequestData;
+  const valuesToUpdate = submittedData.data.filter((field) =>
+    CONFIGURATION_FIELDS.find(({ key }) => key === field.key)
+  );
+  await settings.set(valuesToUpdate);
 };
 
 const handler: Handler = async (request) => {
@@ -61,7 +76,7 @@ const handler: Handler = async (request) => {
       return Response.OK(await prepareResponseData(settings));
     case "POST": {
       try {
-        await saveRequestData(request.body, saleorDomain, settings);
+        await saveRequestData(request.body, settings);
       } catch (e) {
         return Response.InternalServerError({
           error: e,

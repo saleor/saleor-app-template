@@ -4,9 +4,10 @@ import { Theme } from "@material-ui/core/styles";
 import { AppBridge, AppBridgeProvider } from "@saleor/app-sdk/app-bridge";
 import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import React, { PropsWithChildren, useEffect } from "react";
+
+import { ThemeSynchronizer } from "../hooks/theme-synchronizer";
 import GraphQLProvider from "../providers/GraphQLProvider";
 import { AppLayoutProps } from "../types";
-import { ThemeSynchronizer } from "../hooks/theme-synchronizer";
 
 const themeOverrides: Partial<Theme> = {
   overrides: {
