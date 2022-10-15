@@ -22,7 +22,7 @@ const IndexPage: NextPage = () => {
     <div>
       <h1>Welcome to Saleor App Template (Next.js) 🚀</h1>
       <p>
-        This is a <strong>minimal</strong> boilerplate you can start with, to create an app
+        This is a boilerplate you can start with, to create an app
         connected to Saleor
       </p>
       <h2>Resources</h2>
