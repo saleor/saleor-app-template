@@ -19,8 +19,6 @@
 </div>
 
 <div align="center">
-  <a href="https://saleor-app-template.vercel.app/">▶️ Demo</a>
-   <span> • </span>
   <a href="https://githubbox.com/saleor/saleor-app-template">🔎 Explore Code</a>
 </div>
 
