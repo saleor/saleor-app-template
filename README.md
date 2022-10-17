@@ -37,10 +37,6 @@ Saleor App is the fastest way of extending Saleor with custom logic using [async
 ### What's included?
 
 - 🚀 Communication between Saleor instance and Saleor App
-- ⚙️ Encapsulated Metadata and Private Metadata handling logic
-- 📱 Configuration UI
-- ⚡ Example of Webhook handling
-- 🧭 Example of using App Extension
 - 📖 Manifest with webhooks using custom query
 
 ### Why Next.js
@@ -54,6 +50,14 @@ You can use any preferred technology to create Saleor Apps, but Next.js is among
 [Configuring apps in dashboard](https://docs.saleor.io/docs/3.x/dashboard/apps)
 
 ## Development
+
+### Requirements
+
+Before you start, make sure you have installed:
+
+- [Node.js](https://nodejs.org/en/)
+- [pnpm](https://pnpm.io/)
+- [Saleor CLI](https://docs.saleor.io/docs/3.x/cli) - optional, but recommended
 
 ### With CLI
 
@@ -99,29 +103,29 @@ pnpm dev
 
 ### Without CLI
 
-Add the URL of your Saleor instance to the `.env` file:
-
-```
-NEXT_PUBLIC_SALEOR_HOST_URL=https://your-saleor-instance.com
-```
-
-Install the dependencies by running:
+1. Install the dependencies by running:
 ```
 pnpm install
 ```
 
-Start the local server with:
+2. Start the local server with:
 ```
-pnpm run dev
+pnpm dev
 ```
 
-Follow the guide [how to install your app](https://docs.saleor.io/docs/3.x/developer/extending/apps/installing-apps#installation-using-graphql-api) and use tunneling tools like [localtunnel](https://github.com/localtunnel/localtunnel) or [ngrok](https://ngrok.com/) to expose your local server.
+3. Expose local environment using tunnel:
+Use tunneling tools like [localtunnel](https://github.com/localtunnel/localtunnel) or [ngrok](https://ngrok.com/).
 
-If you use [saleor-dashboard](https://github.com/saleor/saleor-dashboard) and your local server is exposed, you can install your app by following this link:
+4. Install aplication at your dashboard:
 
+If you use Saleor Cloud or your local server is exposed, you can install your app by following this link:
 ```
-[YOUR_SALEOR_DASHBOARD_URL]/apps/install?manifestUrl=[YOUR_APPS_MANIFEST_URL]
+[YOUR_SALEOR_DASHBOARD_URL]/apps/install?manifestUrl=[YOUR_APP_TUNNEL_MANIFEST_URL]
 ```
+This template host manifest at `/api/manifest`
+
+
+You can also install application using GQL or command line. Follow the guide [how to install your app](https://docs.saleor.io/docs/3.x/developer/extending/apps/installing-apps#installation-using-graphql-api) to learn more. 
 
 ### Generated schema and typings
 
