@@ -22,7 +22,6 @@
   <a href="https://githubbox.com/saleor/saleor-app-template">🔎 Explore Code</a>
 </div>
 
-
 ## About
 
 ### What is Saleor App
@@ -104,11 +103,13 @@ NEXT_PUBLIC_SALEOR_HOST_URL=https://your-saleor-instance.com
 ```
 
 Install the dependencies by running:
+
 ```
 pnpm install
 ```
 
 Start the local server with:
+
 ```
 pnpm run dev
 ```
@@ -126,3 +127,16 @@ If you use [saleor-dashboard](https://github.com/saleor/saleor-dashboard) and yo
 Commands `build` and `dev` would generate schema and typed functions using Saleor's GraphQL endpoint. Commit the `generated` folder to your repo as they are necessary for queries and keeping track of the schema changes.
 
 [Learn more](https://www.graphql-code-generator.com/) about GraphQL code generation.
+
+### Storing registration data - APL
+
+During registration process Saleor API pass the auth token to the app. With this token App can query Saleor API with privileged access (depending on requested permissions during the installation).
+To store this data, app-template use a different [APL interfaces](https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md).
+
+The choice of the APL is done using `APL` environment variable. If value is not set, FileAPL is used. Available choices:
+
+- `file`: no additional setup is required. Good choice for local development. Can't be used for multi tenant-apps or be deployed (not intended for production)
+- `upstash`: use [Upstash](https://upstash.com/) Redis as storage method. Free account required. Can be used for development and production and supports multi-tenancy. Requires `UPSTASH_URL` and `UPSTASH_TOKEN` environment variables to be set
+- `vercel`: used by deployments from the Marketplace. It's single-tenant only and only supported by Vercel deployments done with Saleor CLI. Requires `SALEOR_REGISTER_APP_URL` and `SALEOR_DEPLOYMENT_TOKEN` environment variables to be set (handled automatically by the Saleor CLI)
+
+If you want to use your own database, you can implement your own APL. [Check the documentation to read more.](https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md)
