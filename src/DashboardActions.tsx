@@ -1,5 +1,6 @@
 import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Button } from "@saleor/macaw-ui";
+import Link from "next/link";
 
 /**
  * This is example of using AppBridge, when App is mounted in Dashboard
@@ -8,17 +9,20 @@ import { Button } from "@saleor/macaw-ui";
  *
  * You can safely remove this file!
  */
+
 export const DashboardActions = () => {
   const { appBridge } = useAppBridge();
 
   return (
     <div>
       <h2>App running in dashboard!</h2>
-      <div style={{
-        display:'inline-grid',
-        gridGap: '2rem',
-        gridTemplateColumns:'50% 50%'
-      }}>
+      <div
+        style={{
+          display: "inline-grid",
+          gridGap: "2rem",
+          gridTemplateColumns: "50% 50%",
+        }}
+      >
         <Button
           onClick={() => {
             appBridge?.dispatch({
@@ -47,6 +51,9 @@ export const DashboardActions = () => {
         >
           Redirect to orders ➡️💰
         </Button>
+        <Link href={"metadata-manager"} passHref>
+          <Button>MetadataManager ➡️⚙️</Button>
+        </Link>
       </div>
     </div>
   );
