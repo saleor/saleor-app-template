@@ -4,24 +4,13 @@ import { Theme } from "@material-ui/core/styles";
 import { AppBridge, AppBridgeProvider } from "@saleor/app-sdk/app-bridge";
 import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import React, { PropsWithChildren, useEffect } from "react";
+import { AppProps } from "next/app";
 import GraphQLProvider from "../providers/GraphQLProvider";
-import { AppLayoutProps } from "../types";
-import { ThemeSynchronizer } from "../hooks/theme-synchronizer";
 
 const themeOverrides: Partial<Theme> = {
-  overrides: {
-    MuiTableCell: {
-      body: {
-        paddingBottom: 8,
-        paddingTop: 8,
-      },
-      root: {
-        height: 56,
-        paddingBottom: 4,
-        paddingTop: 4,
-      },
-    },
-  },
+  /**
+   * You can override MacawUI theme here
+   */
 };
 
 /**
@@ -30,14 +19,17 @@ const themeOverrides: Partial<Theme> = {
  */
 const appBridgeInstance = typeof window !== "undefined" ? new AppBridge() : undefined;
 
-// That's a hack required by Macaw-UI incompatibility with React@18
+/**
+ * That's a hack required by Macaw-UI incompatibility with React@18
+ */
 const ThemeProvider = MacawUIThemeProvider as React.FC<
-  PropsWithChildren<{ overrides: Partial<Theme>; ssr: boolean }>
+  PropsWithChildren<{ overrides?: Partial<Theme>; ssr: boolean }>
 >;
 
-function NextApp({ Component, pageProps }: AppLayoutProps) {
-  const getLayout = Component.getLayout ?? ((page) => page);
-
+function NextApp({ Component, pageProps }: AppProps) {
+  /**
+   * Configure JSS (used by MacawUI) for SSR. If Macaw is not used, can be removed.
+   */
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
@@ -49,8 +41,7 @@ function NextApp({ Component, pageProps }: AppLayoutProps) {
     <AppBridgeProvider appBridgeInstance={appBridgeInstance}>
       <GraphQLProvider>
         <ThemeProvider overrides={themeOverrides} ssr>
-          <ThemeSynchronizer />
-          {getLayout(<Component {...pageProps} />)}
+          <Component {...pageProps} />
         </ThemeProvider>
       </GraphQLProvider>
     </AppBridgeProvider>
