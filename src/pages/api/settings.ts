@@ -6,6 +6,9 @@ import { createClient } from "../../lib/graphql";
 import { createSettingsManager } from "../../lib/metadata";
 import { saleorApp } from "../../../saleor-app";
 
+// Interfaces below are shared with the client part to ensure we use the same
+// shape of the data for communication. It's completely optional, but makes
+// refactoring much easier.
 export interface SettingsUpdateApiRequest {
   name: string;
   secret: string;
@@ -19,10 +22,16 @@ export interface SettingsApiResponse {
   };
 }
 
+// If your app store secrets like API keys, it is a good practice to not send
+// them to client application if thats not required.
+// Obfuscate function will hide secret value with dots, leaving only last 4
+// characters which should be enough for the user to know if thats a right value.
 const obfuscateSecret = (secret: string) => {
   return "*".repeat(secret.length - 4) + secret.substring(secret.length - 4);
 };
 
+// Helper function to minimize duplication and keep the same response structure.
+// Even multiple calls of `get` method will result with only one call to the database.
 const sendResponse = async (
   res: NextApiResponse<SettingsApiResponse>,
   statusCode: number,
@@ -38,6 +47,8 @@ const sendResponse = async (
   });
 };
 
+// Main body of our settings endpoint. It's available at `api/settings` url.
+// Using GET method will return existing values, and POST is used to modify them.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<SettingsApiResponse>
@@ -51,10 +62,13 @@ export default async function handler(
     return;
   }
 
+  // To make queries to Saleor API we need urql client
   const client = createClient(`https://${saleorDomain}/graphql/`, async () =>
     Promise.resolve({ token: authData.token })
   );
 
+  // Helper located at `src/lib/metadata.ts` returns manager which will be used to
+  // get or modify metadata.
   const settings = createSettingsManager(client);
 
   if (req.method === "GET") {
@@ -64,8 +78,14 @@ export default async function handler(
     const { name, secret } = req.body as SettingsUpdateApiRequest;
 
     if (name && secret) {
-      await settings.set({ key: "name", value: name });
-      await settings.set({ key: "secret", value: secret, domain: saleorDomain });
+      // You can set metadata one by one, but passing array of the values
+      // will spare additional roundtrips to the Saleor API.
+      // After mutation is made, internal cache of the manager
+      // will be automatically updated
+      await settings.set([
+        { key: "name", value: name },
+        { key: "secret", value: secret, domain: saleorDomain },
+      ]);
       await sendResponse(res, 200, settings, saleorDomain);
       return;
     } else {
