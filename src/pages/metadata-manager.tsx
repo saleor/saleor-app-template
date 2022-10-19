@@ -108,7 +108,7 @@ const MetadataManagerPage: NextPage = () => {
         setSecret(data.secret);
       }
     });
-  }, [appBridgeState?.token]);
+  }, [appBridgeState?.token, appBridgeState?.domain]);
 
   return (
     <div>
@@ -118,8 +118,8 @@ const MetadataManagerPage: NextPage = () => {
       </p>
       <p>
         You can use Encrypted Metadata Managers to store configuration of your app. First field
-        store plaintext value for key "name". The second one is obfuscated before sending it to the
-        client.
+        store plaintext value for key &quot;name&quot;. The second one is obfuscated before sending
+        it to the client.
       </p>
       <h2>Example form</h2>
 
