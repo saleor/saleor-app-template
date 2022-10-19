@@ -10,7 +10,7 @@ import { AppExtensionMountEnum } from "../../../generated/graphql";
 export const generateAppExtensions = (baseUrl: string): AppExtension[] =>
   Object.values(AppExtensionMountEnum).map((mount) => ({
     // Label which will be displayed in the dashboard menus
-    label: `Example of the ${mount} extension`,
+    label: `${mount} extension`,
     mount: mount as AppExtensionMount,
     // List of user permission required to show extension in the dashboard
     permissions: [],

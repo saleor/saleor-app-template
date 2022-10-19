@@ -18,7 +18,6 @@ const ExtensionPage: NextPage = () => {
   }
 
   const query = router.query;
-  console.log(JSON.stringify(query, null, 2));
   return (
     <div>
       <h1>🎉 Greetings from the app extension!</h1>
