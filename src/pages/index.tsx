@@ -1,6 +1,5 @@
 import { NextPage } from "next";
 import { useAppBridge } from "@saleor/app-sdk/app-bridge";
-import { Button } from "@saleor/macaw-ui";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
@@ -14,17 +13,16 @@ const ClientContent = dynamic(() => import("../DashboardActions"), {
  */
 const IndexPage: NextPage = () => {
   const { appBridgeState } = useAppBridge();
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {setMounted(true)},[])
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <div>
       <h1>Welcome to Saleor App Template (Next.js) 🚀</h1>
-      <p>
-        This is a boilerplate you can start with, to create an app
-        connected to Saleor
-      </p>
+      <p>This is a boilerplate you can start with, to create an app connected to Saleor</p>
       <h2>Resources</h2>
       <ul>
         <li>
