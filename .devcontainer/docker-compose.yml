@@ -1,0 +1,95 @@
+version: '3'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
+      - ..:/workspace:cached
+
+      # Uncomment the next line to use Docker from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker-compose for details.
+      # - /var/run/docker.sock:/var/run/docker.sock 
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: /bin/sh -c "while sleep 1000; do :; done"  
+
+    # Runs app on the same network as the service container, allows "forwardPorts" in devcontainer.json function.
+    network_mode: service:saleor-api
+    
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+    # Uncomment the next line to use a non-root user for all processes - See https://aka.ms/vscode-remote/containers/non-root for details.
+    # user: vscode
+
+    # Uncomment the next four lines if you will use a ptrace-based debugger like C++, Go, and Rust.
+    # cap_add:
+    #   - SYS_PTRACE
+    # security_opt:
+    #   - seccomp:unconfined
+    
+  # You can include other services not opened by VS Code as well
+  saleor-api:
+    image: ghcr.io/saleor/saleor:3.7.26
+    restart: unless-stopped
+    networks:
+      - saleor-backend-tier
+    depends_on:
+      - db
+    environment:
+      - JAEGER_AGENT_HOST=jaeger
+      - STOREFRONT_URL=http://localhost:3000/
+      - DASHBOARD_URL=http://localhost:9000/
+      - ALLOWED_HOSTS=localhost,api
+
+  db:
+    image: library/postgres:13-alpine
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    networks:
+      - saleor-backend-tier
+    volumes:
+      - saleor-db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=saleor
+      - POSTGRES_PASSWORD=saleor
+
+#   redis:
+#     image: library/redis:5.0-alpine
+#     ports:
+#       - 6379:6379
+#     restart: unless-stopped
+#     networks:
+#       - saleor-backend-tier
+#     volumes:
+#       - saleor-redis:/data
+
+#   jaeger:
+#     image: jaegertracing/all-in-one
+#     ports:
+#       - "5775:5775/udp"
+#       - "6831:6831/udp"
+#       - "6832:6832/udp"
+#       - "5778:5778"
+#       - "16686:16686"
+#       - "14268:14268"
+#       - "9411:9411"
+#     restart: unless-stopped
+#     networks:
+#       - saleor-backend-tier
+
+#     # As in the "app" service, use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+
+volumes:
+  saleor-db:
+    driver: local
+#   saleor-redis:
+#     driver: local
+#   saleor-media:
+
+networks:
+  saleor-backend-tier:
+    driver: bridge
