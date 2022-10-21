@@ -1,16 +1,26 @@
 import { SaleorApp } from "@saleor/app-sdk";
-import { FileAPL, VercelAPL } from "@saleor/app-sdk/APL";
-
-const isVercel = process.env.VERCEL === "1";
+import { APL, FileAPL, UpstashAPL, VercelAPL } from "@saleor/app-sdk/APL";
 
 /**
- * For local development store auth data in the `.auth-data.json`.
- * For app deployment on Vercel with Saleor CLI, use vercelAPL.
+ * By default auth data are stored in the `.auth-data.json` (FileAPL).
+ * For multi-tenant applications and deployments please use UpstashAPL.
  *
  * To read more about storing auth data, read the
  * [APL documentation](https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md)
  */
-export const apl = isVercel ? new VercelAPL() : new FileAPL();
+
+export let apl: APL;
+switch (process.env.APL) {
+  case "vercel":
+    apl = new VercelAPL();
+    break;
+  case "upstash":
+    // Require `UPSTASH_URL` and `UPSTASH_TOKEN` environment variables
+    apl = new UpstashAPL();
+    break;
+  default:
+    apl = new FileAPL();
+}
 
 export const saleorApp = new SaleorApp({
   apl,
