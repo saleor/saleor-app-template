@@ -1,3 +1,25 @@
+# Example: Handling webhook from external service
+
+This example highlights:
+- Example endpoint, that should be a target of external service webhook. This endpoint will create GiftCard in Saleor
+- Example how to authorize webhook
+
+### using example
+
+1. Ensure app is installed
+2. Run following cURL:
+```shell
+curl --location --request POST 'localhost:3000/api/giftcard-service/new-giftcard' \
+--header 'saleor-domain: <<YOUR_SALEOR_DOMAIN>>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "amount": 10,
+    "currency":"USD",
+    "secret":"jzcccrbnthhjnzsrafwtwcytywsflaokjppljpzzacfhfuwnnshskncxxrkxdqpzxmvypprabiukuojjlhuooajtnovxrieayotqltglpgmsonythblmsmukowrtsfgq"
+}'
+```
+
+
 ![Saleor App Template](https://user-images.githubusercontent.com/249912/71523206-4e45f800-28c8-11ea-84ba-345a9bfc998a.png)
 
 <div align="center">
