@@ -10,20 +10,15 @@ import { CreateGiftCardDocument } from "../../../../generated/graphql";
  *
  * Check external service how secrets are attached
  *
- * In this example it will be part of request body.
- *
- * In production, put it to ENV
+ * In this example it will be a header.
  */
-const WEBHOOK_SECRET =
-  "jzcccrbnthhjnzsrafwtwcytywsflaokjppljpzzacfhfuwnnshskncxxrkxdqpzxmvypprabiukuojjlhuooajtnovxrieayotqltglpgmsonythblmsmukowrtsfgq";
-
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 /**
  * Assume this is payload that will be sent by external service
  */
 type ExternalServiceGiftCardBody = {
   amount: number;
   currency: string;
-  secret: string;
 };
 
 const validateBody = (body: any): body is ExternalServiceGiftCardBody => {
@@ -32,14 +27,14 @@ const validateBody = (body: any): body is ExternalServiceGiftCardBody => {
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method !== "POST") {
-    return res.status(500).json({ error: "Only POST is supported!" });
+    return res.status(405).json({ error: "Only POST is supported!" });
   }
 
   if (!validateBody(req.body)) {
     return res.status(400).send("Invalid body payload");
   }
 
-  if (req.body.secret !== WEBHOOK_SECRET) {
+  if (req.headers["webhook-secret"] !== WEBHOOK_SECRET) {
     return res.status(401).send("Not allowed");
   }
 
@@ -86,12 +81,23 @@ const handler: NextApiHandler = async (req, res) => {
     }
 
     /**
-     * If mutation fails, return with 500
+     * If connection fails, return 500
      */
     if (error) {
       console.error(error);
 
-      return res.status(500).send("Adding GiftCard to Saleor failed, check logs");
+      return res.status(500).send("Connection to Saleor failed, check logs");
+    }
+
+    /**
+     * If mutation fails, return 500 and message from Saleor
+     */
+    if (data?.giftCardCreate?.errors && data.giftCardCreate.errors.length > 0) {
+      console.error(error);
+
+      return res
+        .status(500)
+        .send("GiftCard create mutation failed: " + data.giftCardCreate.errors[0].message);
     }
   } catch (e: unknown) {
     console.error(e);

@@ -2,20 +2,21 @@
 
 This example highlights:
 - Example endpoint, that should be a target of external service webhook. This endpoint will create GiftCard in Saleor
-- Example how to authorize webhook
+- Example how to authorize webhook using a secret header
+- Track of Saleor domain, so app can support multiple stores (Multi-tenant)
 
 ### using example
 
 1. Ensure app is installed
-2. Run following cURL:
+2. The following cURL will trigger creation of a new gift card:
 ```shell
 curl --location --request POST 'localhost:3000/api/giftcard-service/new-giftcard' \
 --header 'saleor-domain: <<YOUR_SALEOR_DOMAIN>>' \
 --header 'Content-Type: application/json' \
+--header 'webhook-secret: jzcccrbnthhjnzsrafwtwcytywsflaokjppljpzzacfhfuwnnshskncxxrkxdqpzxmvypprabiukuojjlhuooajtnovxrieayotqltglpgmsonythblmsmukowrtsfgq' \
 --data-raw '{
     "amount": 10,
-    "currency":"USD",
-    "secret":"jzcccrbnthhjnzsrafwtwcytywsflaokjppljpzzacfhfuwnnshskncxxrkxdqpzxmvypprabiukuojjlhuooajtnovxrieayotqltglpgmsonythblmsmukowrtsfgq"
+    "currency":"USD"
 }'
 ```
 
