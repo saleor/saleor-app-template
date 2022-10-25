@@ -1,0 +1,7 @@
+mutation CreateGiftCard($input: GiftCardCreateInput!) {
+  giftCardCreate(input: $input){
+    giftCard {
+      id
+    }
+  }
+}
