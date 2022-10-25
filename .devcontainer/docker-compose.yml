@@ -32,17 +32,42 @@ services:
     
   # You can include other services not opened by VS Code as well
   saleor-api:
-    image: ghcr.io/saleor/saleor:3.7.26
+    image: ghcr.io/saleor/saleor:3.7.27
     restart: unless-stopped
     networks:
       - saleor-backend-tier
     depends_on:
-      - db
+      - saleor-api-setup 
     environment:
       - JAEGER_AGENT_HOST=jaeger
       - STOREFRONT_URL=http://localhost:3000/
       - DASHBOARD_URL=http://localhost:9000/
       - ALLOWED_HOSTS=localhost,api
+      - DATABASE_URL=postgres://saleor:saleor@db/saleor
+      - DEFAULT_FROM_EMAIL=noreply@example.com
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - SECRET_KEY=changeme
+      - DEFAULT_CHANNEL_SLUG=default-channel
+
+  saleor-api-setup:
+    image: ghcr.io/saleor/saleor:3.7.27
+    depends_on:
+      - db 
+      - redis
+    restart: "no"
+    networks:
+      - saleor-backend-tier
+    environment:
+      - JAEGER_AGENT_HOST=jaeger
+      - STOREFRONT_URL=http://localhost:3000/
+      - DASHBOARD_URL=http://localhost:9000/
+      - ALLOWED_HOSTS=localhost,api
+      - DATABASE_URL=postgres://saleor:saleor@db/saleor
+      - DEFAULT_FROM_EMAIL=noreply@example.com
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - SECRET_KEY=changeme
+      - DEFAULT_CHANNEL_SLUG=default-channel
+    entrypoint: [ "bash", "-c", "python3 manage.py migrate && python3 manage.py collectstatic --noinput && python3 manage.py populatedb --createsuperuser"]      
 
   db:
     image: library/postgres:13-alpine
@@ -57,15 +82,15 @@ services:
       - POSTGRES_USER=saleor
       - POSTGRES_PASSWORD=saleor
 
-#   redis:
-#     image: library/redis:5.0-alpine
-#     ports:
-#       - 6379:6379
-#     restart: unless-stopped
-#     networks:
-#       - saleor-backend-tier
-#     volumes:
-#       - saleor-redis:/data
+  redis:
+    image: library/redis:5.0-alpine
+    ports:
+      - 6379:6379
+    restart: unless-stopped
+    networks:
+      - saleor-backend-tier
+    volumes:
+      - saleor-redis:/data
 
 #   jaeger:
 #     image: jaegertracing/all-in-one
@@ -86,8 +111,8 @@ services:
 volumes:
   saleor-db:
     driver: local
-#   saleor-redis:
-#     driver: local
+  saleor-redis:
+    driver: local
 #   saleor-media:
 
 networks:
