@@ -1623,7 +1623,7 @@ packages:
       debug: 4.3.4
       fast-glob: 3.2.12
       graphql: 16.6.0
-      jose: 4.10.0
+      jose: 4.10.3
       next: 12.3.1_biqbaboplfbrettd7655fr4n2y
       node-fetch: 2.6.7
       react: 18.2.0
@@ -3835,8 +3835,8 @@ packages:
       ws: 8.9.0
     dev: true
 
-  /jose/4.10.0:
-    resolution: {integrity: sha512-KEhB/eLGLomWGPTb+/RNbYsTjIyx03JmbqAyIyiXBuNSa7CmNrJd5ysFhblayzs/e/vbOPMUaLnjHUMhGp4yLw==}
+  /jose/4.10.3:
+    resolution: {integrity: sha512-3S4wQnaoJKSAx9uHSoyf8B/lxjs1qCntHWL6wNFszJazo+FtWe+qD0zVfY0BlqJ5HHK4jcnM98k3BQzVLbzE4g==}
     dev: false
 
   /js-sdsl/4.1.5:
