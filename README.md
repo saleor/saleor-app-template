@@ -1,3 +1,27 @@
+# Example: Subscribing for the Saleor webhooks
+
+This example highlights:
+
+- Example endpoint, that will be a target of Saleor webhook for updated products
+- Adding asynchronous event subscription to app manifest
+- Example how to use helpers from App SDK to validate incoming request
+- Leverage graphql code generator to create types for incoming payload
+
+## How to use
+
+1. Ensure app is running and installed - detailed instructions can be found in development section of this document
+2. Using dashboard of your Saleor instance modify any product
+3. Check logs of app dev server. You should see a message:
+
+```
+New event product_updated from the demo.saleor.cloud domain has been received!
+Payload contains Blue Hoodie (id: UHJvZHVjdDoxMTY=) product
+```
+
+## Docs
+
+If you would like to learn more, check out [our docs about webhooks](https://docs.saleor.io/docs/3.x/developer/extending/apps/asynchronous-webhooks)
+
 ![Saleor App Template](https://user-images.githubusercontent.com/249912/71523206-4e45f800-28c8-11ea-84ba-345a9bfc998a.png)
 
 <div align="center">
@@ -101,28 +125,31 @@ pnpm dev
 ### Without CLI
 
 1. Install the dependencies by running:
+
 ```
 pnpm install
 ```
 
 2. Start the local server with:
+
 ```
 pnpm dev
 ```
 
 3. Expose local environment using tunnel:
-Use tunneling tools like [localtunnel](https://github.com/localtunnel/localtunnel) or [ngrok](https://ngrok.com/).
+   Use tunneling tools like [localtunnel](https://github.com/localtunnel/localtunnel) or [ngrok](https://ngrok.com/).
 
 4. Install aplication at your dashboard:
 
 If you use Saleor Cloud or your local server is exposed, you can install your app by following this link:
+
 ```
 [YOUR_SALEOR_DASHBOARD_URL]/apps/install?manifestUrl=[YOUR_APP_TUNNEL_MANIFEST_URL]
 ```
+
 This template host manifest at `/api/manifest`
 
-
-You can also install application using GQL or command line. Follow the guide [how to install your app](https://docs.saleor.io/docs/3.x/developer/extending/apps/installing-apps#installation-using-graphql-api) to learn more. 
+You can also install application using GQL or command line. Follow the guide [how to install your app](https://docs.saleor.io/docs/3.x/developer/extending/apps/installing-apps#installation-using-graphql-api) to learn more.
 
 ### Generated schema and typings
 
