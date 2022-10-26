@@ -1,4 +1,6 @@
 schema: graphql/schema.graphql
+# We would like to keep subscriptions code near the handlers definition, so we have to
+# add new paths to list of files scanned for GraphQL queries
 documents: [graphql/**/*.graphql, src/pages/api/webhooks/saleor/**/*.ts]
 extensions:
   codegen:

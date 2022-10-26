@@ -3,7 +3,7 @@ import { gql } from "urql";
 import { ProductUpdatedWebhookPayloadFragment } from "../../../../../generated/graphql";
 import { saleorApp } from "../../../../../saleor-app";
 
-// By using the fragment, we'll be able to get TS types for the payload/
+// By using the fragment, we'll be able to get TS types for the payload
 // Since this webhook subscribes for product updates, we have to create fragment on
 // type ProductUpdated
 export const ProductUpdatedWebhookPayload = gql`
