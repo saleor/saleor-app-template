@@ -3,6 +3,14 @@ import { gql } from "urql";
 import { ProductUpdatedWebhookPayloadFragment } from "../../../../../generated/graphql";
 import { saleorApp } from "../../../../../saleor-app";
 
+// Next.js body parser has to be turned off for us to be able to access the raw request body
+// which is required to validate incoming requests
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 // By using the fragment, we'll be able to get TS types for the payload
 // Since this webhook subscribes for product updates, we have to create fragment on
 // type ProductUpdated
@@ -52,11 +60,9 @@ export const handler: NextWebhookApiHandler<ProductUpdatedWebhookPayloadFragment
   res.status(200).end();
 };
 
-// Next.js body parser has to be turned off to be able to access the raw body
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
+// Before productUpdatedWebhook.handler will execute your handler, wrapper will reject:
+// - requests with missing or invalid headers
+// - requests from Saleor instances which didn't installed this app
+// - requests which could have been tampered with. Checking their checksum gives us
+//   confidence that request source was secure Saleor instance
 export default productUpdatedWebhook.handler(handler);
