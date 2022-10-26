@@ -2,7 +2,7 @@ import { createManifestHandler } from "@saleor/app-sdk/handlers/next";
 import { AppManifest } from "@saleor/app-sdk/types";
 
 import packageJson from "../../../package.json";
-import { ExampleProductUpdatedWebhookManifest } from "./webhooks/saleor/product-updated";
+import { productUpdatedWebhook } from "./webhooks/saleor/product-updated";
 
 export default createManifestHandler({
   async manifestFactory(context) {
@@ -17,7 +17,7 @@ export default createManifestHandler({
       ],
       id: "saleor.app",
       version: packageJson.version,
-      webhooks: [ExampleProductUpdatedWebhookManifest(context.appBaseUrl)],
+      webhooks: [productUpdatedWebhook.getManifest(context.appBaseUrl)],
       extensions: [
         /**
          * Optionally, extend Dashboard with custom UIs
