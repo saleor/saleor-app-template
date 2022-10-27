@@ -1,26 +1,19 @@
 import { SaleorApp } from "@saleor/app-sdk/saleor-app";
-import { APL, FileAPL, UpstashAPL, VercelAPL } from "@saleor/app-sdk/APL";
+import { FirestoreAPL } from "@saleor/app-sdk/APL";
+import { Firestore } from "@google-cloud/firestore";
 
 /**
- * By default auth data are stored in the `.auth-data.json` (FileAPL).
- * For multi-tenant applications and deployments please use UpstashAPL.
- *
- * To read more about storing auth data, read the
- * [APL documentation](https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md)
+ * Follow Firestore docs to configure client
  */
+export const firestore = new Firestore({
+  projectId: "your-firestore-id",
+  credentials: {
+    private_key: "your-key",
+    client_email: "your-email",
+  },
+});
 
-export let apl: APL;
-switch (process.env.APL) {
-  case "vercel":
-    apl = new VercelAPL();
-    break;
-  case "upstash":
-    // Require `UPSTASH_URL` and `UPSTASH_TOKEN` environment variables
-    apl = new UpstashAPL();
-    break;
-  default:
-    apl = new FileAPL();
-}
+export const apl = new FirestoreAPL(firestore.collection("apl"));
 
 export const saleorApp = new SaleorApp({
   apl,
