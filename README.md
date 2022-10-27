@@ -1,4 +1,4 @@
-# Example: Subscribing for the Saleor webhooks
+# Example: Subscribing for the Saleor asynchronous webhooks
 
 This example highlights:
 

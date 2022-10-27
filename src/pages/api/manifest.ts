@@ -17,7 +17,7 @@ export default createManifestHandler({
       ],
       id: "saleor.app",
       version: packageJson.version,
-      webhooks: [productUpdatedWebhook.getManifest(context.appBaseUrl)],
+      webhooks: [productUpdatedWebhook.getWebhookManifest(context.appBaseUrl)],
       extensions: [
         /**
          * Optionally, extend Dashboard with custom UIs
