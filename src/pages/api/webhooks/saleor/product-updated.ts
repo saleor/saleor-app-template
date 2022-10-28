@@ -2,12 +2,12 @@ import { NextWebhookApiHandler, SaleorAsyncWebhook } from "@saleor/app-sdk/handl
 import { gql } from "urql";
 import { ProductUpdatedWebhookPayloadFragment } from "../../../../../generated/graphql";
 import { saleorApp } from "../../../../../saleor-app";
-import currentRoutePath from "../../../../lib/currentRoutePath";
+import { getCurrentRoutePath } from "../../../../lib/getCurrentRoutePath";
 
 /**
  * Get route path of this file
  */
-const webhookPath = currentRoutePath();
+const webhookPath = getCurrentRoutePath();
 
 /**
  * Next.js body parser has to be turned off for us to be able to access the raw request body
