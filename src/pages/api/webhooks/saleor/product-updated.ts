@@ -2,12 +2,6 @@ import { NextWebhookApiHandler, SaleorAsyncWebhook } from "@saleor/app-sdk/handl
 import { gql } from "urql";
 import { ProductUpdatedWebhookPayloadFragment } from "../../../../../generated/graphql";
 import { saleorApp } from "../../../../../saleor-app";
-import { getCurrentRoutePath } from "../../../../lib/getCurrentRoutePath";
-
-/**
- * Get route path of this file
- */
-const webhookPath = getCurrentRoutePath();
 
 /**
  * Next.js body parser has to be turned off for us to be able to access the raw request body
@@ -52,7 +46,7 @@ export const ExampleProductUpdatedSubscription = gql`
  */
 export const productUpdatedWebhook = new SaleorAsyncWebhook<ProductUpdatedWebhookPayloadFragment>({
   name: "Example product updated webhook",
-  webhookPath,
+  webhookPath: "api/webhooks/saleor/product-updated",
   asyncEvent: "PRODUCT_UPDATED",
   apl: saleorApp.apl,
   subscriptionQueryAst: ExampleProductUpdatedSubscription,
