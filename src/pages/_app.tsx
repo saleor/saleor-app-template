@@ -2,9 +2,11 @@ import "../styles/globals.css";
 
 import { Theme } from "@material-ui/core/styles";
 import { AppBridge, AppBridgeProvider } from "@saleor/app-sdk/app-bridge";
+import { RoutePropagator } from "@saleor/app-sdk/app-bridge/next";
 import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import React, { PropsWithChildren, useEffect } from "react";
 import { AppProps } from "next/app";
+
 import GraphQLProvider from "../providers/GraphQLProvider";
 import { ThemeSynchronizer } from "../lib/theme-synchronizer";
 
@@ -43,6 +45,7 @@ function NextApp({ Component, pageProps }: AppProps) {
       <GraphQLProvider>
         <ThemeProvider overrides={themeOverrides} ssr>
           <ThemeSynchronizer />
+          <RoutePropagator />
           <Component {...pageProps} />
         </ThemeProvider>
       </GraphQLProvider>
