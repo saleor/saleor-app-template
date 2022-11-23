@@ -38,7 +38,13 @@ const SuccessFetchButton = ({
             "authorization-bearer": token,
           },
         })
-          .then((response) => response.json())
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Non 200 response code");
+            }
+          })
           .then((body) => {
             /**
              * We expect this request to succeed, so you should see a toast message
@@ -90,7 +96,13 @@ const FailedFetchButton = ({ domain, appBridge }: { domain: string; appBridge: A
             "authorization-bearer": "this is not a valid token",
           },
         })
-          .then((response) => response.json())
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Non 200 response code");
+            }
+          })
           .then((body) => {
             // We don't expect this to succeed
             appBridge?.dispatch({
