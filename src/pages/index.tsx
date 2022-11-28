@@ -59,7 +59,12 @@ const IndexPage: NextPage = () => {
           </a>
         </li>
         <li>
-          <a target="_blank" rel="noreferrer" href="https://github.com/saleor/saleor-app-sdk">
+          <a
+            onClick={handleLinkClick}
+            target="_blank"
+            rel="noreferrer"
+            href="https://github.com/saleor/saleor-app-sdk"
+          >
             Saleor App SDK
           </a>
         </li>
