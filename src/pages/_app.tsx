@@ -20,13 +20,14 @@ const themeOverrides: Partial<Theme> = {
  * Ensure instance is a singleton.
  * TODO: This is React 18 issue, consider hiding this workaround inside app-sdk
  */
-const appBridgeInstance = typeof window !== "undefined" ? new AppBridge() : undefined;
+const appBridgeInstance =
+  typeof window !== "undefined" ? new AppBridge({ autoNotifyReady: false }) : undefined;
 
 /**
  * That's a hack required by Macaw-UI incompatibility with React@18
  */
 const ThemeProvider = MacawUIThemeProvider as React.FC<
-  PropsWithChildren<{ overrides?: Partial<Theme>; ssr: boolean }>
+  PropsWithChildren<{ overrides?: Partial<Theme>; ssr: boolean; defaultTheme: "light" | "dark" }>
 >;
 
 function NextApp({ Component, pageProps }: AppProps) {
@@ -40,10 +41,14 @@ function NextApp({ Component, pageProps }: AppProps) {
     }
   }, []);
 
+  useEffect(() => {
+    appBridgeInstance?.sendNotifyReadyAction()
+  },[])
+
   return (
     <AppBridgeProvider appBridgeInstance={appBridgeInstance}>
       <GraphQLProvider>
-        <ThemeProvider overrides={themeOverrides} ssr>
+        <ThemeProvider overrides={themeOverrides} ssr defaultTheme={"dark"}>
           <ThemeSynchronizer />
           <RoutePropagator />
           <Component {...pageProps} />
