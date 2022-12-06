@@ -3,6 +3,7 @@ import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Button } from "@saleor/macaw-ui";
 import dynamic from "next/dynamic";
 import { MouseEventHandler, useEffect, useState } from "react";
+import { Link } from "@material-ui/core";
 
 const ClientContent = dynamic(() => import("../DashboardActions"), {
   ssr: false,
@@ -49,44 +50,44 @@ const IndexPage: NextPage = () => {
       <h2>Resources</h2>
       <ul>
         <li>
-          <a
+          <Link
             onClick={handleLinkClick}
             target="_blank"
             rel="noreferrer"
             href="https://github.com/saleor/app-examples"
           >
             App Examples repository
-          </a>
+          </Link>
         </li>
         <li>
-          <a
+          <Link
             onClick={handleLinkClick}
             target="_blank"
             rel="noreferrer"
             href="https://github.com/saleor/saleor-app-sdk"
           >
             Saleor App SDK
-          </a>
+          </Link>
         </li>
         <li>
-          <a
+          <Link
             onClick={handleLinkClick}
             target="_blank"
             href="https://docs.saleor.io/docs/3.x/developer/extending/apps/key-concepts"
             rel="noreferrer"
           >
             Apps documentation
-          </a>
+          </Link>
         </li>
         <li>
-          <a
+          <Link
             onClick={handleLinkClick}
             target="_blank"
             href="https://github.com/saleor/saleor-cli"
             rel="noreferrer"
           >
             Saleor CLI
-          </a>
+          </Link>
         </li>
       </ul>
 
