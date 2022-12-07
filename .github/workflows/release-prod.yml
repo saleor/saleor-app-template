@@ -10,5 +10,5 @@ jobs:
       with:
         base: main
         branch: canary
-        title: "Release prodgs"
+        title: "Release prod"
         team-reviewers: "@saleor/devtools"
