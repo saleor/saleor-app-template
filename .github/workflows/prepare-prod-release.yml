@@ -1,0 +1,14 @@
+name: Prepare prod release
+on:
+  workflow_dispatch:
+  schedule:
+      - cron: "0 0 * * 1" # Every Monday midnight
+jobs:
+  open-pr:
+    steps:
+      - uses: peter-evans/create-pull-request@v4
+        with:
+          base: main
+          branch: canary
+          title: "Release prod"
+          team-reviewers: "@saleor/devtools"
