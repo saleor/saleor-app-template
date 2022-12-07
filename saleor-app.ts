@@ -8,7 +8,7 @@ import { APL, FileAPL, UpstashAPL, VercelAPL } from "@saleor/app-sdk/APL";
  * To read more about storing auth data, read the
  * [APL documentation](https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md)
  */
-
+// test
 export let apl: APL;
 switch (process.env.APL) {
   case "vercel":
