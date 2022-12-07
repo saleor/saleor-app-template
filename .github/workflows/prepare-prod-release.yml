@@ -5,6 +5,7 @@ on:
       - cron: "0 0 * * 1" # Every Monday midnight
 jobs:
   open-pr:
+    runs-on: ubuntu-latest
     steps:
       - uses: peter-evans/create-pull-request@v4
         with:
