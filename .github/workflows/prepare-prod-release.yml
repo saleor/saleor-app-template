@@ -7,6 +7,7 @@ jobs:
   open-pr:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - uses: peter-evans/create-pull-request@v4
         with:
           base: main
