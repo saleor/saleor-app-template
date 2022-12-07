@@ -6,7 +6,7 @@ on:
 jobs:
   open-pr:
     - name: "Open canary->main PR"
-      uses: peter-evans/create-pull-request@v4
+    - uses: peter-evans/create-pull-request@v4
       with:
         base: main
         branch: canary
