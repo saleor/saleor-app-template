@@ -1,4 +1,4 @@
-name: Release Prod
+name: Prepare prod release
 on:
   workflow_dispatch:
   schedule:
