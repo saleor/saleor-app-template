@@ -5,10 +5,10 @@ on:
       - cron: "0 0 * * 1" # Every Monday midnight
 jobs:
   open-pr:
-    - name: "Open canary->main PR"
-    - uses: peter-evans/create-pull-request@v4
-      with:
-        base: main
-        branch: canary
-        title: "Release prod"
-        team-reviewers: "@saleor/devtools"
+    steps:
+      - uses: peter-evans/create-pull-request@v4
+        with:
+          base: main
+          branch: canary
+          title: "Release prod"
+          team-reviewers: "@saleor/devtools"
