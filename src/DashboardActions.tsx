@@ -50,7 +50,9 @@ export const DashboardActions = () => {
         >
           Redirect to orders ➡️💰
         </Button>
-        <Link href="/trpc">tRPC example</Link>
+        <Button>
+          <Link href="/trpc-example">tRPC example</Link>
+        </Button>
       </div>
     </div>
   );
