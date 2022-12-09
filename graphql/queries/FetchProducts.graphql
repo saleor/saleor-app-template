@@ -1,5 +1,5 @@
-query FetchProducts($count: Int!) {
-    products(first: $count) {
+query FetchProducts($count: Int!, $channel: String!) {
+    products(first: $count, channel: $channel) {
         edges {
             node {
                 id,

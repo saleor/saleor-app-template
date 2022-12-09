@@ -1,0 +1,6 @@
+query FetchChannels {
+  channels {
+    name
+    id
+  }
+}

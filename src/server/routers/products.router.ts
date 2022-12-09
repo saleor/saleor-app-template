@@ -1,15 +1,16 @@
 import { z } from "zod";
-import { procedure, router } from "../../server";
-import { saleorApp } from "../../../../saleor-app";
-import { FetchProductsDocument } from "../../../../generated/graphql";
+import { procedure, router } from "../server";
+import { saleorApp } from "../../../saleor-app";
+import { FetchProductsDocument } from "../../../generated/graphql";
 import { TRPCError } from "@trpc/server";
-import { createClient } from "../../../lib/graphql";
+import { createClient } from "../../lib/graphql";
 
-export const fetchProductsRouter = router({
+export const productsRouter = router({
   fetch: procedure
     .input(
       z.object({
         count: z.number().min(1),
+        channel: z.string()
       })
     )
     .query(async ({ ctx, input }) => {
@@ -29,8 +30,6 @@ export const fetchProductsRouter = router({
         });
       }
 
-      console.log(authData.token);
-
       const client = createClient(`https://${ctx.domain}/graphql/`, async () =>
         Promise.resolve({ token: authData.token })
       );
@@ -38,6 +37,7 @@ export const fetchProductsRouter = router({
       const data = await client
         .query(FetchProductsDocument, {
           count: input.count,
+          channel: input.channel
         })
         .toPromise();
 
