@@ -1,0 +1,10 @@
+query FetchProducts($count: Int!) {
+    products(first: $count) {
+        edges {
+            node {
+                id,
+                name
+            }
+        }
+    }
+}

@@ -1,6 +1,8 @@
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { AppRouter } from "./server/routers/app-router";
+import { SALEOR_AUTHORIZATION_BEARER_HEADER, SALEOR_DOMAIN_HEADER } from "@saleor/app-sdk/const";
+import { appBridgeInstance } from "./pages/_app";
 
 
 function getBaseUrl() {
@@ -16,7 +18,14 @@ export const trpc = createTRPCNext<AppRouter>({
       links: [
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers() {
+            return {
+              [SALEOR_DOMAIN_HEADER]: appBridgeInstance?.getState().domain,
+              [SALEOR_AUTHORIZATION_BEARER_HEADER]: appBridgeInstance?.getState().token
+            }
+          }
         }),
+
       ],
       // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
     };
