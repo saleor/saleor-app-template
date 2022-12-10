@@ -9,7 +9,7 @@ import { AppProps } from "next/app";
 
 import GraphQLProvider from "../providers/GraphQLProvider";
 import { ThemeSynchronizer } from "../lib/theme-synchronizer";
-import { trpc } from "../trpc";
+import { trpcClient } from "../trpc-client";
 
 const themeOverrides: Partial<Theme> = {
   /**
@@ -20,6 +20,8 @@ const themeOverrides: Partial<Theme> = {
 /**
  * Ensure instance is a singleton.
  * TODO: This is React 18 issue, consider hiding this workaround inside app-sdk
+ *
+ * In tRPC example export it, to directly access it's state in tRPC context creator
  */
 export const appBridgeInstance = typeof window !== "undefined" ? new AppBridge() : undefined;
 
@@ -54,4 +56,4 @@ function NextApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default trpc.withTRPC(NextApp);
+export default trpcClient.withTRPC(NextApp);

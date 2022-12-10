@@ -12,7 +12,7 @@ function getBaseUrl() {
   return `http://localhost:${process.env.PORT ?? 3000}`;
 }
 
-export const trpc = createTRPCNext<AppRouter>({
+export const trpcClient = createTRPCNext<AppRouter>({
   config({ ctx }) {
     return {
       links: [
@@ -20,6 +20,9 @@ export const trpc = createTRPCNext<AppRouter>({
           url: `${getBaseUrl()}/api/trpc`,
           headers() {
             return {
+              /**
+               * Attach headers from app to client requests, so tRPC can add them to context
+               */
               [SALEOR_DOMAIN_HEADER]: appBridgeInstance?.getState().domain,
               [SALEOR_AUTHORIZATION_BEARER_HEADER]: appBridgeInstance?.getState().token
             }

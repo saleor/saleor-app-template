@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { LinearProgress, Select, Typography } from "@material-ui/core";
-import { trpc } from "../trpc";
+import { trpcClient } from "../trpc-client";
 import { PropsWithChildren, useEffect, useState } from "react";
 
 const Wrapper = ({ children }: PropsWithChildren<{}>) => (
@@ -28,8 +28,8 @@ const Products = ({
 
 const TrpcExamplePage: NextPage = () => {
   const [selectedChannel, setSelectedChannel] = useState<string | null>(null);
-  const { data: channelsData } = trpc.channels.fetch.useQuery();
-  const { data: productsData } = trpc.products.fetch.useQuery(
+  const { data: channelsData } = trpcClient.channels.fetch.useQuery();
+  const { data: productsData, isLoading: productsLoading } = trpcClient.products.fetch.useQuery(
     {
       count: 5,
       channel: selectedChannel as string,
@@ -67,9 +67,9 @@ const TrpcExamplePage: NextPage = () => {
           ))}
         </Select>
       </div>
-      {products && products.length > 0 ? (
-        <Products products={products} />
-      ) : (
+      {productsLoading && <LinearProgress />}
+      {products && products.length > 0 && <Products products={products} />}
+      {!productsLoading && products && products.length === 0 && (
         <Typography>No products in selected channel</Typography>
       )}
     </Wrapper>
