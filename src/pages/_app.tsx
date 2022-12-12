@@ -6,6 +6,15 @@ import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import React, { PropsWithChildren, useEffect } from "react";
 import { AppProps } from "next/app";
 import GraphQLProvider from "../providers/GraphQLProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const themeOverrides: Partial<Theme> = {
   /**
@@ -41,7 +50,9 @@ function NextApp({ Component, pageProps }: AppProps) {
     <AppBridgeProvider appBridgeInstance={appBridgeInstance}>
       <GraphQLProvider>
         <ThemeProvider overrides={themeOverrides} ssr>
-          <Component {...pageProps} />
+          <QueryClientProvider client={queryClient}>
+            <Component {...pageProps} />
+          </QueryClientProvider>
         </ThemeProvider>
       </GraphQLProvider>
     </AppBridgeProvider>

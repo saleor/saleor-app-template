@@ -1,6 +1,5 @@
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
-import { Button } from "@saleor/macaw-ui";
-import { ConfigurationFormComponent } from "./lib/conf";
+import { exampleJSONConfiguration } from "./lib/confSchema";
+import { JSONConfigurationForm } from "./lib/JSONConfigurationForm";
 
 /**
  * This is example of using AppBridge, when App is mounted in Dashboard
@@ -10,19 +9,10 @@ import { ConfigurationFormComponent } from "./lib/conf";
  * You can safely remove this file!
  */
 export const DashboardActions = () => {
-  const { appBridge } = useAppBridge();
-
   return (
     <div>
-      <h2>App running in dashboard!</h2>
-      <div
-        style={{
-          display: "inline-grid",
-          gridGap: "2rem",
-          gridTemplateColumns: "50% 50%",
-        }}
-      >
-        <ConfigurationFormComponent />
+      <div>
+        <JSONConfigurationForm JSONConf={exampleJSONConfiguration} />
       </div>
     </div>
   );

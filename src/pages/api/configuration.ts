@@ -1,3 +1,4 @@
-import { confHandler } from "../../lib/conf";
+import { saleorApp } from "../../../saleor-app";
+import { exampleJSONConfiguration, exampleSchema } from "../../lib/confSchema";
 
-export default confHandler;
+export default exampleJSONConfiguration.createHandler(saleorApp.apl);
