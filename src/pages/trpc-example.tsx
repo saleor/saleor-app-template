@@ -7,16 +7,18 @@ const Wrapper = ({ children }: PropsWithChildren<{}>) => (
   <div style={{ display: "grid", gridAutoFlow: "column" }}>{children}</div>
 );
 
-const Products = ({
-  products,
-}: {
-  products: Array<{
-    node: {
-      id: string;
-      name: string;
-    };
-  }>;
-}) => {
+/**
+ * Define fields required by UI to be rendered. Alternatively tRPC inference can be used
+ * https://trpc.io/docs/infer-types
+ */
+type ExampleProductsRenderData = Array<{
+  node: {
+    id: string;
+    name: string;
+  };
+}>;
+
+const Products = ({ products }: { products: ExampleProductsRenderData }) => {
   return (
     <ul>
       {products.map((product) => (
