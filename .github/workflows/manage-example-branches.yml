@@ -15,6 +15,7 @@ jobs:
       - uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8  # v1.1.0
         name: Set example label
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             example
       - name: Example branches are not meant to be merged
