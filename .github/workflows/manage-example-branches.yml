@@ -1,0 +1,24 @@
+# Branches with names starting with `example` are meant to be long living branches used as
+# documentation/usage example.
+# After accepting the branch, the main PR should be closed
+name: Example branch management
+
+on:
+  pull_request
+
+jobs:
+  example-branches-checks:
+    if: ${{ startsWith(github.head_ref, 'example') }}
+    name: Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8  # v1.1.0
+        name: Set example label
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            example
+      - name: Example branches are not meant to be merged
+        run: |
+          echo "Example branches are not meant to be merged"
+          exit 1

@@ -3,11 +3,35 @@ import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Button } from "@saleor/macaw-ui";
 import dynamic from "next/dynamic";
 import { MouseEventHandler, useEffect, useState } from "react";
-import { Link } from "@material-ui/core";
+import { Link, TextField } from "@material-ui/core";
 
 const ClientContent = dynamic(() => import("../DashboardActions"), {
   ssr: false,
 });
+
+const AddToSaleorForm = () => (
+  <form
+    style={{
+      display: "flex",
+      gap: "2rem",
+    }}
+    onSubmit={(event) => {
+      event.preventDefault();
+
+      const saleorUrl = new FormData(event.currentTarget).get("saleor-url");
+      const manifestUrl = new URL("/api/manifest", window.location.origin);
+      const redirectUrl = new URL(
+        `/dashboard/apps/install?manifestUrl=${manifestUrl}`,
+        saleorUrl as string
+      ).href;
+
+      window.open(redirectUrl, "_blank");
+    }}
+  >
+    <TextField type="url" required label="Saleor URL" name="saleor-url" />
+    <Button type="submit">Add to Saleor</Button>
+  </form>
+);
 
 /**
  * This is page publicly accessible from your app.
@@ -94,7 +118,10 @@ const IndexPage: NextPage = () => {
       {appBridgeState?.ready && mounted ? (
         <ClientContent />
       ) : (
-        <p>Install this app in your Dashboard and check extra powers!</p>
+        <div>
+          <p>Install this app in your Dashboard and check extra powers!</p>
+          {mounted && !global.location.href.includes("localhost") && <AddToSaleorForm />}
+        </div>
       )}
     </div>
   );
