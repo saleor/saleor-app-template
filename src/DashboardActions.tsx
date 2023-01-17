@@ -6,7 +6,7 @@ import { Button } from "@saleor/macaw-ui";
  * See more about AppBridge possibilities
  * https://github.com/saleor/saleor-app-sdk/blob/main/docs/app-bridge.md
  *
- * You can safely remove this file!
+ * -> You can safely remove this file!
  */
 export const DashboardActions = () => {
   const { appBridge } = useAppBridge();

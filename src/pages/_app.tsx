@@ -7,8 +7,8 @@ import { ThemeProvider as MacawUIThemeProvider } from "@saleor/macaw-ui";
 import React, { PropsWithChildren, useEffect } from "react";
 import { AppProps } from "next/app";
 
-import GraphQLProvider from "../providers/GraphQLProvider";
 import { ThemeSynchronizer } from "../lib/theme-synchronizer";
+import { NoSSRWrapper } from "../lib/no-ssr-wrapper";
 
 const themeOverrides: Partial<Theme> = {
   /**
@@ -41,15 +41,15 @@ function NextApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <AppBridgeProvider appBridgeInstance={appBridgeInstance}>
-      <GraphQLProvider>
+    <NoSSRWrapper>
+      <AppBridgeProvider appBridgeInstance={appBridgeInstance}>
         <ThemeProvider overrides={themeOverrides} ssr>
           <ThemeSynchronizer />
           <RoutePropagator />
           <Component {...pageProps} />
         </ThemeProvider>
-      </GraphQLProvider>
-    </AppBridgeProvider>
+      </AppBridgeProvider>
+    </NoSSRWrapper>
   );
 }
 
