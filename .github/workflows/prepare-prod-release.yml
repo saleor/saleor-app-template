@@ -9,6 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: create pull request
-        run: gh pr create -B main -H canary --title 'Merge canary to main' --body 'Merge canary to main, to trigger a prod release'
+        run: node ./github/scripts/open-prod-pr.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
