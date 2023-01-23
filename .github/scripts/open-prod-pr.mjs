@@ -1,27 +1,44 @@
-import { exec } from "node:child_process";
-import { promisify } from "node:util";
+import { spawnSync } from "node:child_process";
 
-const promiseExec = promisify(exec);
-
-const branchesDiffResult = await promiseExec("git log main..canary").catch((e) => {
-  console.error(e);
-  process.exit(1);
+const { stdout: branchesDiffer, stderr } = spawnSync("git", ["log", "main..canary"], {
+  encoding: "utf8",
 });
 
-if (branchesDiffResult.stdout === "") {
+if (stderr) {
+  console.error("Fail reading branches diff");
+  console.error(stderr);
+  process.exit(1);
+}
+
+if (branchesDiffer === "") {
   console.log("Branches canary and main have no different commits");
   process.exit(0);
-} else if (branchesDiffResult.stdout.length > 0) {
-  console.log("Found different commits, open a PR");
-  await promiseExec(
-    "gh pr create -B main -H canary --title 'Merge canary to main' --body 'Merge canary to main, to trigger a prod release"
-  )
-    .then(() => {
-      console.log("PR opened successfully");
-    })
-    .catch((e) => {
-      console.error("Fail opening a PR");
-      console.error(e);
-      process.exit(1);
-    });
+} else if (branchesDiffer.length > 0) {
+  const result = spawnSync(
+    "gh",
+    [
+      "pr",
+      "create",
+      "-B",
+      "main",
+      "-H",
+      "canary",
+      "--title",
+      "Merge canary to main",
+      "--body",
+      "Merge canary to main, to trigger a prod release",
+    ],
+    {}
+  );
+
+  if (result.stdout.length > 0) {
+    console.log("Successfully opened a PR");
+    process.exit(0);
+  }
+
+  if (result.stderr.length > 0) {
+    console.error("Error trying to open a PR");
+    console.error(result.stderr);
+    process.exit(1);
+  }
 }
