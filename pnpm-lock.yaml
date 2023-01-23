@@ -12,7 +12,7 @@ specifiers:
   '@material-ui/core': ^4.12.4
   '@material-ui/icons': ^4.11.3
   '@material-ui/lab': 4.0.0-alpha.61
-  '@saleor/app-sdk': 0.26.0
+  '@saleor/app-sdk': 0.27.0
   '@saleor/macaw-ui': ^0.7.2
   '@testing-library/react': ^13.4.0
   '@testing-library/react-hooks': ^8.0.1
@@ -40,7 +40,7 @@ dependencies:
   '@material-ui/core': 4.12.4_ib3m5ricvtkl2cll7qpr2f6lvq
   '@material-ui/icons': 4.11.3_do6jtu5bwlvlflxw6cggb7lxsi
   '@material-ui/lab': 4.0.0-alpha.61_do6jtu5bwlvlflxw6cggb7lxsi
-  '@saleor/app-sdk': 0.26.0_7jnwqgtpcnwg4nzft4b6xlzlfi
+  '@saleor/app-sdk': 0.27.0_7jnwqgtpcnwg4nzft4b6xlzlfi
   '@saleor/macaw-ui': 0.7.2_ushc7t6wkobdy4akuvezsbxqvu
   '@urql/exchange-auth': 1.0.0_graphql@16.6.0
   '@vitejs/plugin-react': 3.0.1_vite@4.0.4
@@ -1979,8 +1979,8 @@ packages:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
     dev: true
 
-  /@saleor/app-sdk/0.26.0_7jnwqgtpcnwg4nzft4b6xlzlfi:
-    resolution: {integrity: sha512-OdaWKpvgMBYY/O0RJdHqgyurZXsVJDe1De1n6rU+6Au8C7VusMLQWbjS0VVbV3UJsEKJmbKSgBUSXSD283a01g==}
+  /@saleor/app-sdk/0.27.0_7jnwqgtpcnwg4nzft4b6xlzlfi:
+    resolution: {integrity: sha512-2rNI3mL4EFjmGVNpEKqmpImAACCjP7mVCK8sJKf3W08smWzjqu6xw6pLpXdx8/Vhmn3IhkjUmB4IAc6XBFhslg==}
     peerDependencies:
       next: '>=12'
       react: '>=17'
