@@ -1,4 +1,6 @@
-![Saleor App Template](https://user-images.githubusercontent.com/249912/71523206-4e45f800-28c8-11ea-84ba-345a9bfc998a.png)
+<div align="center">
+<img width="150" alt="saleor-app-template" src="https://user-images.githubusercontent.com/4006792/215185065-4ef2eda4-ca71-48cc-b14b-c776e0b491b6.png">
+</div>
 
 <div align="center">
   <h1>Saleor App Template</h1>
@@ -9,20 +11,13 @@
 </div>
 
 <div align="center">
-  <a href="https://saleor.io/">🏠 Website</a>
-  <span> • </span>
-  <a href="https://docs.saleor.io/docs/3.x/">📚 Docs</a>
-  <span> • </span>
-  <a href="https://saleor.io/blog/">📰 Blog</a>
-  <span> • </span>
-  <a href="https://twitter.com/getsaleor">🐦 Twitter</a>
+  <a href="https://saleor.io/">Website</a>
+  <span> | </span>
+  <a href="https://docs.saleor.io/docs/3.x/">Docs</a>
+  <span> | </span>
+    <a href="https://githubbox.com/saleor/saleor-app-template">Codesandbox</a>
 </div>
 
-<div align="center">
-  <a href="https://githubbox.com/saleor/saleor-app-template">🔎 Explore Code</a>
-</div>
-
-## About
 
 ### What is Saleor App
 
