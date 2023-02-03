@@ -15,7 +15,8 @@ export default createManifestHandler({
          * https://docs.saleor.io/docs/3.x/developer/permissions
          */
       ],
-      id: "saleor.app",
+      // TODO: Update the app id
+      id: "saleor.app.APP_NAME",
       version: packageJson.version,
       webhooks: [
         /**

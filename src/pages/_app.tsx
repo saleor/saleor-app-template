@@ -9,6 +9,7 @@ import { AppProps } from "next/app";
 
 import { ThemeSynchronizer } from "../lib/theme-synchronizer";
 import { NoSSRWrapper } from "../lib/no-ssr-wrapper";
+import { trpcClient } from "../modules/trpc/trpc-client";
 
 const themeOverrides: Partial<Theme> = {
   /**
@@ -20,7 +21,7 @@ const themeOverrides: Partial<Theme> = {
  * Ensure instance is a singleton.
  * TODO: This is React 18 issue, consider hiding this workaround inside app-sdk
  */
-const appBridgeInstance = typeof window !== "undefined" ? new AppBridge() : undefined;
+export const appBridgeInstance = typeof window !== "undefined" ? new AppBridge() : undefined;
 
 /**
  * That's a hack required by Macaw-UI incompatibility with React@18
@@ -43,7 +44,7 @@ function NextApp({ Component, pageProps }: AppProps) {
   return (
     <NoSSRWrapper>
       <AppBridgeProvider appBridgeInstance={appBridgeInstance}>
-        <ThemeProvider overrides={themeOverrides} ssr>
+        <ThemeProvider overrides={themeOverrides} ssr={false}>
           <ThemeSynchronizer />
           <RoutePropagator />
           <Component {...pageProps} />
@@ -53,4 +54,4 @@ function NextApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default NextApp;
+export default trpcClient.withTRPC(NextApp);
