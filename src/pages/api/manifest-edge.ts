@@ -1,6 +1,5 @@
 import packageJson from "../../../package.json";
 import { AppManifest } from "@saleor/app-sdk/types";
-import { getBaseUrl } from "@saleor/app-sdk/headers";
 
 export const config = {
   runtime: "edge",
@@ -17,7 +16,7 @@ export type CreateManifestHandlerOptions = {
  */
 export const createManifestHandler = (options: CreateManifestHandlerOptions) => {
   const baseHandler = async (request: Request) => {
-    const baseURL = getBaseUrl(request.headers as any);
+    const baseURL = 'localhost:3000'
 
     const manifest = await options.manifestFactory({
       appBaseUrl: baseURL,
@@ -36,6 +35,7 @@ export const createManifestHandler = (options: CreateManifestHandlerOptions) => 
 
 export default createManifestHandler({
   async manifestFactory(context: { appBaseUrl: string }): Promise<AppManifest> {
+
     const manifest: AppManifest = {
       name: packageJson.name,
       tokenTargetUrl: `${context.appBaseUrl}/api/register`,
