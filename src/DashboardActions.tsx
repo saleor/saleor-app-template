@@ -1,5 +1,5 @@
 import { useAppBridge } from "@saleor/app-sdk/app-bridge";
-import { Button } from "@saleor/macaw-ui";
+import { Button } from "@saleor/macaw-ui/next";
 
 /**
  * This is example of using AppBridge, when App is mounted in Dashboard
@@ -20,6 +20,7 @@ export const DashboardActions = () => {
         gridTemplateColumns:'50% 50%'
       }}>
         <Button
+          variant={"secondary"}
           onClick={() => {
             appBridge?.dispatch({
               type: "notification",
@@ -35,6 +36,7 @@ export const DashboardActions = () => {
           Trigger notification 📤
         </Button>
         <Button
+          variant={"secondary"}
           onClick={() => {
             appBridge?.dispatch({
               type: "redirect",
