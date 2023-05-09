@@ -78,10 +78,16 @@ export default orderCreatedWebhook.createHandler((req, res, ctx) => {
   console.log(`Order was created for customer: ${payload.order?.userEmail}`);
 
   /**
-   * Use client to interact with Saleor
+   * Create GraphQL client to interact with Saleor API.
    */
   const client = createClient(authData.saleorApiUrl, async () => ({ token: authData.token }));
-  // client.query()
+  
+  /**
+   * Now you can fetch additional data using urql.
+   * https://formidable.com/open-source/urql/docs/api/core/#clientquery
+   */
+  
+  // const data = await client.query().toPromise()
 
   /**
    * Inform Saleor that webhook was delivered properly.
