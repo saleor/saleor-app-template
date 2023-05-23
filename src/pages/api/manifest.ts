@@ -27,7 +27,7 @@ export default createManifestHandler({
       /**
        * Configure webhooks here. They will be created in Saleor during installation
        * Read more
-       * https://docs.saleor.io/docs/3.x/developer/api-reference/objects/webhook
+       * https://docs.saleor.io/docs/3.x/developer/api-reference/webhooks/objects/webhook
        *
        * Easiest way to create webhook is to use app-sdk
        * https://github.com/saleor/saleor-app-sdk/blob/main/docs/saleor-webhook.md
