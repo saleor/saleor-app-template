@@ -21,7 +21,7 @@
 
 ### What is Saleor App
 
-Saleor App is the fastest way of extending Saleor with custom logic using [asynchronous](https://docs.saleor.io/docs/3.x/developer/extending/apps/asynchronous-webhooks) and [synchronous](https://docs.saleor.io/docs/3.x/developer/extending/apps/synchronous-webhooks) webhooks (and vast Saleor's API). In most cases, creating an App consists of two tasks:
+Saleor App is the fastest way of extending Saleor with custom logic using [asynchronous](https://docs.saleor.io/docs/3.x/developer/extending/apps/asynchronous-webhooks) and [synchronous](https://docs.saleor.io/docs/3.x/developer/extending/apps/synchronous-webhooks/key-concepts) webhooks (and vast Saleor's API). In most cases, creating an App consists of two tasks:
 
 - Writing webhook's code executing your custom logic.
 - Developing configuration UI to be displayed in Saleor Dashboard via specialized view (designated in the App's manifest).
@@ -38,8 +38,6 @@ You can use any preferred technology to create Saleor Apps, but Next.js is among
 ### Learn more about Apps
 
 [Apps guide](https://docs.saleor.io/docs/3.x/developer/extending/apps/key-concepts)
-
-[Configuring apps in dashboard](https://docs.saleor.io/docs/3.x/dashboard/apps)
 
 ## Development
 
@@ -117,7 +115,7 @@ If you use Saleor Cloud or your local server is exposed, you can install your ap
 This template host manifest at `/api/manifest`
 
 
-You can also install application using GQL or command line. Follow the guide [how to install your app](https://docs.saleor.io/docs/3.x/developer/extending/apps/installing-apps#installation-using-graphql-api) to learn more. 
+You can also install application using GQL or command line. Follow the guide [how to install your app](https://docs.saleor.io/docs/3.x/developer/extending/apps/installing-apps#installation-using-graphql-api) to learn more.
 
 ### Generated schema and typings
 
