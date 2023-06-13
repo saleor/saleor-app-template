@@ -55,12 +55,17 @@ The easiest way to set up a Saleor app is by using the Saleor CLI.
 
 [Saleor CLI](https://github.com/saleor/saleor-cli) is designed to save you from the repetitive chores around Saleor development, including creating Apps. It will take the burden of spawning new apps locally, connecting them with Saleor environments, and establishing a tunnel for local development in seconds.
 
-[Full Saleor CLI reference](https://docs.saleor.io/docs/3.x/developer/cli)
+[Full Saleor CLI reference](https://docs.saleor.io/docs/3.x/cli)
 
 If you don't have a (free developer) Saleor Cloud account, create one with the following command:
 
 ```
 saleor register
+```
+
+You will also have to login with:
+```
+saleor login
 ```
 
 Now you're ready to create your first App:
