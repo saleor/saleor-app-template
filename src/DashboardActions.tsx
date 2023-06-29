@@ -1,5 +1,5 @@
 import { useAppBridge } from "@saleor/app-sdk/app-bridge";
-import { Button } from "@saleor/macaw-ui/next";
+import { Button, Text, Box } from "@saleor/macaw-ui/next";
 
 /**
  * This is example of using AppBridge, when App is mounted in Dashboard
@@ -9,16 +9,25 @@ import { Button } from "@saleor/macaw-ui/next";
  * -> You can safely remove this file!
  */
 export const DashboardActions = () => {
-  const { appBridge } = useAppBridge();
+  const { appBridge, appBridgeState } = useAppBridge();
+
+  const navigateToOrders = () => {
+    appBridge?.dispatch({
+      type: "redirect",
+      payload: {
+        to: "/orders",
+        actionId: "message-from-app",
+      },
+    });
+  };
 
   return (
     <div>
-      <h2>App running in dashboard!</h2>
-      <div style={{
-        display:'inline-grid',
-        gridGap: '2rem',
-        gridTemplateColumns:'50% 50%'
-      }}>
+      <Text as={"h2"} variant={"heading"} >
+        App running in the Dashboard!
+      </Text>
+      <Text marginBottom={6} as={"p"}>Welcome {appBridgeState?.user?.email}</Text>
+      <Box display={"flex"} gap={4} gridAutoFlow={"column"} marginBottom={6}>
         <Button
           variant={"secondary"}
           onClick={() => {
@@ -35,21 +44,26 @@ export const DashboardActions = () => {
         >
           Trigger notification 📤
         </Button>
-        <Button
-          variant={"secondary"}
-          onClick={() => {
-            appBridge?.dispatch({
-              type: "redirect",
-              payload: {
-                to: "/orders",
-                actionId: "message-from-app",
-              },
-            });
-          }}
-        >
+        <Button variant={"secondary"} onClick={navigateToOrders}>
           Redirect to orders ➡️💰
         </Button>
-      </div>
+      </Box>
+      <Text as={"h2"} variant={"heading"} marginBottom={6}>
+        Webhooks
+      </Text>
+      <Text>
+        App template contains example of webhook. You can create any{" "}
+        <Text
+          as={"a"}
+          variant={"bodyStrong"}
+          onClick={navigateToOrders}
+          cursor={"pointer"}
+          color={"text3Decorative"}
+        >
+          Order
+        </Text>{" "}
+        and check your console output!
+      </Text>
     </div>
   );
 };

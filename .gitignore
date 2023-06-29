@@ -47,3 +47,5 @@ generated/
 
 # Sentry
 .sentryclirc
+
+.env
