@@ -4,6 +4,10 @@ import { AppManifest } from "@saleor/app-sdk/types";
 import packageJson from "../../../package.json";
 import { orderCreatedWebhook } from "./webhooks/order-created";
 
+/**
+ * App SDK helps with the valid Saleor App Manifest creation. Read more:
+ * https://github.com/saleor/saleor-app-sdk/blob/main/docs/api-handlers.md#manifest-handler-factory
+ */
 export default createManifestHandler({
   async manifestFactory({ appBaseUrl, request }) {
     /**
