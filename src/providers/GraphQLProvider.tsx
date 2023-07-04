@@ -7,8 +7,9 @@ export function GraphQLProvider(props: PropsWithChildren<{}>) {
   const { appBridgeState } = useAppBridge();
   const url = appBridgeState?.saleorApiUrl!;
 
-  if(!url) {
-    return <div>{props.children}</div>
+  if (!url) {
+    console.warn("Install the app in the Dashboard to be able to query Saleor API.");
+    return <div>{props.children}</div>;
   }
 
   const client = createClient(url, async () => Promise.resolve({ token: appBridgeState?.token! }));
