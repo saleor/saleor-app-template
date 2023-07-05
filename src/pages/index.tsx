@@ -81,7 +81,7 @@ const IndexPage: NextPage = () => {
       </Text>
       <ul>
         <li>
-          <code>src/pages/api/manifest</code> - the{" "}
+          <code>/src/pages/api/manifest</code> - the{" "}
           <a
             href="https://docs.saleor.io/docs/3.x/developer/extending/apps/manifest"
             target="_blank"
@@ -92,14 +92,14 @@ const IndexPage: NextPage = () => {
           .
         </li>
         <li>
-          <code>src/pages/api/webhooks/order-created</code> - an example <code>ORDER_CREATED</code>{" "}
+          <code>/src/pages/api/webhooks/order-created</code> - an example <code>ORDER_CREATED</code>{" "}
           webhook handler.
         </li>
         <li>
-          <code>graphql</code> - the pre-defined GraphQL queries.
+          <code>/graphql</code> - the pre-defined GraphQL queries.
         </li>
         <li>
-          <code>generated/graphql.ts</code> - the code generated for those queries by{" "}
+          <code>/generated/graphql.ts</code> - the code generated for those queries by{" "}
           <a target="_blank" rel="noreferrer" href="https://the-guild.dev/graphql/codegen">
             GraphQL Code Generator
           </a>
