@@ -1,5 +1,5 @@
 import { useAppBridge } from "@saleor/app-sdk/app-bridge";
-import { Box, Text } from "@saleor/macaw-ui/next";
+import { Box, Button, Text } from "@saleor/macaw-ui/next";
 import { NextPage } from "next";
 import Link from "next/link";
 import { MouseEventHandler, useEffect, useState } from "react";
@@ -45,7 +45,11 @@ const IndexPage: NextPage = () => {
         Saleor App Template is a minimalistic boilerplate that provides a working example of a
         Saleor app.
       </Text>
-      {appBridgeState?.ready && mounted && <Link href="/actions">See what your app can do →</Link>}
+      {appBridgeState?.ready && mounted && (
+        <Link href="/actions">
+          <Button variant="secondary">See what your app can do →</Button>
+        </Link>
+      )}
 
       <Text variant={"heading"} marginTop={8} as={"h2"}>
         Resources
