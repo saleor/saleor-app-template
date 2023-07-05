@@ -1,4 +1,4 @@
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
+import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Button, Text } from "@saleor/macaw-ui/next";
 import { OrderExample } from "../order-example";
 
@@ -13,13 +13,11 @@ const ActionsPage = () => {
   const { appBridge, appBridgeState } = useAppBridge();
 
   const navigateToOrders = () => {
-    appBridge?.dispatch({
-      type: "redirect",
-      payload: {
-        to: "/orders",
-        actionId: "message-from-app",
-      },
-    });
+    appBridge?.dispatch(
+      actions.Redirect({
+        to: `/orders`,
+      })
+    );
   };
 
   return (

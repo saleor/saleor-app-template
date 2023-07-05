@@ -1,4 +1,4 @@
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
+import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Button, Text } from "@saleor/macaw-ui/next";
 import { NextPage } from "next";
 import Link from "next/link";
@@ -23,14 +23,12 @@ const IndexPage: NextPage = () => {
     if (appBridgeState?.ready) {
       e.preventDefault();
 
-      appBridge?.dispatch({
-        type: "redirect",
-        payload: {
+      appBridge?.dispatch(
+        actions.Redirect({
           newContext: true,
-          actionId: "redirect-to-external-resource",
           to: e.currentTarget.href,
-        },
-      });
+        })
+      );
     }
 
     /**

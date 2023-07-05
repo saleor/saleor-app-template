@@ -1,4 +1,4 @@
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
+import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Text } from "@saleor/macaw-ui/next";
 import React from "react";
 import { useLastOrderQuery } from "../generated/graphql";
@@ -56,13 +56,11 @@ export const OrderExample = () => {
   const lastOrder = data?.orders?.edges[0]?.node;
 
   const navigateToOrder = (id: string) => {
-    appBridge?.dispatch({
-      type: "redirect",
-      payload: {
+    appBridge?.dispatch(
+      actions.Redirect({
         to: `/orders/${id}`,
-        actionId: "message-from-app",
-      },
-    });
+      })
+    );
   };
 
   return (
