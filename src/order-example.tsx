@@ -5,6 +5,11 @@ import { useLastOrderQuery } from "../generated/graphql";
 import gql from "graphql-tag";
 import Link from "next/link";
 
+/**
+ * GraphQL Code Generator scans for gql tags and generates types based on them.
+ * The below query is used to generate the "useLastOrderQuery" hook.
+ * If you modify it, make sure to run "pnpm codegen" to regenerate the types.
+ */
 gql`
   query LastOrder {
     orders(first: 1) {
@@ -52,6 +57,7 @@ function generateNumberOfLinesText(lines: any[]) {
 export const OrderExample = () => {
   const { appBridge } = useAppBridge();
 
+  // Using the generated hook
   const [{ data, fetching }] = useLastOrderQuery();
   const lastOrder = data?.orders?.edges[0]?.node;
 
@@ -74,8 +80,9 @@ export const OrderExample = () => {
         {lastOrder && (
           <>
             <Text color="textNeutralSubdued">
-              💡 You can modify the query in the <code>/graphql/queries/Orders.graphql</code> file.
-              Remember to run <code>pnpm codegen</code> command afterwards to regenerate the types.
+              ❗ The <code>orders</code> query requires the <code>MANAGE_ORDERS</code> permission.
+              If you want to query other resources, make sure to update the app permissions in the{" "}
+              <code>/src/pages/api/manifest.ts</code> file.
             </Text>
             <Box
               backgroundColor={"subdued"}
