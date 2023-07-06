@@ -1,7 +1,6 @@
 import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Button, Input, Text } from "@saleor/macaw-ui/next";
 import { NextPage } from "next";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { MouseEventHandler, useEffect, useState } from "react";
 
@@ -194,7 +193,7 @@ const IndexPage: NextPage = () => {
         </li>
       </ul>
 
-      {mounted && !isLocalHost && (
+      {mounted && !isLocalHost && !appBridgeState?.ready && (
         <>
           <Text marginBottom={4} as={"p"}>
             Install this app in your Dashboard and get extra powers!
