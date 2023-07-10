@@ -71,7 +71,7 @@ saleor login
 Now you're ready to create your first App:
 
 ```
-saleor app create [your-app-name]
+saleor app template [your-app-name]
 ```
 
 In this step, Saleor CLI will:
