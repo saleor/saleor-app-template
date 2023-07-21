@@ -1,6 +1,7 @@
 import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Button, Text } from "@saleor/macaw-ui/next";
 import { OrderExample } from "../order-example";
+import { useEffect } from "react";
 
 /**
  * This is example of using AppBridge, when App is mounted in Dashboard
@@ -35,6 +36,17 @@ const ActionsPage = () => {
         <Text color="textNeutralSubdued">
           💡 You can use AppBridge to trigger dashboard actions, such as notifications or redirects.
         </Text>
+        <Button
+          marginTop={4}
+          onClick={() => {
+            appBridge?.dispatch(
+              actions.RequestPermissions(["HANDLE_TAXES", "MANAGE_CHANNELS"], "/permissions-granted")
+            );
+          }}
+        >
+          Request permissions (Handle Taxes, Manage Channels)
+        </Button>
+
         <Box display={"flex"} gap={4} gridAutoFlow={"column"} marginY={4}>
           <Button
             variant={"secondary"}
