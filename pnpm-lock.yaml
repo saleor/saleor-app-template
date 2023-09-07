@@ -25,7 +25,7 @@ dependencies:
     version: 1.0.0(graphql@16.6.0)
   '@vitejs/plugin-react':
     specifier: ^3.0.1
-    version: 3.0.1(vite@4.0.4)
+    version: 3.0.1(vite@4.0.5)
   graphql:
     specifier: ^16.6.0
     version: 16.6.0
@@ -48,8 +48,8 @@ dependencies:
     specifier: ^4.0.2
     version: 4.0.2(graphql@16.6.0)(react@18.2.0)
   vite:
-    specifier: ^4.0.4
-    version: 4.0.4(@types/node@18.11.18)
+    specifier: ^4.0.5
+    version: 4.0.5(@types/node@18.11.18)
   vitest:
     specifier: ^0.27.1
     version: 0.27.1(jsdom@20.0.3)
@@ -2959,7 +2959,7 @@ packages:
     resolution: {integrity: sha512-PZAcHROlgtCUGI2y0JntdNwvPwCNyeVnkQu6KTYKdmxBbK3w72XJUmLFYapfaFfgami4I9CTLnrJTPdtmS3gpw==}
     dev: false
 
-  /@vitejs/plugin-react@3.0.1(vite@4.0.4):
+  /@vitejs/plugin-react@3.0.1(vite@4.0.5):
     resolution: {integrity: sha512-mx+QvYwIbbpOIJw+hypjnW1lAbKDHtWK5ibkF/V1/oMBu8HU/chb+SnqJDAsLq1+7rGqjktCEomMTM5KShzUKQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -2970,7 +2970,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.19.6(@babel/core@7.21.8)
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.0.4(@types/node@18.11.18)
+      vite: 4.0.5(@types/node@18.11.18)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -7393,7 +7393,7 @@ packages:
       picocolors: 1.0.0
       source-map: 0.6.1
       source-map-support: 0.5.21
-      vite: 4.0.4(@types/node@18.11.18)
+      vite: 4.0.5(@types/node@18.11.18)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -7404,8 +7404,8 @@ packages:
       - terser
     dev: false
 
-  /vite@4.0.4(@types/node@18.11.18):
-    resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
+  /vite@4.0.5(@types/node@18.11.18):
+    resolution: {integrity: sha512-7m87RC+caiAxG+8j3jObveRLqaWA/neAdCat6JAZwMkSWqFHOvg8MYe5fAQxVBRAuKAQ1S6XDh3CBQuLNbY33w==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -7476,7 +7476,7 @@ packages:
       tinybench: 2.5.0
       tinypool: 0.3.1
       tinyspy: 1.1.1
-      vite: 4.0.4(@types/node@18.11.18)
+      vite: 4.0.5(@types/node@18.11.18)
       vite-node: 0.27.1(@types/node@18.11.18)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:

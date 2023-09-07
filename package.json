@@ -29,7 +29,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "urql": "^4.0.2",
-    "vite": "^4.0.4",
+    "vite": "^4.0.5",
     "vitest": "^0.27.1"
   },
   "devDependencies": {
