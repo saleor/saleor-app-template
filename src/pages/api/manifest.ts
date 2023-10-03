@@ -13,14 +13,14 @@ export default createManifestHandler({
     /**
      * Allow to overwrite default app base url, to enable Docker support.
      *
-     * See docs: TODO
+     * See docs: https://docs.saleor.io/docs/3.x/developer/extending/apps/local-app-development
      */
     const iframeBaseUrl = process.env.APP_IFRAME_BASE_URL ?? appBaseUrl;
     const apiBaseURL = process.env.APP_API_BASE_URL ?? appBaseUrl;
 
     const manifest: AppManifest = {
       name: 'Saleor App Template',
-      tokenTargetUrl: `${appBaseUrl}/api/register`,
+      tokenTargetUrl: `${apiBaseURL}/api/register`,
       appUrl: iframeBaseUrl,
       /**
        * Set permissions for app if needed
