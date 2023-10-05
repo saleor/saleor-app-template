@@ -20,7 +20,7 @@ specifiers:
   eslint: 8.31.0
   eslint-config-next: 13.1.2
   eslint-config-prettier: ^8.6.0
-  graphql: ^16.6.0
+  graphql: ^16.8.1
   graphql-tag: ^2.12.6
   jsdom: ^20.0.3
   next: 13.3.0
@@ -29,7 +29,7 @@ specifiers:
   react-dom: 18.2.0
   typescript: 5.0.4
   urql: ^4.0.2
-  vite: ^4.0.4
+  vite: ^4.0.5
   vitest: ^0.27.1
 
 dependencies:
