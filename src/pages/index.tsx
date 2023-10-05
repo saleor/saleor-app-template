@@ -1,5 +1,5 @@
 import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
-import { Box, Button, Input, Text } from "@saleor/macaw-ui/next";
+import { Box, Button, Input, Text } from "@saleor/macaw-ui";
 import { NextPage } from "next";
 import Link from "next/link";
 import { MouseEventHandler, useEffect, useState } from "react";

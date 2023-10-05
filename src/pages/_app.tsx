@@ -1,15 +1,15 @@
-import "@saleor/macaw-ui/next/style";
+import "@saleor/macaw-ui/style";
 import "../styles/globals.css";
 
 import { AppBridge, AppBridgeProvider } from "@saleor/app-sdk/app-bridge";
 import { RoutePropagator } from "@saleor/app-sdk/app-bridge/next";
-import React, { useEffect } from "react";
 import { AppProps } from "next/app";
+import { useEffect } from "react";
 
-import { ThemeSynchronizer } from "../lib/theme-synchronizer";
+import { ThemeProvider } from "@saleor/macaw-ui";
 import { NoSSRWrapper } from "../lib/no-ssr-wrapper";
+import { ThemeSynchronizer } from "../lib/theme-synchronizer";
 import { GraphQLProvider } from "../providers/GraphQLProvider";
-import { ThemeProvider } from "@saleor/macaw-ui/next";
 
 /**
  * Ensure instance is a singleton.
