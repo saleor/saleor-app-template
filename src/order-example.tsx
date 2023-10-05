@@ -1,9 +1,8 @@
 import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
-import { Box, Text } from "@saleor/macaw-ui/next";
-import React from "react";
-import { useLastOrderQuery } from "../generated/graphql";
+import { Box, Text } from "@saleor/macaw-ui";
 import gql from "graphql-tag";
 import Link from "next/link";
+import { useLastOrderQuery } from "../generated/graphql";
 
 /**
  * GraphQL Code Generator scans for gql tags and generates types based on them.
