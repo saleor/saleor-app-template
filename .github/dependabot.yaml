@@ -10,3 +10,8 @@ updates:
       codegen:
         patterns:
           - "@graphql-codegen/*"
+      vite:
+        patterns:
+          - "vite"
+          - "vitest"
+          - "@vitejs/*
