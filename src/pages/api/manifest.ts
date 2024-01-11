@@ -6,7 +6,7 @@ import { orderCreatedWebhook } from "./webhooks/order-created";
 
 /**
  * App SDK helps with the valid Saleor App Manifest creation. Read more:
- * https://github.com/saleor/saleor-app-sdk/blob/main/docs/api-handlers.md#manifest-handler-factory
+ * https://docs.saleor.io/docs/3.x/developer/extending/apps/developing-apps/app-sdk/api-handlers#manifest-handler-factory
  */
 export default createManifestHandler({
   async manifestFactory({ appBaseUrl, request }) {
@@ -42,7 +42,7 @@ export default createManifestHandler({
        * https://docs.saleor.io/docs/3.x/developer/api-reference/webhooks/objects/webhook
        *
        * Easiest way to create webhook is to use app-sdk
-       * https://github.com/saleor/saleor-app-sdk/blob/main/docs/saleor-webhook.md
+       * https://docs.saleor.io/docs/3.x/developer/extending/apps/developing-apps/app-sdk/saleor-webhook
        */
       webhooks: [orderCreatedWebhook.getWebhookManifest(apiBaseURL)],
       /**

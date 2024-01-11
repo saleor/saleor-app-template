@@ -134,11 +134,11 @@ Commands `build` and `dev` would generate schema and typed functions using Saleo
 ### Storing registration data - APL
 
 During the registration process, Saleor API passes the auth token to the app. With this token App can query Saleor API with privileged access (depending on requested permissions during the installation).
-To store this data, app-template use a different [APL interfaces](https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md).
+To store this data, app-template use a different [APL interfaces](https://docs.saleor.io/docs/3.x/developer/extending/apps/developing-apps/app-sdk/apl).
 
 The choice of the APL is made using the `APL` environment variable. If the value is not set, FileAPL is used. Available choices:
 
 - `file`: no additional setup is required. Good choice for local development. It can't be used for multi tenant-apps or be deployed (not intended for production)
 - `upstash`: use [Upstash](https://upstash.com/) Redis as storage method. Free account required. It can be used for development and production and supports multi-tenancy. Requires `UPSTASH_URL` and `UPSTASH_TOKEN` environment variables to be set
 
-If you want to use your own database, you can implement your own APL. [Check the documentation to read more.](https://github.com/saleor/saleor-app-sdk/blob/main/docs/apl.md)
+If you want to use your own database, you can implement your own APL. [Check the documentation to read more.](https://docs.saleor.io/docs/3.x/developer/extending/apps/developing-apps/app-sdk/apl)

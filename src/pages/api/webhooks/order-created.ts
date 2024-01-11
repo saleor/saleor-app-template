@@ -2,7 +2,7 @@ import { gql } from "urql";
 import { SaleorAsyncWebhook } from "@saleor/app-sdk/handlers/next";
 import { OrderCreatedWebhookPayloadFragment } from "../../../../generated/graphql";
 import { saleorApp } from "../../../saleor-app";
-import { createClient } from "../../../lib/create-graphq-client";
+import { createGraphQLClient } from "../../../lib/create-graphql-client";
 
 /**
  * Example payload of the webhook. It will be transformed with graphql-codegen to Typescript type: OrderCreatedWebhookPayloadFragment
@@ -67,7 +67,7 @@ export default orderCreatedWebhook.createHandler((req, res, ctx) => {
      */
     baseUrl,
     /**
-     * Auth data (from APL) - contains token and saleorApiUrl that can be used to construct graphQL client
+     * Auth data (from APL) - contains token and saleorApiUrl that can be used to construct GraphQL client
      */
     authData,
   } = ctx;
@@ -80,7 +80,7 @@ export default orderCreatedWebhook.createHandler((req, res, ctx) => {
   /**
    * Create GraphQL client to interact with Saleor API.
    */
-  const client = createClient(authData.saleorApiUrl, async () => ({ token: authData.token }));
+  const client = createGraphQLClient({saleorApiUrl: authData.saleorApiUrl, token: authData.token});
   
   /**
    * Now you can fetch additional data using urql.
