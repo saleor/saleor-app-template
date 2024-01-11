@@ -5,7 +5,7 @@ import { OrderExample } from "../order-example";
 /**
  * This is example of using AppBridge, when App is mounted in Dashboard
  * See more about AppBridge possibilities
- * https://github.com/saleor/saleor-app-sdk/blob/main/docs/app-bridge.md
+ * https://docs.saleor.io/docs/3.x/developer/extending/apps/developing-apps/app-sdk/app-bridge
  *
  * -> You can safely remove this file!
  */
