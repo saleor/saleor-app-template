@@ -41,6 +41,6 @@ export default createAppRegisterHandler({
     /**
      * Optional function which is called after APL Auth data was saved (registration has been successful).
      */
-    console.log("Successfully saved APL Auth data for saleorApiUrl: ", ctx.authData);
+    console.log("Successfully saved APL Auth data for saleorApiUrl: ", ctx.authData.saleorApiUrl);
   }
 });

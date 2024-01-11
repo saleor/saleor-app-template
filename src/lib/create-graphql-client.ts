@@ -25,13 +25,13 @@ export const createGraphQLClient = ({ saleorApiUrl, token }: CreateGraphQLClient
       authExchange(async (utils) => {
         return {
           addAuthToOperation(operation) {
-            const headers: Record<string, string> = token
-              ? {
-                  "Authorization-Bearer": token,
-                }
-              : {};
-
-            return utils.appendHeaders(operation, headers);
+            if(!token){
+              return operation
+            }
+            
+            return utils.appendHeaders(operation, {
+              "Authorization-Bearer": token,
+            });
           },
           didAuthError(error) {
             return error.graphQLErrors.some((e) => e.extensions?.code === "FORBIDDEN");
