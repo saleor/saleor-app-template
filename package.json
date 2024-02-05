@@ -12,10 +12,10 @@
     "test": "vitest"
   },
   "saleor": {
-    "schemaVersion": "3.10"
+    "schemaVersion": "3.18"
   },
   "dependencies": {
-    "@saleor/app-sdk": "0.41.0",
+    "@saleor/app-sdk": "0.48.2",
     "@saleor/macaw-ui": "1.0.0-pre.4",
     "@urql/exchange-auth": "^1.0.0",
     "@vitejs/plugin-react": "^3.0.1",
