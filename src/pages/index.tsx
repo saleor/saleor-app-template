@@ -64,7 +64,7 @@ const IndexPage: NextPage = () => {
 
   return (
     <Box padding={8}>
-      <Text variant={"hero"}>Welcome to Saleor App Template (Next.js) 🚀</Text>
+      <Text size={11}>Welcome to Saleor App Template (Next.js) 🚀</Text>
       <Text as={"p"} marginY={4}>
         Saleor App Template is a minimalistic boilerplate that provides a working example of a
         Saleor app.
@@ -105,7 +105,7 @@ const IndexPage: NextPage = () => {
           .
         </li>
       </ul>
-      <Text variant={"heading"} marginTop={8} as={"h2"}>
+      <Text size={8} marginTop={8} as={"h2"}>
         Resources
       </Text>
       <ul>
@@ -116,7 +116,7 @@ const IndexPage: NextPage = () => {
             href="https://docs.saleor.io/docs/3.x/developer/extending/apps/key-concepts"
             rel="noreferrer"
           >
-            <Text color={"text3Decorative"}>Apps documentation </Text>
+            <Text color={"info1"}>Apps documentation </Text>
           </a>
         </li>
         <li>
@@ -126,7 +126,7 @@ const IndexPage: NextPage = () => {
             rel="noreferrer"
             href="https://docs.saleor.io/docs/3.x/developer/extending/apps/developing-with-tunnels"
           >
-            <Text color={"text3Decorative"}>Tunneling the app</Text>
+            <Text color={"info1"}>Tunneling the app</Text>
           </a>
         </li>
         <li>
@@ -136,7 +136,7 @@ const IndexPage: NextPage = () => {
             rel="noreferrer"
             href="https://github.com/saleor/app-examples"
           >
-            <Text color={"text3Decorative"}>App Examples repository</Text>
+            <Text color={"info1"}>App Examples repository</Text>
           </a>
         </li>
 
@@ -147,7 +147,7 @@ const IndexPage: NextPage = () => {
             rel="noreferrer"
             href="https://github.com/saleor/saleor-app-sdk"
           >
-            <Text color={"text3Decorative"}>Saleor App SDK</Text>
+            <Text color={"info1"}>Saleor App SDK</Text>
           </a>
         </li>
 
@@ -158,7 +158,7 @@ const IndexPage: NextPage = () => {
             href="https://github.com/saleor/saleor-cli"
             rel="noreferrer"
           >
-            <Text color={"text3Decorative"}>Saleor CLI</Text>
+            <Text color={"info1"}>Saleor CLI</Text>
           </a>
         </li>
         <li>
@@ -168,7 +168,7 @@ const IndexPage: NextPage = () => {
             href="https://github.com/saleor/apps"
             rel="noreferrer"
           >
-            <Text color={"text3Decorative"}>Saleor App Store - official apps by Saleor Team</Text>
+            <Text color={"info1"}>Saleor App Store - official apps by Saleor Team</Text>
           </a>
         </li>
         <li>
@@ -178,7 +178,7 @@ const IndexPage: NextPage = () => {
             href="https://macaw-ui-next.vercel.app/?path=/docs/getting-started-installation--docs"
             rel="noreferrer"
           >
-            <Text color={"text3Decorative"}>Macaw UI - official Saleor UI library</Text>
+            <Text color={"info1"}>Macaw UI - official Saleor UI library</Text>
           </a>
         </li>
         <li>
@@ -188,7 +188,7 @@ const IndexPage: NextPage = () => {
             href="https://nextjs.org/docs"
             rel="noreferrer"
           >
-            <Text color={"text3Decorative"}>Next.js documentation</Text>
+            <Text color={"info1"}>Next.js documentation</Text>
           </a>
         </li>
       </ul>

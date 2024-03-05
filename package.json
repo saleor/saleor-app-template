@@ -12,11 +12,11 @@
     "test": "vitest"
   },
   "saleor": {
-    "schemaVersion": "3.10"
+    "schemaVersion": "3.19"
   },
   "dependencies": {
-    "@saleor/app-sdk": "0.41.0",
-    "@saleor/macaw-ui": "1.0.0-pre.4",
+    "@saleor/app-sdk": "0.50.0",
+    "@saleor/macaw-ui": "1.0.0",
     "@urql/exchange-auth": "^1.0.0",
     "@vitejs/plugin-react": "^3.0.1",
     "graphql": "^16.8.1",
@@ -29,6 +29,7 @@
     "vite": "^4.0.5",
     "vitest": "^0.27.1"
   },
+  "packageManager": "pnpm@8.15.4",
   "devDependencies": {
     "@graphql-codegen/cli": "3.3.1",
     "@graphql-codegen/introspection": "3.0.1",

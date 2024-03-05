@@ -14,4 +14,4 @@ updates:
         patterns:
           - "vite"
           - "vitest"
-          - "@vitejs/*
+          - "@vitejs/*"

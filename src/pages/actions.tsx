@@ -29,10 +29,10 @@ const ActionsPage = () => {
         <Text as={"p"}>Installing the app in the Dashboard gave it superpowers such as:</Text>
       </Box>
       <Box>
-        <Text as={"h2"} variant={"heading"} marginBottom={2}>
+        <Text as={"h2"} size={8} marginBottom={2}>
           AppBridge actions
         </Text>
-        <Text color="textNeutralSubdued">
+        <Text color="default2">
           💡 You can use AppBridge to trigger dashboard actions, such as notifications or redirects.
         </Text>
         <Box display={"flex"} gap={4} gridAutoFlow={"column"} marginY={4}>
@@ -59,7 +59,7 @@ const ActionsPage = () => {
       </Box>
       <OrderExample />
       <Box display="flex" flexDirection={"column"} gap={2}>
-        <Text as={"h2"} variant={"heading"}>
+        <Text as={"h2"} size={8}>
           Webhooks
         </Text>
         <Text>
@@ -70,10 +70,11 @@ const ActionsPage = () => {
           Create any{" "}
           <Text
             as={"a"}
-            variant={"bodyStrong"}
+            fontWeight="bold"
+            size={4}
             onClick={navigateToOrders}
             cursor={"pointer"}
-            color={"text3Decorative"}
+            color={"info1"}
           >
             Order
           </Text>{" "}

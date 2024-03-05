@@ -6,9 +6,11 @@ on:
 
 jobs:
   assign_creator:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    permissions:
+      pull-requests: write
     steps:
-    - name: Assign PR to creator
-      uses: thomaseizinger/assign-pr-creator-action@v1.0.0
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Assign PR to creator
+        uses: toshimaru/auto-author-assign@ebd30f10fb56e46eb0759a14951f36991426fed0 # v2.1.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

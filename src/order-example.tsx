@@ -70,26 +70,26 @@ export const OrderExample = () => {
 
   return (
     <Box display="flex" flexDirection={"column"} gap={2}>
-      <Text as={"h2"} variant={"heading"}>
+      <Text as={"h2"} size={8}>
         Fetching data
       </Text>
 
       <>
-        {fetching && <Text color="textNeutralSubdued">Fetching the last order...</Text>}
+        {fetching && <Text color="default2">Fetching the last order...</Text>}
         {lastOrder && (
           <>
-            <Text color="textNeutralSubdued">
+            <Text color="default2">
               ❗ The <code>orders</code> query requires the <code>MANAGE_ORDERS</code> permission.
               If you want to query other resources, make sure to update the app permissions in the{" "}
               <code>/src/pages/api/manifest.ts</code> file.
             </Text>
             <Box
-              backgroundColor={"subdued"}
+              backgroundColor={"default2"}
               padding={4}
               borderRadius={4}
               borderWidth={1}
               borderStyle={"solid"}
-              borderColor={"neutralDefault"}
+              borderColor={"default2"}
               marginY={4}
             >
               <Text>{`The last order #${lastOrder.number}:`}</Text>
@@ -110,7 +110,7 @@ export const OrderExample = () => {
             </Box>
           </>
         )}
-        {!fetching && !lastOrder && <Text color="textNeutralSubdued">No orders found</Text>}
+        {!fetching && !lastOrder && <Text color="default2">No orders found</Text>}
       </>
     </Box>
   );
