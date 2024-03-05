@@ -3,16 +3,17 @@
 # After accepting the branch, the main PR should be closed
 name: Example branch management
 
-on:
-  pull_request
+on: pull_request
 
 jobs:
   example-branches-checks:
     if: ${{ startsWith(github.head_ref, 'example') }}
     name: Checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    permissions:
+      pull-requests: write
     steps:
-      - uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8  # v1.1.0
+      - uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8 # v1.1.0
         name: Set example label
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -6,7 +6,9 @@ on:
 
 jobs:
   assign_creator:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    permissions:
+      pull-requests: write
     steps:
       - name: Assign PR to creator
         uses: toshimaru/auto-author-assign@ebd30f10fb56e46eb0759a14951f36991426fed0 # v2.1.0
