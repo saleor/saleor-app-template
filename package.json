@@ -15,7 +15,7 @@
     "schemaVersion": "3.19"
   },
   "engines": {
-    "node": ">=18.17.0 <19",
+    "node": ">=18.17.0 <=20",
     "pnpm": ">=8"
   },
   "dependencies": {
