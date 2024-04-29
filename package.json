@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@saleor/app-sdk": "0.50.0",
-    "@saleor/macaw-ui": "1.0.0",
+    "@saleor/macaw-ui": "1.1.4",
     "@urql/exchange-auth": "^1.0.0",
     "@vitejs/plugin-react": "4.2.1",
     "graphql": "^16.8.1",
