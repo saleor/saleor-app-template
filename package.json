@@ -21,7 +21,7 @@
   "dependencies": {
     "@saleor/app-sdk": "0.50.0",
     "@saleor/macaw-ui": "1.0.0",
-    "@urql/exchange-auth": "^1.0.0",
+    "@urql/exchange-auth": "^2.2.0",
     "@vitejs/plugin-react": "4.2.1",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
