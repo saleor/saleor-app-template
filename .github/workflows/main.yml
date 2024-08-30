@@ -20,7 +20,11 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.json') }}-
       - name: Install dependencies
         run: pnpm install
+      - name: Generate GraphQL types
+        run: pnpm generate
+      - name: Lint
+        run: pnpm lint
+      - name: Check types
+        run: pnpm type-check
       - name: Test
         run: pnpm test
-      - name: Build project
-        run: pnpm build
