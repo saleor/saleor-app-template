@@ -1,3 +1,6 @@
 {
-  "extends": ["next", "prettier"]
+  "extends": ["next", "plugin:@saleor/saleor-app/recommended", "prettier"],
+  "parserOptions": {
+    "project": "tsconfig.json"
+  }
 }
