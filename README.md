@@ -18,6 +18,9 @@
     <a href="https://githubbox.com/saleor/saleor-app-template">CodeSandbox</a>
 </div>
 
+> [!TIP]
+> Questions or issues? Check our [discord](https://discord.gg/H52JTZAtSH) channel for help.
+
 ### What is Saleor App
 
 Saleor App is the fastest way of extending Saleor with custom logic using [asynchronous](https://docs.saleor.io/docs/3.x/developer/extending/apps/asynchronous-webhooks) and [synchronous](https://docs.saleor.io/docs/3.x/developer/extending/apps/synchronous-webhooks/key-concepts) webhooks (and vast Saleor's API). In most cases, creating an App consists of two tasks:
