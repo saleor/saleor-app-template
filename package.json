@@ -12,7 +12,7 @@
     "test": "vitest"
   },
   "saleor": {
-    "schemaVersion": "3.10"
+    "schemaVersion": "3.20"
   },
   "dependencies": {
     "@saleor/app-sdk": "0.41.0",

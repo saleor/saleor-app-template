@@ -42,8 +42,6 @@ yarn-error.log*
 .vscode
 .idea
 
-# GraphQL auto-generated
-generated/
 
 # Sentry
 .sentryclirc
