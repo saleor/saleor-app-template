@@ -26,6 +26,10 @@ jobs:
         run: pnpm lint
       - name: Check types
         run: pnpm check-types
+      - name: Check for changes in generated GraphQL files
+        run: |
+          pnpm generate
+          git diff --name-status --exit-code .
       - name: Test
         run: pnpm test
       - name: Build project
