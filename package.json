@@ -2,6 +2,7 @@
   "name": "saleor-app-template",
   "version": "1.0.0",
   "private": true,
+  "license": "(BSD-3-Clause AND CC-BY-4.0)",
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
