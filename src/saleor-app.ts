@@ -1,6 +1,6 @@
 import { SaleorApp } from "@saleor/app-sdk/saleor-app";
 import { APL, FileAPL, UpstashAPL } from "@saleor/app-sdk/APL";
-import { _experimental_VercelKvApl } from "@saleor/app-sdk/APL/vercel-kv";
+import { VercelKvApl } from "@saleor/app-sdk/APL/vercel-kv";
 
 /**
  * By default auth data are stored in the `.auth-data.json` (FileAPL).
@@ -15,13 +15,15 @@ switch (process.env.APL) {
     /**
      * Following envs are required
      *
-     * "KV_URL",
      * "KV_REST_API_URL",
      * "KV_REST_API_TOKEN",
      * "KV_REST_API_READ_ONLY_TOKEN",
      * "KV_STORAGE_NAMESPACE",
+     *
+     * Additinally you need
+     * pnpm i @vercel/kv
      */
-    apl = new _experimental_VercelKvApl();
+    apl = new VercelKvApl();
   case "upstash":
     // Require `UPSTASH_URL` and `UPSTASH_TOKEN` environment variables
     apl = new UpstashAPL();
