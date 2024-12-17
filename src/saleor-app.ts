@@ -15,15 +15,17 @@ switch (process.env.APL) {
     /**
      * Following envs are required
      *
-     * "KV_REST_API_URL",
-     * "KV_REST_API_TOKEN",
-     * "KV_REST_API_READ_ONLY_TOKEN",
-     * "KV_STORAGE_NAMESPACE",
+     * KV_URL
+     * KV_REST_API_URL
+     * KV_REST_API_TOKEN
+     * KV_REST_API_READ_ONLY_TOKEN
+     * KV_STORAGE_NAMESPACE
      *
-     * Additinally you need
+     * Additionally, you need
      * pnpm i @vercel/kv
      */
     apl = new VercelKvApl();
+    break;
   case "upstash":
     // Require `UPSTASH_URL` and `UPSTASH_TOKEN` environment variables
     apl = new UpstashAPL();
