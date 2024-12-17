@@ -1,5 +1,6 @@
 import { SaleorApp } from "@saleor/app-sdk/saleor-app";
 import { APL, FileAPL, UpstashAPL } from "@saleor/app-sdk/APL";
+import { _experimental_VercelKvApl } from "@saleor/app-sdk/APL/vercel-kv";
 
 /**
  * By default auth data are stored in the `.auth-data.json` (FileAPL).
@@ -10,6 +11,17 @@ import { APL, FileAPL, UpstashAPL } from "@saleor/app-sdk/APL";
  */
 export let apl: APL;
 switch (process.env.APL) {
+  case "vercel-kv":
+    /**
+     * Following envs are required
+     *
+     * "KV_URL",
+     * "KV_REST_API_URL",
+     * "KV_REST_API_TOKEN",
+     * "KV_REST_API_READ_ONLY_TOKEN",
+     * "KV_STORAGE_NAMESPACE",
+     */
+    apl = new _experimental_VercelKvApl();
   case "upstash":
     // Require `UPSTASH_URL` and `UPSTASH_TOKEN` environment variables
     apl = new UpstashAPL();
