@@ -2,6 +2,7 @@ import { createManifestHandler } from "@saleor/app-sdk/handlers/fetch-api";
 import { AppManifest } from "@saleor/app-sdk/types";
 import packageJson from "../../../../package.json";
 import { orderCreatedWebhook } from "../../../pages/api/webhooks/order-created";
+import { orderFilterShippingMethodsWebhook } from "../webhooks/order-filter-shipping-methods/route";
 
 export const GET = createManifestHandler({
   manifestFactory({ appBaseUrl, request }) {
@@ -39,7 +40,7 @@ export const GET = createManifestHandler({
        * Easiest way to create webhook is to use app-sdk
        * https://github.com/saleor/saleor-app-sdk/blob/main/docs/saleor-webhook.md
        */
-      webhooks: [orderCreatedWebhook.getWebhookManifest(apiBaseURL)],
+      webhooks: [orderCreatedWebhook.getWebhookManifest(apiBaseURL), orderFilterShippingMethodsWebhook.getWebhookManifest(apiBaseURL)],
       /**
        * Optionally, extend Dashboard with custom UIs
        * https://docs.saleor.io/docs/3.x/developer/extending/apps/extending-dashboard-with-apps
