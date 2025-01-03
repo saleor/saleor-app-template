@@ -28,13 +28,13 @@ const OrderFilterShippingMethodsSubscription = gql`
 export const orderFilterShippingMethodsWebhook =
   new SaleorSyncWebhook<OrderFilterShippingMethodsPayloadFragment>({
     name: "Order Filter Shipping Methods",
-    webhookPath: "api/webhooks/order-filter-shipping-methods",
+    webhookPath: "api-v2/webhooks/order-filter-shipping-methods",
     event: "ORDER_FILTER_SHIPPING_METHODS",
     apl: saleorApp.apl,
     query: OrderFilterShippingMethodsSubscription,
   });
 
-export default orderFilterShippingMethodsWebhook.createHandler((request, ctx) => {
+export const POST = orderFilterShippingMethodsWebhook.createHandler((request, ctx) => {
   const { payload } = ctx;
   console.log("Order Filter Shipping Methods Webhook received with: ", payload);
   return new Response("{}", { status: 200 })

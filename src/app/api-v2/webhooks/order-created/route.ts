@@ -43,7 +43,7 @@ const OrderCreatedGraphqlSubscription = gql`
  */
 export const orderCreatedWebhook = new SaleorAsyncWebhook<OrderCreatedWebhookPayloadFragment>({
   name: "Order Created in Saleor",
-  webhookPath: "api/webhooks/order-created",
+  webhookPath: "api-v2/webhooks/order-created",
   event: "ORDER_CREATED",
   apl: saleorApp.apl,
   query: OrderCreatedGraphqlSubscription,
@@ -52,7 +52,7 @@ export const orderCreatedWebhook = new SaleorAsyncWebhook<OrderCreatedWebhookPay
 /**
  * Export decorated Request handler, which adds extra context
  */
-export default orderCreatedWebhook.createHandler((request, ctx) => {
+export const POST = orderCreatedWebhook.createHandler((request, ctx) => {
   const {
     /**
      * Access payload from Saleor - defined above
