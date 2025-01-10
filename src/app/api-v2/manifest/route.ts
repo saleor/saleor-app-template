@@ -1,8 +1,8 @@
 import { createManifestHandler } from "@saleor/app-sdk/handlers/fetch-api";
 import { AppManifest } from "@saleor/app-sdk/types";
 import packageJson from "../../../../package.json";
-import { orderFilterShippingMethodsWebhook } from "../webhooks/order-filter-shipping-methods/route";
-import { orderCreatedWebhook } from "../webhooks/order-created/route";
+import { orderCreatedWebhook } from "../webhooks/order-created/webhook";
+import { orderFilterShippingMethodsWebhook } from "../webhooks/order-filter-shipping-methods/webhook";
 
 export const GET = createManifestHandler({
   manifestFactory({ appBaseUrl, request }) {
