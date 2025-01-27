@@ -1,5 +1,5 @@
 import { gql } from "urql";
-import { SaleorSyncWebhook } from "@saleor/app-sdk/handlers/fetch-api";
+import { SaleorSyncWebhook } from "@saleor/app-sdk/handlers/next-app-router";
 import { OrderFilterShippingMethodsPayloadFragment } from "../../../../../generated/graphql";
 import { saleorApp } from "../../../../saleor-app";
 

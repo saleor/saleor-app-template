@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@saleor/app-sdk':
-        specifier: 0.0.0-pr-20250109150409
-        version: 0.0.0-pr-20250109150409(graphql@16.8.1)(next@15.1.3(@babel/core@7.24.0)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 0.0.0-pr-20250127113254
+        version: 0.0.0-pr-20250127113254(graphql@16.8.1)(next@15.1.3(@babel/core@7.24.0)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@saleor/macaw-ui':
         specifier: 1.1.10
         version: 1.1.10(@types/react-dom@18.3.1)(@types/react@18.3.1)(@vanilla-extract/css@1.14.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1166,8 +1166,8 @@ packages:
     resolution: {integrity: sha512-I/s6F7yKUDdtMsoBWXJe8Qz40Tui5vsuKCWJEWVL+5q9sSWRzzx6v2KeNsOBEwd94j0eWkpWCH4yB6rZg9Mf0w==}
     engines: {node: '>=8.0.0'}
 
-  '@opentelemetry/semantic-conventions@1.22.0':
-    resolution: {integrity: sha512-CAOgFOKLybd02uj/GhCdEeeBjOS0yeoDeo/CA7ASBSmenpZHAKGB3iDm/rv3BQLcabb/OprDEsSQ1y0P8A7Siw==}
+  '@opentelemetry/semantic-conventions@1.28.0':
+    resolution: {integrity: sha512-lp4qAiMTD4sNWW4DbKLBkfiMZ4jbAboJIGOQr5DvciMRI494OapieI9qiODpOt0XBr1LjIDy1xAGAnVs5supTA==}
     engines: {node: '>=14'}
 
   '@parcel/watcher-android-arm64@2.3.0':
@@ -1729,16 +1729,22 @@ packages:
   '@rushstack/eslint-patch@1.10.4':
     resolution: {integrity: sha512-WJgX9nzTqknM393q1QJDJmoW28kUfEnybeTfVNcNAPnIx210RXm2DiXiHzfNPJNIUUb1tJnz/l4QGtJ30PgWmA==}
 
-  '@saleor/app-sdk@0.0.0-pr-20250109150409':
-    resolution: {integrity: sha512-ROxpK0EnLnNVRaB5UNLDFMy/pdKloSn2EiXx6TZDsJ20hSESADNS0VhvbiVlOEy3EDskZhwh6m1TPy6+mhhzpw==}
+  '@saleor/app-sdk@0.0.0-pr-20250127113254':
+    resolution: {integrity: sha512-B6xDAsZZwpcQnv9tPDnRquMvhDNrb7TIf1cw0uJjrCFHEDdUjO1bHaWA58rlWtPvvowUt9uFd3qnSaGpxt5TcQ==}
     peerDependencies:
       '@vercel/kv': ^1.0.0
+      aws-lambda: ^1.0.7
       graphql: '>=16.6.0'
       next: '>=12'
       react: '>=17'
       react-dom: '>=17'
+      redis: '>=4'
     peerDependenciesMeta:
       '@vercel/kv':
+        optional: true
+      aws-lambda:
+        optional: true
+      redis:
         optional: true
 
   '@saleor/eslint-plugin-saleor-app@0.1.2':
@@ -4587,8 +4593,8 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
 
-  zod@3.22.4:
-    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+  zod@3.24.1:
+    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
 
 snapshots:
 
@@ -5981,7 +5987,7 @@ snapshots:
 
   '@opentelemetry/api@1.8.0': {}
 
-  '@opentelemetry/semantic-conventions@1.22.0': {}
+  '@opentelemetry/semantic-conventions@1.28.0': {}
 
   '@parcel/watcher-android-arm64@2.3.0':
     optional: true
@@ -6537,10 +6543,10 @@ snapshots:
 
   '@rushstack/eslint-patch@1.10.4': {}
 
-  '@saleor/app-sdk@0.0.0-pr-20250109150409(graphql@16.8.1)(next@15.1.3(@babel/core@7.24.0)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@saleor/app-sdk@0.0.0-pr-20250127113254(graphql@16.8.1)(next@15.1.3(@babel/core@7.24.0)(@opentelemetry/api@1.8.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@opentelemetry/api': 1.8.0
-      '@opentelemetry/semantic-conventions': 1.22.0
+      '@opentelemetry/semantic-conventions': 1.28.0
       debug: 4.3.4
       graphql: 16.8.1
       jose: 4.14.4
@@ -9119,7 +9125,7 @@ snapshots:
   retes@0.33.0:
     dependencies:
       busboy: 1.6.0
-      zod: 3.22.4
+      zod: 3.24.1
 
   reusify@1.0.4: {}
 
@@ -9880,4 +9886,4 @@ snapshots:
 
   yocto-queue@1.0.0: {}
 
-  zod@3.22.4: {}
+  zod@3.24.1: {}

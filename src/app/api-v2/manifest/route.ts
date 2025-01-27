@@ -1,4 +1,4 @@
-import { createManifestHandler } from "@saleor/app-sdk/handlers/fetch-api";
+import { createManifestHandler } from "@saleor/app-sdk/handlers/next-app-router";
 import { AppManifest } from "@saleor/app-sdk/types";
 import packageJson from "../../../../package.json";
 import { orderCreatedWebhook } from "../webhooks/order-created/webhook";

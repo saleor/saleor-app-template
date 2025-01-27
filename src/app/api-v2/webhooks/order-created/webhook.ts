@@ -1,7 +1,7 @@
 import { gql } from "urql";
 import { OrderCreatedWebhookPayloadFragment } from "../../../../../generated/graphql";
 import { saleorApp } from "../../../../saleor-app";
-import { SaleorAsyncWebhook } from "@saleor/app-sdk/handlers/fetch-api";
+import { SaleorAsyncWebhook } from "@saleor/app-sdk/handlers/next-app-router";
 
 /**
  * Example payload of the webhook. It will be transformed with graphql-codegen to Typescript type: OrderCreatedWebhookPayloadFragment

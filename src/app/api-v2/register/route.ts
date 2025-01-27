@@ -1,4 +1,4 @@
-import { createAppRegisterHandler } from "@saleor/app-sdk/handlers/fetch-api";
+import { createAppRegisterHandler } from "@saleor/app-sdk/handlers/next-app-router";
 import { saleorApp } from "../../../saleor-app";
 
 export const runtime = "nodejs"; // FileAPL requires node environment to save files on disk using fs
