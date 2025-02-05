@@ -10,16 +10,13 @@ importers:
     dependencies:
       '@saleor/app-sdk':
         specifier: 0.51.0
-        version: 0.51.0(@vercel/kv@3.0.0)(graphql@16.8.1)(next@14.1.2(@babel/core@7.24.0)(@opentelemetry/api@1.8.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.51.0(graphql@16.8.1)(next@14.1.2(@babel/core@7.24.0)(@opentelemetry/api@1.8.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@saleor/macaw-ui':
         specifier: 1.1.10
         version: 1.1.10(@types/react-dom@18.2.10)(@types/react@18.2.25)(@vanilla-extract/css@1.14.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@urql/exchange-auth':
         specifier: ^1.0.0
         version: 1.0.0(graphql@16.8.1)
-      '@vercel/kv':
-        specifier: ^3.0.0
-        version: 3.0.0
       '@vitejs/plugin-react':
         specifier: 4.2.1
         version: 4.2.1(vite@5.2.10(@types/node@18.18.3))
@@ -1722,9 +1719,6 @@ packages:
     resolution: {integrity: sha512-07ny+LHRzQXepkGg6w0mFY41fVUNBrL2Roj/++7V1txKugfjm/Ci/qSND03r2RhlJhJYMcTn9AhhSSqQp0Ysyw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@upstash/redis@1.34.4':
-    resolution: {integrity: sha512-AZx2iD5s1Pu/KCrRA7KVCffu3NSoaYnNY7N9YI7aLAYhcJfsriQKTe+8OxQWJqGqFbrvm17Lyr9HFnDLvqNpfA==}
-
   '@urql/core@4.1.3':
     resolution: {integrity: sha512-Wapa58olpEJtZzSEuZNDxzBxmOmHuivG6Hb/QPc6HjHfCJ6f36gnlWc9a9TsC8Vddle+6PsS6+quMMTuj+bj7A==}
 
@@ -1751,10 +1745,6 @@ packages:
     resolution: {integrity: sha512-NfdZ8XyqCDG2RsO3FmYPALDMKg5045dRD97NbBb0Fog3LMDVXZxYgDOct5FAWob8U6W4GbhVpRZt1X9hNnH6fA==}
     peerDependencies:
       '@vanilla-extract/css': ^1.0.0
-
-  '@vercel/kv@3.0.0':
-    resolution: {integrity: sha512-pKT8fRnfyYk2MgvyB6fn6ipJPCdfZwiKDdw7vB+HL50rjboEBHDVBEcnwfkEpVSp2AjNtoaOUH7zG+bVC/rvSg==}
-    engines: {node: '>=14.6'}
 
   '@vitejs/plugin-react@4.2.1':
     resolution: {integrity: sha512-oojO9IDc4nCUUi8qIR11KoQm0XFFLIwsRBwHRR4d/88IWghn1y6ckz/bJ8GHDCsYEJee8mDzqtJxh15/cisJNQ==}
@@ -2136,9 +2126,6 @@ packages:
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
-
-  crypto-js@4.2.0:
-    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
 
   css-what@6.1.0:
     resolution: {integrity: sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==}
@@ -6130,7 +6117,7 @@ snapshots:
 
   '@rushstack/eslint-patch@1.5.1': {}
 
-  '@saleor/app-sdk@0.51.0(@vercel/kv@3.0.0)(graphql@16.8.1)(next@14.1.2(@babel/core@7.24.0)(@opentelemetry/api@1.8.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@saleor/app-sdk@0.51.0(graphql@16.8.1)(next@14.1.2(@babel/core@7.24.0)(@opentelemetry/api@1.8.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@opentelemetry/api': 1.8.0
       '@opentelemetry/semantic-conventions': 1.22.0
@@ -6143,8 +6130,6 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       retes: 0.33.0
       uuid: 9.0.0
-    optionalDependencies:
-      '@vercel/kv': 3.0.0
     transitivePeerDependencies:
       - supports-color
 
@@ -6313,10 +6298,6 @@ snapshots:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.3
 
-  '@upstash/redis@1.34.4':
-    dependencies:
-      crypto-js: 4.2.0
-
   '@urql/core@4.1.3(graphql@16.8.1)':
     dependencies:
       '@0no-co/graphql.web': 1.0.4(graphql@16.8.1)
@@ -6355,10 +6336,6 @@ snapshots:
   '@vanilla-extract/recipes@0.5.0(@vanilla-extract/css@1.14.2)':
     dependencies:
       '@vanilla-extract/css': 1.14.2
-
-  '@vercel/kv@3.0.0':
-    dependencies:
-      '@upstash/redis': 1.34.4
 
   '@vitejs/plugin-react@4.2.1(vite@5.2.10(@types/node@18.18.3))':
     dependencies:
@@ -6856,8 +6833,6 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-
-  crypto-js@4.2.0: {}
 
   css-what@6.1.0: {}
 
