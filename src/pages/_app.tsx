@@ -3,13 +3,13 @@ import "../styles/globals.css";
 
 import { AppBridge, AppBridgeProvider } from "@saleor/app-sdk/app-bridge";
 import { RoutePropagator } from "@saleor/app-sdk/app-bridge/next";
+import { ThemeProvider } from "@saleor/macaw-ui";
 import { AppProps } from "next/app";
 import { useEffect } from "react";
 
-import { ThemeProvider } from "@saleor/macaw-ui";
-import { NoSSRWrapper } from "../lib/no-ssr-wrapper";
-import { ThemeSynchronizer } from "../lib/theme-synchronizer";
-import { GraphQLProvider } from "../providers/GraphQLProvider";
+import { NoSSRWrapper } from "@/lib/no-ssr-wrapper";
+import { ThemeSynchronizer } from "@/lib/theme-synchronizer";
+import { GraphQLProvider } from "@/providers/GraphQLProvider";
 
 /**
  * Ensure instance is a singleton.
@@ -32,7 +32,7 @@ function NextApp({ Component, pageProps }: AppProps) {
     <NoSSRWrapper>
       <AppBridgeProvider appBridgeInstance={appBridgeInstance}>
         <GraphQLProvider>
-          <ThemeProvider >
+          <ThemeProvider>
             <ThemeSynchronizer />
             <RoutePropagator />
             <Component {...pageProps} />

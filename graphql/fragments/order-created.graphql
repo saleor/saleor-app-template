@@ -1,0 +1,12 @@
+fragment OrderCreatedWebhookPayload on OrderCreated {
+  order {
+    userEmail
+    id
+    number
+    user {
+      email
+      firstName
+      lastName
+    }
+  }
+}

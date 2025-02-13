@@ -1,0 +1,14 @@
+services:
+  saleor-app-template:
+    image: saleor-app-template
+    command: sleep infinity # keeps docker container running
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - "..:/app"
+      - "pnpm-store:/app/.pnpm-store"
+
+volumes:
+  pnpm-store:
+    driver: local
