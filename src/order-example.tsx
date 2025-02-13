@@ -2,6 +2,7 @@ import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Text } from "@saleor/macaw-ui";
 import gql from "graphql-tag";
 import Link from "next/link";
+
 import { useLastOrderQuery } from "../generated/graphql";
 
 /**

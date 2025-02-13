@@ -1,5 +1,6 @@
 import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Button, Text } from "@saleor/macaw-ui";
+
 import { OrderExample } from "../order-example";
 
 /**

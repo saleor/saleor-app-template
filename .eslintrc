@@ -1,6 +1,12 @@
 {
   "extends": ["next", "plugin:@saleor/saleor-app/recommended", "prettier"],
+  "plugins": ["simple-import-sort"],
   "parserOptions": {
     "project": "tsconfig.json"
+  },
+  "rules": {
+    "import/order": "off", // to avoid conflicts with simple-import-sort
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn"
   }
 }

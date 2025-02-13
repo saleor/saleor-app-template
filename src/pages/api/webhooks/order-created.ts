@@ -1,40 +1,12 @@
-import { gql } from "urql";
 import { SaleorAsyncWebhook } from "@saleor/app-sdk/handlers/next";
-import { OrderCreatedWebhookPayloadFragment } from "../../../../generated/graphql";
-import { saleorApp } from "../../../saleor-app";
-import { createClient } from "../../../lib/create-graphq-client";
 
-/**
- * Example payload of the webhook. It will be transformed with graphql-codegen to Typescript type: OrderCreatedWebhookPayloadFragment
- */
-const OrderCreatedWebhookPayload = gql`
-  fragment OrderCreatedWebhookPayload on OrderCreated {
-    order {
-      userEmail
-      id
-      number
-      user {
-        email
-        firstName
-        lastName
-      }
-    }
-  }
-`;
+import { createClient } from "@/lib/create-graphq-client";
+import { saleorApp } from "@/saleor-app";
 
-/**
- * Top-level webhook subscription query, that will be attached to the Manifest.
- * Saleor will use it to register webhook.
- */
-const OrderCreatedGraphqlSubscription = gql`
-  # Payload fragment must be included in the root query
-  ${OrderCreatedWebhookPayload}
-  subscription OrderCreated {
-    event {
-      ...OrderCreatedWebhookPayload
-    }
-  }
-`;
+import {
+  OrderCreatedSubscriptionDocument,
+  OrderCreatedWebhookPayloadFragment,
+} from "../../../../generated/graphql";
 
 /**
  * Create abstract Webhook. It decorates handler and performs security checks under the hood.
@@ -46,7 +18,7 @@ export const orderCreatedWebhook = new SaleorAsyncWebhook<OrderCreatedWebhookPay
   webhookPath: "api/webhooks/order-created",
   event: "ORDER_CREATED",
   apl: saleorApp.apl,
-  query: OrderCreatedGraphqlSubscription,
+  query: OrderCreatedSubscriptionDocument,
 });
 
 /**
@@ -81,12 +53,12 @@ export default orderCreatedWebhook.createHandler((req, res, ctx) => {
    * Create GraphQL client to interact with Saleor API.
    */
   const client = createClient(authData.saleorApiUrl, async () => ({ token: authData.token }));
-  
+
   /**
    * Now you can fetch additional data using urql.
    * https://formidable.com/open-source/urql/docs/api/core/#clientquery
    */
-  
+
   // const data = await client.query().toPromise()
 
   /**
