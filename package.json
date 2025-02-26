@@ -22,16 +22,16 @@
     "pnpm": ">=9.0.0 <10.0.0"
   },
   "dependencies": {
-    "@saleor/app-sdk": "0.51.0",
+    "@saleor/app-sdk": "0.0.0-pr-20250226090519",
     "@saleor/macaw-ui": "1.1.10",
     "@urql/exchange-auth": "^1.0.0",
     "@vitejs/plugin-react": "4.2.1",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "jsdom": "^20.0.3",
-    "next": "14.1.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "next": "15.1.7",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "urql": "^4.0.2",
     "vite": "5.2.10",
     "vitest": "1.5.2"
