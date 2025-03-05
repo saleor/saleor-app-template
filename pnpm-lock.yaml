@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@saleor/app-sdk':
-        specifier: 0.0.0-pr-20250226090519
-        version: 0.0.0-pr-20250226090519(graphql@16.8.1)(next@15.1.7(@babel/core@7.24.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 0.0.0-pr-20250304162628
+        version: 0.0.0-pr-20250304162628(graphql@16.8.1)(next@15.1.7(@babel/core@7.24.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@saleor/macaw-ui':
         specifier: 1.1.10
         version: 1.1.10(@types/react-dom@18.2.10)(@types/react@18.2.25)(@vanilla-extract/css@1.14.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1698,8 +1698,8 @@ packages:
   '@rushstack/eslint-patch@1.5.1':
     resolution: {integrity: sha512-6i/8UoL0P5y4leBIGzvkZdS85RDMG9y1ihZzmTZQ5LdHUYmZ7pKFoj8X0236s3lusPs1Fa5HTQUpwI+UfTcmeA==}
 
-  '@saleor/app-sdk@0.0.0-pr-20250226090519':
-    resolution: {integrity: sha512-0wUrwv0fLcugxWaUmTTTrCovxB7HeyVLZ208sqZQwxnrA8It3KObWix70hBRCfB3O32EKQHqLYXKRYHoc8ZW7w==}
+  '@saleor/app-sdk@0.0.0-pr-20250304162628':
+    resolution: {integrity: sha512-+lDf80IUYVpAnX/6FLydZEBlCo/tjTmWjPGVHWbYwf1LUbeeF5W+OI811CdZ6rQcMkIIEhAJUbAUpZ+6R4xH9A==}
     peerDependencies:
       '@vercel/kv': ^1.0.0
       graphql: '>=16.6.0'
@@ -6341,7 +6341,7 @@ snapshots:
 
   '@rushstack/eslint-patch@1.5.1': {}
 
-  '@saleor/app-sdk@0.0.0-pr-20250226090519(graphql@16.8.1)(next@15.1.7(@babel/core@7.24.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@saleor/app-sdk@0.0.0-pr-20250304162628(graphql@16.8.1)(next@15.1.7(@babel/core@7.24.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/semantic-conventions': 1.30.0
