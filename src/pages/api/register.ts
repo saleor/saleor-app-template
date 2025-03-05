@@ -8,6 +8,7 @@ import { saleorApp } from "@/saleor-app";
  */
 export default createAppRegisterHandler({
   apl: saleorApp.apl,
+
   allowedSaleorUrls: [
     /**
      * You may want your app to work only for certain Saleor instances.
