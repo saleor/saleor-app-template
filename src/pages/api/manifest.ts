@@ -9,7 +9,7 @@ import { orderCreatedWebhook } from "./webhooks/order-created";
  * https://github.com/saleor/saleor-app-sdk/blob/main/docs/api-handlers.md#manifest-handler-factory
  */
 export default createManifestHandler({
-  async manifestFactory({ appBaseUrl, request }) {
+  async manifestFactory({ appBaseUrl, request, schemaVersion }) {
     /**
      * Allow to overwrite default app base url, to enable Docker support.
      *
