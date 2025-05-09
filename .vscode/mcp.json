@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "mcp-saleor": {
+      "command": "npx",
+      "args": ["mcp-graphql"],
+      "env": {
+        "SCHEMA":"../graphql/schema.graphql"
+      }
+    }
+  }
+}

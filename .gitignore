@@ -39,7 +39,8 @@ yarn-error.log*
 .auth_token
 
 #editor
-.vscode
+!.vscode/mcp.json
+
 .idea
 
 # Sentry
