@@ -22,7 +22,7 @@
     "pnpm": ">=9.0.0 <10.0.0"
   },
   "dependencies": {
-    "@saleor/app-sdk": "1.0.0",
+    "@saleor/app-sdk": "0.0.0-pr-20250604121931",
     "@saleor/macaw-ui": "1.1.10",
     "@urql/exchange-auth": "^1.0.0",
     "@vitejs/plugin-react": "4.2.1",
