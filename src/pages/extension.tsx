@@ -1,10 +1,15 @@
 import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Text } from "@saleor/macaw-ui";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const ExtensionPage = () => {
   const { appBridgeState } = useAppBridge();
-  const params = useParams();
+  const searchParams = useSearchParams();
+  const params: { [key: string]: string } = {};
+
+  searchParams.forEach((value, key) => {
+    params[key] = value;
+  });
 
   return (
     <Box display="grid">
