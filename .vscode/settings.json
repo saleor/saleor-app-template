@@ -1,0 +1,6 @@
+{
+  "search.exclude": {
+    "**/playwright-report/**": true,
+    "**/.next/**": true
+  }
+}
