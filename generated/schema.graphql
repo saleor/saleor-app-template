@@ -302,7 +302,6 @@ type AccountError {
   message: String
 }
 
-"""An enumeration."""
 enum AccountErrorCode {
   ACCOUNT_NOT_CONFIRMED
   ACTIVATE_OWN_ACCOUNT
@@ -734,7 +733,6 @@ type AddressSetDefault {
   user: User
 }
 
-"""An enumeration."""
 enum AddressTypeEnum {
   BILLING
   SHIPPING
@@ -1215,7 +1213,6 @@ type AppError {
   permissions: [PermissionEnum!]
 }
 
-"""An enumeration."""
 enum AppErrorCode {
   FORBIDDEN
   GRAPHQL_ERROR
@@ -1685,7 +1682,6 @@ type AppUpdated implements Event {
   version: String
 }
 
-"""An enumeration."""
 enum AreaUnitsEnum {
   SQ_CM
   SQ_DM
@@ -1934,7 +1930,6 @@ type AttributeBulkCreateError {
   path: String
 }
 
-"""An enumeration."""
 enum AttributeBulkCreateErrorCode {
   ALREADY_EXISTS
   BLANK
@@ -2058,7 +2053,6 @@ type AttributeBulkUpdateError {
   path: String
 }
 
-"""An enumeration."""
 enum AttributeBulkUpdateErrorCode {
   ALREADY_EXISTS
   BLANK
@@ -2262,7 +2256,6 @@ type AttributeDeleted implements Event {
   version: String
 }
 
-"""An enumeration."""
 enum AttributeEntityTypeEnum {
   PAGE
   PRODUCT
@@ -2290,7 +2283,6 @@ type AttributeError {
   message: String
 }
 
-"""An enumeration."""
 enum AttributeErrorCode {
   ALREADY_EXISTS
   GRAPHQL_ERROR
@@ -2345,7 +2337,6 @@ input AttributeInput {
   valuesRange: IntRangeInput
 }
 
-"""An enumeration."""
 enum AttributeInputTypeEnum {
   BOOLEAN
   DATE
@@ -2461,7 +2452,6 @@ type AttributeTranslate {
   translationErrors: [TranslationError!]! @deprecated(reason: "This field will be removed in Saleor 4.0. Use `errors` field instead.")
 }
 
-"""An enumeration."""
 enum AttributeTranslateErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -2488,7 +2478,6 @@ type AttributeTranslation implements Node {
   translatableContent: AttributeTranslatableContent
 }
 
-"""An enumeration."""
 enum AttributeTypeEnum {
   PAGE_TYPE
   PRODUCT_TYPE
@@ -3021,7 +3010,6 @@ type AttributeValueTranslate {
   translationErrors: [TranslationError!]! @deprecated(reason: "This field will be removed in Saleor 4.0. Use `errors` field instead.")
 }
 
-"""An enumeration."""
 enum AttributeValueTranslateErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -4271,7 +4259,6 @@ type ChannelError {
   warehouses: [ID!]
 }
 
-"""An enumeration."""
 enum ChannelErrorCode {
   ALREADY_EXISTS
   CHANNELS_CURRENCY_MUST_BE_THE_SAME
@@ -4946,7 +4933,6 @@ type CheckoutCreateFromOrderError {
   message: String
 }
 
-"""An enumeration."""
 enum CheckoutCreateFromOrderErrorCode {
   CHANNEL_INACTIVE
   GRAPHQL_ERROR
@@ -4969,7 +4955,6 @@ type CheckoutCreateFromOrderUnavailableVariant {
   variantId: ID!
 }
 
-"""An enumeration."""
 enum CheckoutCreateFromOrderUnavailableVariantErrorCode {
   INSUFFICIENT_STOCK
   NOT_FOUND
@@ -5114,7 +5099,6 @@ type CheckoutError {
   variants: [ID!]
 }
 
-"""An enumeration."""
 enum CheckoutErrorCode {
   BILLING_ADDRESS_NOT_SET
   CHANNEL_INACTIVE
@@ -5190,7 +5174,7 @@ type CheckoutFilterShippingMethods implements Event {
 }
 
 """
-Event sent when checkout is fully paid with transactions.
+Event sent when checkout is fully paid with transactions. The checkout is considered as fully paid when the checkout `charge_status` is `FULL` or `OVERCHARGED`. The event is not sent when the checkout authorization flow strategy is used.
 
 Added in Saleor 3.13.
 
@@ -5556,6 +5540,13 @@ Note: this API is currently in Feature Preview and can be subject to changes at 
 """
 type CheckoutSettings {
   """
+  Default `false`. Determines if the paid checkouts should be automatically completed. This setting applies only to checkouts where payment was processed through transactions.When enabled, the checkout will be automatically completed once the checkout `charge_status` reaches `FULL`. This occurs when the total sum of charged and authorized transaction amounts equals or exceeds the checkout's total amount.
+  
+  Added in Saleor 3.20.
+  """
+  automaticallyCompleteFullyPaidCheckouts: Boolean!
+
+  """
   Default `true`. Determines if the checkout mutations should use legacy error flow. In legacy flow, all mutations can raise an exception unrelated to the requested action - (e.g. out-of-stock exception when updating checkoutShippingAddress.) If `false`, the errors will be aggregated in `checkout.problems` field. Some of the `problems` can block the finalizing checkout process. The legacy flow will be removed in Saleor 4.0. The flow with `checkout.problems` will be the default one.
   
   Added in Saleor 3.15.This field will be removed in Saleor 4.0.
@@ -5564,6 +5555,13 @@ type CheckoutSettings {
 }
 
 input CheckoutSettingsInput {
+  """
+  Default `false`. Determines if the paid checkouts should be automatically completed. This setting applies only to checkouts where payment was processed through transactions.When enabled, the checkout will be automatically completed once the checkout `charge_status` reaches `FULL`. This occurs when the total sum of charged and authorized transaction amounts equals or exceeds the checkout's total amount.
+  
+  Added in Saleor 3.20.
+  """
+  automaticallyCompleteFullyPaidCheckouts: Boolean
+
   """
   Default `true`. Determines if the checkout mutations should use legacy error flow. In legacy flow, all mutations can raise an exception unrelated to the requested action - (e.g. out-of-stock exception when updating checkoutShippingAddress.) If `false`, the errors will be aggregated in `checkout.problems` field. Some of the `problems` can block the finalizing checkout process. The legacy flow will be removed in Saleor 4.0. The flow with `checkout.problems` will be the default one. 
   
@@ -6044,7 +6042,6 @@ type CollectionError {
   products: [ID!]
 }
 
-"""An enumeration."""
 enum CollectionErrorCode {
   CANNOT_MANAGE_PRODUCT_WITHOUT_VARIANT
   DUPLICATED_INPUT_ITEM
@@ -6384,7 +6381,6 @@ input ConfigurationItemInput {
   value: String
 }
 
-"""An enumeration."""
 enum ConfigurationTypeFieldEnum {
   BOOLEAN
   MULTILINE
@@ -6817,7 +6813,6 @@ type CustomerBulkUpdateError {
   path: String
 }
 
-"""An enumeration."""
 enum CustomerBulkUpdateErrorCode {
   BLANK
   DUPLICATED_INPUT_ITEM
@@ -6923,7 +6918,6 @@ type CustomerEvent implements Node {
   user: User
 }
 
-"""An enumeration."""
 enum CustomerEventsEnum {
   ACCOUNT_ACTIVATED
   ACCOUNT_CREATED
@@ -7440,7 +7434,6 @@ type DiscountError {
   voucherCodes: [String!]
 }
 
-"""An enumeration."""
 enum DiscountErrorCode {
   ALREADY_EXISTS
   CANNOT_MANAGE_PRODUCT_WITHOUT_VARIANT
@@ -7478,7 +7471,6 @@ input DiscountedObjectWhereInput {
   baseTotalPrice: DecimalFilterInput
 }
 
-"""An enumeration."""
 enum DistanceUnitsEnum {
   CM
   DM
@@ -7931,7 +7923,6 @@ type ExportError {
   message: String
 }
 
-"""An enumeration."""
 enum ExportErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -7964,7 +7955,6 @@ type ExportEvent implements Node {
   user: User
 }
 
-"""An enumeration."""
 enum ExportEventsEnum {
   EXPORTED_FILE_SENT
   EXPORT_DELETED
@@ -8214,7 +8204,6 @@ type ExternalNotificationError {
   message: String
 }
 
-"""An enumeration."""
 enum ExternalNotificationErrorCodes {
   CHANNEL_INACTIVE
   INVALID_MODEL_TYPE
@@ -8307,7 +8296,6 @@ type File {
   url: String!
 }
 
-"""An enumeration."""
 enum FileTypesEnum {
   CSV
   XLSX
@@ -8611,7 +8599,6 @@ type FulfillmentReturnProducts {
   returnFulfillment: Fulfillment
 }
 
-"""An enumeration."""
 enum FulfillmentStatus {
   CANCELED
   FULFILLED
@@ -9159,7 +9146,6 @@ type GiftCardError {
   tags: [String!]
 }
 
-"""An enumeration."""
 enum GiftCardErrorCode {
   ALREADY_EXISTS
   DUPLICATED_INPUT_ITEM
@@ -9243,7 +9229,6 @@ input GiftCardEventFilterInput {
   type: GiftCardEventsEnum
 }
 
-"""An enumeration."""
 enum GiftCardEventsEnum {
   ACTIVATED
   BALANCE_RESET
@@ -9397,14 +9382,12 @@ type GiftCardSettingsError {
   message: String
 }
 
-"""An enumeration."""
 enum GiftCardSettingsErrorCode {
   GRAPHQL_ERROR
   INVALID
   REQUIRED
 }
 
-"""An enumeration."""
 enum GiftCardSettingsExpiryTypeEnum {
   EXPIRY_PERIOD
   NEVER_EXPIRE
@@ -9851,7 +9834,6 @@ type InvoiceError {
   message: String
 }
 
-"""An enumeration."""
 enum InvoiceErrorCode {
   EMAIL_NOT_SET
   INVALID_STATUS
@@ -9998,7 +9980,6 @@ interface Job {
   updatedAt: DateTime!
 }
 
-"""An enumeration."""
 enum JobStatusEnum {
   DELETED
   FAILED
@@ -10006,7 +9987,6 @@ enum JobStatusEnum {
   SUCCESS
 }
 
-"""An enumeration."""
 enum LanguageCodeEnum {
   AF
   AF_NA
@@ -10962,7 +10942,6 @@ enum MarkAsPaidStrategyEnum {
   TRANSACTION_FLOW
 }
 
-"""An enumeration."""
 enum MeasurementUnitsEnum {
   ACRE_FT
   ACRE_IN
@@ -11222,7 +11201,6 @@ type MenuError {
   message: String
 }
 
-"""An enumeration."""
 enum MenuErrorCode {
   CANNOT_ASSIGN_NODE
   GRAPHQL_ERROR
@@ -11710,7 +11688,6 @@ type MetadataError {
   message: String
 }
 
-"""An enumeration."""
 enum MetadataErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -16371,6 +16348,11 @@ type Mutation {
   Note: this API is currently in Feature Preview and can be subject to changes at later point.
   
   Requires the following permissions: OWNER and HANDLE_PAYMENTS for apps, HANDLE_PAYMENTS for staff users. Staff user cannot update a transaction that is owned by the app.
+  
+  Triggers the following webhook events:
+  - TRANSACTION_ITEM_METADATA_UPDATED (async): Optionally called when transaction's metadata was updated.
+  - CHECKOUT_FULLY_PAID (async): Optionally called when the checkout charge status changed to `FULL` or `OVERCHARGED`.
+  - ORDER_UPDATED (async): Optionally called when the transaction is related to the order and the order was updated.
   """
   transactionEventReport(
     """
@@ -16391,7 +16373,9 @@ type Mutation {
     """The ID of the transaction. One of field id or token is required."""
     id: ID
 
-    """The message related to the event."""
+    """
+    The message related to the event. The maximum length is 512 characters; any text exceeding this limit will be truncated.
+    """
     message: String
 
     """PSP Reference of the event to report."""
@@ -16408,6 +16392,20 @@ type Mutation {
     Added in Saleor 3.14.
     """
     token: UUID
+
+    """
+    Fields required to update the transaction metadata.
+    
+    Added in Saleor 3.17.
+    """
+    transactionMetadata: [MetadataInput!]
+
+    """
+    Fields required to update the transaction private metadata.
+    
+    Added in Saleor 3.17.
+    """
+    transactionPrivateMetadata: [MetadataInput!]
 
     """Current status of the event to report."""
     type: TransactionEventTypeEnum!
@@ -17485,7 +17483,6 @@ type OrderBulkCreateError {
   path: String
 }
 
-"""An enumeration."""
 enum OrderBulkCreateErrorCode {
   BULK_LIMIT
   FUTURE_DATE
@@ -17671,6 +17668,13 @@ input OrderBulkCreateOrderLineInput {
   """The name of the product."""
   productName: String
 
+  """
+  The SKU of the product.
+  
+  Added in Saleor 3.18.
+  """
+  productSku: String
+
   """Number of items in the order line"""
   quantity: Int!
 
@@ -17700,6 +17704,27 @@ input OrderBulkCreateOrderLineInput {
 
   """Price of the order line excluding applied discount."""
   undiscountedTotalPrice: TaxedMoneyInput!
+
+  """
+  Reason of the discount on order line.
+  
+  Added in Saleor 3.19.
+  """
+  unitDiscountReason: String
+
+  """
+  Type of the discount: fixed or percent
+  
+  Added in Saleor 3.19.
+  """
+  unitDiscountType: DiscountValueTypeEnum
+
+  """
+  Value of the discount. Can store fixed value or percent value
+  
+  Added in Saleor 3.19.
+  """
+  unitDiscountValue: PositiveDecimal
 
   """The external ID of the product variant."""
   variantExternalReference: String
@@ -17929,7 +17954,6 @@ type OrderCreateFromCheckoutError {
   variants: [ID!]
 }
 
-"""An enumeration."""
 enum OrderCreateFromCheckoutErrorCode {
   BILLING_ADDRESS_NOT_SET
   CHANNEL_INACTIVE
@@ -18045,7 +18069,6 @@ type OrderDiscountDelete {
   orderErrors: [OrderError!]! @deprecated(reason: "This field will be removed in Saleor 4.0. Use `errors` field instead.")
 }
 
-"""An enumeration."""
 enum OrderDiscountType {
   MANUAL
   ORDER_PROMOTION
@@ -18100,7 +18123,6 @@ type OrderError {
   warehouse: ID
 }
 
-"""An enumeration."""
 enum OrderErrorCode {
   BILLING_ADDRESS_NOT_SET
   CANNOT_CANCEL_FULFILLMENT
@@ -18281,7 +18303,6 @@ type OrderEventOrderLineObject {
   quantity: Int
 }
 
-"""An enumeration."""
 enum OrderEventsEmailsEnum {
   CONFIRMED
   DIGITAL_LINKS
@@ -18336,6 +18357,7 @@ enum OrderEventsEnum {
   PAYMENT_REFUNDED
   PAYMENT_VOIDED
   PLACED
+  PLACED_AUTOMATICALLY_FROM_PAID_CHECKOUT
   PLACED_FROM_DRAFT
   REMOVED_PRODUCTS
   TRACKING_UPDATED
@@ -18586,7 +18608,6 @@ type OrderGrantRefundCreateError {
   message: String
 }
 
-"""An enumeration."""
 enum OrderGrantRefundCreateErrorCode {
   AMOUNT_GREATER_THAN_AVAILABLE
   GRAPHQL_ERROR
@@ -18649,7 +18670,6 @@ type OrderGrantRefundCreateLineError {
   message: String
 }
 
-"""An enumeration."""
 enum OrderGrantRefundCreateLineErrorCode {
   GRAPHQL_ERROR
   NOT_FOUND
@@ -18717,7 +18737,6 @@ type OrderGrantRefundUpdateError {
   removeLines: [OrderGrantRefundUpdateLineError!]
 }
 
-"""An enumeration."""
 enum OrderGrantRefundUpdateErrorCode {
   AMOUNT_GREATER_THAN_AVAILABLE
   GRAPHQL_ERROR
@@ -18800,7 +18819,6 @@ type OrderGrantRefundUpdateLineError {
   message: String
 }
 
-"""An enumeration."""
 enum OrderGrantRefundUpdateLineErrorCode {
   GRAPHQL_ERROR
   NOT_FOUND
@@ -19077,23 +19095,33 @@ type OrderLine implements Node & ObjectWithMetadata {
   undiscountedTotalPrice: TaxedMoney!
 
   """
-  Price of the single item in the order line without applied an order line discount.
+  Price of the single item in the order line without any discount applied.
   """
   undiscountedUnitPrice: TaxedMoney!
 
-  """The discount applied to the single order line."""
+  """
+  Sum of the line-level discounts applied to the order line. Order-level discounts which affect the line are not visible in this field. For order-level discount portion (if any), please query `order.discounts` field.
+  """
   unitDiscount: Money!
 
-  """Reason for any discounts applied on a product in the order."""
+  """
+  Reason for line-level discounts applied on the order line. Order-level discounts which affect the line are not visible in this field. For order-level discount reason (if any), please query `order.discounts` field.
+  """
   unitDiscountReason: String
 
-  """Type of the discount: fixed or percent"""
+  """
+  Type of the discount: `fixed` or `percent`. This field shouldn't be used when multiple discounts affect the line. There is a limitation, that after running `checkoutComplete` mutation the field is always set to `fixed`.
+  """
   unitDiscountType: DiscountValueTypeEnum
 
-  """Value of the discount. Can store fixed value or percent value"""
+  """
+  Value of the discount. Can store fixed value or percent value. This field shouldn't be used when multiple discounts affect the line. There is a limitation, that after running `checkoutComplete` mutation the field always stores fixed value.
+  """
   unitDiscountValue: PositiveDecimal!
 
-  """Price of the single item in the order line."""
+  """
+  Price of the single item in the order line with all the line-level discounts and order-level discount portions applied.
+  """
   unitPrice: TaxedMoney!
 
   """
@@ -19286,7 +19314,6 @@ type OrderNoteAddError {
   message: String
 }
 
-"""An enumeration."""
 enum OrderNoteAddErrorCode {
   GRAPHQL_ERROR
   REQUIRED
@@ -19329,7 +19356,6 @@ type OrderNoteUpdateError {
   message: String
 }
 
-"""An enumeration."""
 enum OrderNoteUpdateErrorCode {
   GRAPHQL_ERROR
   NOT_FOUND
@@ -19338,7 +19364,6 @@ enum OrderNoteUpdateErrorCode {
 
 union OrderOrCheckout = Checkout | Order
 
-"""An enumeration."""
 enum OrderOriginEnum {
   BULK_CREATE
   CHECKOUT
@@ -19564,7 +19589,6 @@ type OrderSettingsError {
   message: String
 }
 
-"""An enumeration."""
 enum OrderSettingsErrorCode {
   INVALID
 }
@@ -19699,7 +19723,6 @@ input OrderSortingInput {
   field: OrderSortField!
 }
 
-"""An enumeration."""
 enum OrderStatus {
   CANCELED
   DRAFT
@@ -20098,7 +20121,6 @@ type PageError {
   values: [ID!]
 }
 
-"""An enumeration."""
 enum PageErrorCode {
   ATTRIBUTE_ALREADY_ASSIGNED
   DUPLICATED_INPUT_ITEM
@@ -20853,7 +20875,6 @@ type PaymentCaptureEvent implements Event {
   version: String
 }
 
-"""An enumeration."""
 enum PaymentChargeStatusEnum {
   CANCELLED
   FULLY_CHARGED
@@ -20943,7 +20964,6 @@ type PaymentError {
   variants: [ID!]
 }
 
-"""An enumeration."""
 enum PaymentErrorCode {
   BALANCE_CHECK_ERROR
   BILLING_ADDRESS_NOT_SET
@@ -21015,7 +21035,6 @@ type PaymentGatewayConfigError {
   message: String
 }
 
-"""An enumeration."""
 enum PaymentGatewayConfigErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -21049,7 +21068,6 @@ type PaymentGatewayInitializeError {
   message: String
 }
 
-"""An enumeration."""
 enum PaymentGatewayInitializeErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -21120,7 +21138,6 @@ type PaymentGatewayInitializeTokenizationError {
   message: String
 }
 
-"""An enumeration."""
 enum PaymentGatewayInitializeTokenizationErrorCode {
   CHANNEL_INACTIVE
   GATEWAY_ERROR
@@ -21297,7 +21314,6 @@ type PaymentMethodInitializeTokenizationError {
   message: String
 }
 
-"""An enumeration."""
 enum PaymentMethodInitializeTokenizationErrorCode {
   CHANNEL_INACTIVE
   GATEWAY_ERROR
@@ -21376,7 +21392,6 @@ type PaymentMethodProcessTokenizationError {
   message: String
 }
 
-"""An enumeration."""
 enum PaymentMethodProcessTokenizationErrorCode {
   CHANNEL_INACTIVE
   GATEWAY_ERROR
@@ -21598,7 +21613,6 @@ type Permission {
   name: String!
 }
 
-"""An enumeration."""
 enum PermissionEnum {
   HANDLE_CHECKOUTS
   HANDLE_PAYMENTS
@@ -21749,7 +21763,6 @@ type PermissionGroupError {
   users: [ID!]
 }
 
-"""An enumeration."""
 enum PermissionGroupErrorCode {
   ASSIGN_NON_STAFF_MEMBER
   CANNOT_REMOVE_FROM_LAST_GROUP
@@ -21927,7 +21940,6 @@ type PluginError {
   message: String
 }
 
-"""An enumeration."""
 enum PluginErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -21987,7 +21999,6 @@ Should be used in places where value must be nonnegative (0 or greater).
 """
 scalar PositiveDecimal
 
-"""An enumeration."""
 enum PostalCodeRuleInclusionTypeEnum {
   EXCLUDE
   INCLUDE
@@ -22394,7 +22405,6 @@ type ProductBulkCreateError {
   warehouses: [ID!]
 }
 
-"""An enumeration."""
 enum ProductBulkCreateErrorCode {
   ATTRIBUTE_ALREADY_ASSIGNED
   ATTRIBUTE_CANNOT_BE_ASSIGNED
@@ -22942,7 +22952,6 @@ type ProductError {
   values: [ID!]
 }
 
-"""An enumeration."""
 enum ProductErrorCode {
   ALREADY_EXISTS
   ATTRIBUTE_ALREADY_ASSIGNED
@@ -23360,7 +23369,6 @@ type ProductMediaReorder {
   productErrors: [ProductError!]! @deprecated(reason: "This field will be removed in Saleor 4.0. Use `errors` field instead.")
 }
 
-"""An enumeration."""
 enum ProductMediaType {
   IMAGE
   VIDEO
@@ -23637,7 +23645,6 @@ type ProductTranslate {
   translationErrors: [TranslationError!]! @deprecated(reason: "This field will be removed in Saleor 4.0. Use `errors` field instead.")
 }
 
-"""An enumeration."""
 enum ProductTranslateErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -23944,7 +23951,6 @@ input ProductTypeInput {
   weight: WeightScalar
 }
 
-"""An enumeration."""
 enum ProductTypeKindEnum {
   GIFT_CARD
   NORMAL
@@ -24385,7 +24391,6 @@ type ProductVariantBulkError {
   warehouses: [ID!]
 }
 
-"""An enumeration."""
 enum ProductVariantBulkErrorCode {
   ATTRIBUTE_ALREADY_ASSIGNED
   ATTRIBUTE_CANNOT_BE_ASSIGNED
@@ -25084,7 +25089,6 @@ type ProductVariantTranslate {
   translationErrors: [TranslationError!]! @deprecated(reason: "This field will be removed in Saleor 4.0. Use `errors` field instead.")
 }
 
-"""An enumeration."""
 enum ProductVariantTranslateErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -25393,7 +25397,6 @@ type PromotionCreateError {
   rulesLimitExceedBy: Int
 }
 
-"""An enumeration."""
 enum PromotionCreateErrorCode {
   GIFTS_NUMBER_LIMIT
   GRAPHQL_ERROR
@@ -25508,7 +25511,6 @@ type PromotionDeleteError {
   message: String
 }
 
-"""An enumeration."""
 enum PromotionDeleteErrorCode {
   GRAPHQL_ERROR
   NOT_FOUND
@@ -25603,7 +25605,6 @@ interface PromotionEventInterface {
   type: PromotionEventsEnum!
 }
 
-"""An enumeration."""
 enum PromotionEventsEnum {
   PROMOTION_CREATED
   PROMOTION_ENDED
@@ -25748,7 +25749,6 @@ type PromotionRuleCreateError {
   rulesLimitExceedBy: Int
 }
 
-"""An enumeration."""
 enum PromotionRuleCreateErrorCode {
   GIFTS_NUMBER_LIMIT
   GRAPHQL_ERROR
@@ -25898,7 +25898,6 @@ type PromotionRuleDeleteError {
   message: String
 }
 
-"""An enumeration."""
 enum PromotionRuleDeleteErrorCode {
   GRAPHQL_ERROR
   NOT_FOUND
@@ -26143,7 +26142,6 @@ type PromotionRuleUpdateError {
   message: String
 }
 
-"""An enumeration."""
 enum PromotionRuleUpdateErrorCode {
   DUPLICATED_INPUT_ITEM
   GIFTS_NUMBER_LIMIT
@@ -26422,7 +26420,6 @@ input PromotionTranslationInput {
   name: String
 }
 
-"""An enumeration."""
 enum PromotionTypeEnum {
   CATALOGUE
   ORDER
@@ -26468,7 +26465,6 @@ type PromotionUpdateError {
   message: String
 }
 
-"""An enumeration."""
 enum PromotionUpdateErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -28314,13 +28310,11 @@ type RequestPasswordReset {
   errors: [AccountError!]!
 }
 
-"""An enumeration."""
 enum RewardTypeEnum {
   GIFT
   SUBTOTAL_DISCOUNT
 }
 
-"""An enumeration."""
 enum RewardValueTypeEnum {
   FIXED
   PERCENTAGE
@@ -28972,7 +28966,6 @@ type SendConfirmationEmailError {
   message: String
 }
 
-"""An enumeration."""
 enum SendConfirmationEmailErrorCode {
   ACCOUNT_CONFIRMED
   CONFIRMATION_ALREADY_REQUESTED
@@ -29027,7 +29020,6 @@ type ShippingError {
   warehouses: [ID!]
 }
 
-"""An enumeration."""
 enum ShippingErrorCode {
   ALREADY_EXISTS
   DUPLICATED_INPUT_ITEM
@@ -29409,7 +29401,6 @@ type ShippingMethodType implements Node & ObjectWithMetadata {
   type: ShippingMethodTypeEnum
 }
 
-"""An enumeration."""
 enum ShippingMethodTypeEnum {
   PRICE
   WEIGHT
@@ -30277,7 +30268,6 @@ type ShopError {
   message: String
 }
 
-"""An enumeration."""
 enum ShopErrorCode {
   ALREADY_EXISTS
   CANNOT_FETCH_TAX_RATES
@@ -30916,7 +30906,6 @@ type StockBulkUpdateError {
   message: String
 }
 
-"""An enumeration."""
 enum StockBulkUpdateErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -30972,7 +30961,6 @@ type StockError {
   message: String
 }
 
-"""An enumeration."""
 enum StockErrorCode {
   ALREADY_EXISTS
   GRAPHQL_ERROR
@@ -31139,7 +31127,6 @@ type StoredPaymentMethodRequestDelete {
   result: StoredPaymentMethodRequestDeleteResult!
 }
 
-"""An enumeration."""
 enum StoredPaymentMethodRequestDeleteErrorCode {
   CHANNEL_INACTIVE
   GATEWAY_ERROR
@@ -31518,7 +31505,6 @@ type TaxClassCreateError {
   message: String
 }
 
-"""An enumeration."""
 enum TaxClassCreateErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -31558,7 +31544,6 @@ type TaxClassDeleteError {
   message: String
 }
 
-"""An enumeration."""
 enum TaxClassDeleteErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -31620,7 +31605,6 @@ type TaxClassUpdateError {
   message: String
 }
 
-"""An enumeration."""
 enum TaxClassUpdateErrorCode {
   DUPLICATED_INPUT_ITEM
   GRAPHQL_ERROR
@@ -31824,7 +31808,6 @@ type TaxConfigurationUpdateError {
   message: String
 }
 
-"""An enumeration."""
 enum TaxConfigurationUpdateErrorCode {
   DUPLICATED_INPUT_ITEM
   GRAPHQL_ERROR
@@ -31903,7 +31886,6 @@ type TaxCountryConfigurationDeleteError {
   message: String
 }
 
-"""An enumeration."""
 enum TaxCountryConfigurationDeleteErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -31940,7 +31922,6 @@ type TaxCountryConfigurationUpdateError {
   taxClassIds: [String!]!
 }
 
-"""An enumeration."""
 enum TaxCountryConfigurationUpdateErrorCode {
   CANNOT_CREATE_NEGATIVE_RATE
   GRAPHQL_ERROR
@@ -31974,7 +31955,6 @@ type TaxExemptionManageError {
   message: String
 }
 
-"""An enumeration."""
 enum TaxExemptionManageErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -32155,7 +32135,6 @@ type ThumbnailCreated implements Event {
   version: String
 }
 
-"""An enumeration."""
 enum ThumbnailFormatEnum {
   AVIF
   ORIGINAL
@@ -32178,7 +32157,6 @@ input TimePeriodInputType {
   type: TimePeriodTypeEnum!
 }
 
-"""An enumeration."""
 enum TimePeriodTypeEnum {
   DAY
   MONTH
@@ -32337,7 +32315,6 @@ type TransactionCreateError {
   message: String
 }
 
-"""An enumeration."""
 enum TransactionCreateErrorCode {
   GRAPHQL_ERROR
   INCORRECT_CURRENCY
@@ -32484,6 +32461,11 @@ Added in Saleor 3.13.
 Note: this API is currently in Feature Preview and can be subject to changes at later point.
 
 Requires the following permissions: OWNER and HANDLE_PAYMENTS for apps, HANDLE_PAYMENTS for staff users. Staff user cannot update a transaction that is owned by the app.
+
+Triggers the following webhook events:
+- TRANSACTION_ITEM_METADATA_UPDATED (async): Optionally called when transaction's metadata was updated.
+- CHECKOUT_FULLY_PAID (async): Optionally called when the checkout charge status changed to `FULL` or `OVERCHARGED`.
+- ORDER_UPDATED (async): Optionally called when the transaction is related to the order and the order was updated.
 """
 type TransactionEventReport {
   """Defines if the reported event hasn't been processed earlier."""
@@ -32512,7 +32494,6 @@ type TransactionEventReportError {
   message: String
 }
 
-"""An enumeration."""
 enum TransactionEventReportErrorCode {
   ALREADY_EXISTS
   GRAPHQL_ERROR
@@ -32613,7 +32594,6 @@ type TransactionInitializeError {
   message: String
 }
 
-"""An enumeration."""
 enum TransactionInitializeErrorCode {
   CHECKOUT_COMPLETION_IN_PROGRESS
   GRAPHQL_ERROR
@@ -32858,7 +32838,6 @@ type TransactionItemMetadataUpdated implements Event {
   version: String
 }
 
-"""An enumeration."""
 enum TransactionKind {
   ACTION_TO_CONFIRM
   AUTH
@@ -32914,7 +32893,6 @@ type TransactionProcessError {
   message: String
 }
 
-"""An enumeration."""
 enum TransactionProcessErrorCode {
   CHECKOUT_COMPLETION_IN_PROGRESS
   GRAPHQL_ERROR
@@ -33031,7 +33009,6 @@ type TransactionRequestActionError {
   message: String
 }
 
-"""An enumeration."""
 enum TransactionRequestActionErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -33066,7 +33043,6 @@ type TransactionRequestRefundForGrantedRefundError {
   message: String
 }
 
-"""An enumeration."""
 enum TransactionRequestRefundForGrantedRefundErrorCode {
   AMOUNT_GREATER_THAN_AVAILABLE
   GRAPHQL_ERROR
@@ -33104,7 +33080,6 @@ type TransactionUpdateError {
   message: String
 }
 
-"""An enumeration."""
 enum TransactionUpdateErrorCode {
   GRAPHQL_ERROR
   INCORRECT_CURRENCY
@@ -33240,7 +33215,6 @@ type TranslationError {
   message: String
 }
 
-"""An enumeration."""
 enum TranslationErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -33344,7 +33318,6 @@ type UploadError {
   message: String
 }
 
-"""An enumeration."""
 enum UploadErrorCode {
   GRAPHQL_ERROR
 }
@@ -33848,7 +33821,6 @@ type VerifyToken {
   user: User
 }
 
-"""An enumeration."""
 enum VolumeUnitsEnum {
   ACRE_FT
   ACRE_IN
@@ -34238,7 +34210,6 @@ type VoucherCodeBulkDeleteError {
   voucherCodes: [ID!]
 }
 
-"""An enumeration."""
 enum VoucherCodeBulkDeleteErrorCode {
   GRAPHQL_ERROR
   INVALID
@@ -34843,7 +34814,6 @@ type Warehouse implements Node & ObjectWithMetadata {
   ): StockCountableConnection
 }
 
-"""An enumeration."""
 enum WarehouseClickAndCollectOptionEnum {
   ALL
   DISABLED
@@ -34978,7 +34948,6 @@ type WarehouseError {
   shippingZones: [ID!]
 }
 
-"""An enumeration."""
 enum WarehouseErrorCode {
   ALREADY_EXISTS
   GRAPHQL_ERROR
@@ -35291,7 +35260,6 @@ type WebhookDryRunError {
   message: String
 }
 
-"""An enumeration."""
 enum WebhookDryRunErrorCode {
   GRAPHQL_ERROR
   INVALID_ID
@@ -35317,7 +35285,6 @@ type WebhookError {
   message: String
 }
 
-"""An enumeration."""
 enum WebhookErrorCode {
   DELETE_FAILED
   GRAPHQL_ERROR
@@ -36615,7 +36582,6 @@ enum WebhookEventTypeSyncEnum {
   TRANSACTION_REFUND_REQUESTED
 }
 
-"""An enumeration."""
 enum WebhookSampleEventTypeEnum {
   ACCOUNT_CHANGE_EMAIL_REQUESTED
   ACCOUNT_CONFIRMATION_REQUESTED
@@ -36787,7 +36753,6 @@ type WebhookTriggerError {
   message: String
 }
 
-"""An enumeration."""
 enum WebhookTriggerErrorCode {
   GRAPHQL_ERROR
   INVALID_ID
@@ -36873,7 +36838,6 @@ type Weight {
 
 scalar WeightScalar
 
-"""An enumeration."""
 enum WeightUnitsEnum {
   G
   KG
