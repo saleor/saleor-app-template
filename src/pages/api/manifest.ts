@@ -49,7 +49,44 @@ export default createManifestHandler({
        * Optionally, extend Dashboard with custom UIs
        * https://docs.saleor.io/docs/3.x/developer/extending/apps/extending-dashboard-with-apps
        */
-      extensions: [],
+      extensions: [
+        {
+          url: "/api/server-widget",
+          permissions: [],
+          mount: "PRODUCT_DETAILS_WIDGETS",
+          label: "Product Timestamps",
+          target: "NEW_TAB",
+          options: {
+            newTabTarget: {
+              method: "POST",
+            },
+          },
+        },
+        {
+          url: "/api/server-widget",
+          permissions: [],
+          mount: "PRODUCT_DETAILS_WIDGETS",
+          label: "Product Timestamps",
+          target: "WIDGET",
+          options: {
+            widgetTarget: {
+              method: "POST",
+            },
+          },
+        },
+        {
+          url: "/client-widget",
+          permissions: [],
+          mount: "ORDER_DETAILS_WIDGETS",
+          label: "Order widget example",
+          target: "WIDGET",
+          options: {
+            widgetTarget: {
+              method: "GET",
+            },
+          },
+        },
+      ],
       author: "Saleor Commerce",
       brand: {
         logo: {
