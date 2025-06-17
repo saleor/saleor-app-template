@@ -9,7 +9,7 @@ const ClientWidget: NextPage = () => {
     return <Text>Loading widget...</Text>;
   }
 
-  return <Text>This is a client widget. Your email is {appBridgeState.user?.email}.</Text>;
+  return <Text>This is a client widget 😎. Your email is {appBridgeState.user?.email}.</Text>;
 };
 
 export default ClientWidget;

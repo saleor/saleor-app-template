@@ -34,7 +34,7 @@ export default createManifestHandler({
          */
         "MANAGE_ORDERS",
       ],
-      id: "saleor.app",
+      id: "saleor.app.template",
       version: packageJson.version,
       /**
        * Configure webhooks here. They will be created in Saleor during installation
@@ -51,19 +51,7 @@ export default createManifestHandler({
        */
       extensions: [
         {
-          url: "/api/server-widget",
-          permissions: [],
-          mount: "PRODUCT_DETAILS_WIDGETS",
-          label: "Product Timestamps",
-          target: "NEW_TAB",
-          options: {
-            newTabTarget: {
-              method: "POST",
-            },
-          },
-        },
-        {
-          url: "/api/server-widget",
+          url: apiBaseURL + "/api/server-widget",
           permissions: [],
           mount: "PRODUCT_DETAILS_WIDGETS",
           label: "Product Timestamps",
@@ -75,7 +63,7 @@ export default createManifestHandler({
           },
         },
         {
-          url: "/client-widget",
+          url: iframeBaseUrl+"/client-widget",
           permissions: [],
           mount: "ORDER_DETAILS_WIDGETS",
           label: "Order widget example",
