@@ -1,48 +1,16 @@
 import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Text } from "@saleor/macaw-ui";
-import gql from "graphql-tag";
 import Link from "next/link";
 
-import { useLastOrderQuery } from "../generated/graphql";
+import { useLastOrderQuery } from "@/generated/graphql";
 
 /**
  * GraphQL Code Generator scans for gql tags and generates types based on them.
  * The below query is used to generate the "useLastOrderQuery" hook.
- * If you modify it, make sure to run "pnpm codegen" to regenerate the types.
+ * If you modify it, make sure to run "pnpm run generate:app-graphql-types" to regenerate the types.
  */
-gql`
-  query LastOrder {
-    orders(first: 1) {
-      edges {
-        node {
-          id
-          number
-          created
-          user {
-            firstName
-            lastName
-          }
-          shippingAddress {
-            country {
-              country
-            }
-          }
-          total {
-            gross {
-              amount
-              currency
-            }
-          }
-          lines {
-            id
-          }
-        }
-      }
-    }
-  }
-`;
 
-function generateNumberOfLinesText(lines: any[]) {
+function generateNumberOfLinesText(lines: readonly { readonly id: string }[]) {
   if (lines.length === 0) {
     return "no lines";
   }

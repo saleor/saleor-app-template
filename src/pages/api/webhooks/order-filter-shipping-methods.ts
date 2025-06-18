@@ -1,0 +1,70 @@
+import { SaleorSyncWebhook } from "@saleor/app-sdk/handlers/next";
+
+import {
+  OrderFilterShippingMethodsPayloadFragment,
+  OrderFilterShippingMethodsSubscriptionDocument,
+} from "@/generated/graphql";
+import { FilterShippingMethods } from "@/generated/json-schema/order-filter-shipping-methods";
+import { saleorApp } from "@/saleor-app";
+
+/**
+ * Create abstract Webhook. It decorates handler and performs security checks under the hood.
+ *
+ * orderFilterShippingMethodsWebhook.getWebhookManifest() must be called in api/manifest too!
+ */
+export const orderFilterShippingMethodsWebhook =
+  new SaleorSyncWebhook<OrderFilterShippingMethodsPayloadFragment>({
+    name: "Order Filter Shipping Methods",
+    webhookPath: "api/webhooks/order-filter-shipping-methods",
+    event: "ORDER_FILTER_SHIPPING_METHODS",
+    apl: saleorApp.apl,
+    query: OrderFilterShippingMethodsSubscriptionDocument,
+  });
+
+/**
+ * Export decorated Next.js pages router handler, which adds extra context
+ */
+export default orderFilterShippingMethodsWebhook.createHandler((req, res, ctx) => {
+  const {
+    /**
+     * Access payload from Saleor - defined above
+     */
+    payload,
+    /**
+     * Saleor event that triggers the webhook (here - ORDER_FILTER_SHIPPING_METHODS)
+     */
+    event,
+    /**
+     * App's URL
+     */
+    baseUrl,
+    /**
+     * Auth data (from APL) - contains token and saleorApiUrl that can be used to construct graphQL client
+     */
+    authData,
+  } = ctx;
+
+  const firstShippingMethod = payload.shippingMethods?.[0];
+
+  if (!firstShippingMethod) {
+    console.warn("No shipping methods available in the payload.");
+
+    const response: FilterShippingMethods = {
+      excluded_methods: [],
+    };
+
+    return res.status(200).json(response);
+  }
+
+  const response: FilterShippingMethods = {
+    excluded_methods: [
+      {
+        // Example of excluding the first shipping method from the payload
+        id: firstShippingMethod.id,
+        reason: "Example reason for excluding this shipping method",
+      },
+    ],
+  };
+
+  return res.status(200).json(response);
+});
