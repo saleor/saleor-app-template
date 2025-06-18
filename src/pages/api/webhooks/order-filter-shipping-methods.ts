@@ -43,7 +43,6 @@ export default orderFilterShippingMethodsWebhook.createHandler((req, res, ctx) =
      */
     authData,
   } = ctx;
-
   const firstShippingMethod = payload.shippingMethods?.[0];
 
   if (!firstShippingMethod) {
@@ -61,10 +60,19 @@ export default orderFilterShippingMethodsWebhook.createHandler((req, res, ctx) =
       {
         // Example of excluding the first shipping method from the payload
         id: firstShippingMethod.id,
-        reason: "Example reason for excluding this shipping method",
+        reason: "Shipping method was excluded by Saleor App Template",
       },
     ],
   };
 
   return res.status(200).json(response);
 });
+
+/**
+ * Disable body parser for this endpoint, so signature can be verified
+ */
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
