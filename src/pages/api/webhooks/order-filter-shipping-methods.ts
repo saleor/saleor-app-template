@@ -43,26 +43,15 @@ export default orderFilterShippingMethodsWebhook.createHandler((req, res, ctx) =
      */
     authData,
   } = ctx;
-  const firstShippingMethod = payload.shippingMethods?.[0];
 
-  if (!firstShippingMethod) {
-    console.warn("No shipping methods available in the payload.");
-
-    const response: FilterShippingMethods = {
-      excluded_methods: [],
-    };
-
-    return res.status(200).json(response);
-  }
+  /**
+   * Perform logic based on Saleor Event payload e.g filter shipping methods
+   * This is a synchronous webhook, so you can return the response directly.
+   */
+  console.log(`Filtering shipping methods for order id: ${payload.order?.id}`);
 
   const response: FilterShippingMethods = {
-    excluded_methods: [
-      {
-        // Example of excluding the first shipping method from the payload
-        id: firstShippingMethod.id,
-        reason: "Shipping method was excluded by Saleor App Template",
-      },
-    ],
+    excluded_methods: [],
   };
 
   return res.status(200).json(response);
