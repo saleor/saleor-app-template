@@ -1,0 +1,9 @@
+fragment OrderFilterShippingMethodsPayload on OrderFilterShippingMethods {
+  order {
+    id
+  }
+  shippingMethods {
+    id
+    name
+  }
+}

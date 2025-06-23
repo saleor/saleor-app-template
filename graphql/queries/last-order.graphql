@@ -1,0 +1,29 @@
+query LastOrder {
+  orders(first: 1) {
+    edges {
+      node {
+        id
+        number
+        created
+        user {
+          firstName
+          lastName
+        }
+        shippingAddress {
+          country {
+            country
+          }
+        }
+        total {
+          gross {
+            amount
+            currency
+          }
+        }
+        lines {
+          id
+        }
+      }
+    }
+  }
+}

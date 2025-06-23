@@ -90,9 +90,14 @@ You can also install application using GQL or command line. Follow the guide [ho
 
 ### Generated schema and typings
 
-Command `generate` would generate schema and typed functions using Saleor's GraphQL endpoint. Commit the `generated` folder to your repo as they are necessary for queries and keeping track of the schema changes.
+This project uses a `generate` npm script command to:
 
-[Learn more](https://www.graphql-code-generator.com/) about GraphQL code generation.
+- Generate GraphQL schema and typed functions from Saleor's GraphQL endpoint.
+- Generate types for Saleor sync webhook responses from JSON schema
+
+Commit the `generated` folder to your repo as they are necessary for queries and keeping track of the GraphQL / JSON schema changes.
+
+To generate GraphQL types we are using [GraphQL Codegen](https://www.graphql-code-generator.com/). For generating types from JSON schema we use [json-schema-to-typescript](https://www.npmjs.com/package/json-schema-to-typescript).
 
 ### Storing registration data - APL
 

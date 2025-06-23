@@ -19,7 +19,7 @@ jobs:
         run: pnpm lint
       - name: Check types
         run: pnpm check-types
-      - name: Check for changes in generated GraphQL files
+      - name: Check for changes in generated files
         run: |
           pnpm generate
           git diff --name-status --exit-code .

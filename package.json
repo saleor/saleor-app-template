@@ -3,41 +3,50 @@
   "version": "1.0.0",
   "private": true,
   "license": "(BSD-3-Clause AND CC-BY-4.0)",
+  "type": "module",
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fetch-schema": "curl https://raw.githubusercontent.com/saleor/saleor/${npm_package_saleor_schemaVersion}/saleor/graphql/schema.graphql > graphql/schema.graphql",
-    "generate": "graphql-codegen",
+    "fetch-schema": "curl https://raw.githubusercontent.com/saleor/saleor/${npm_package_config_saleor_schemaVersion}/saleor/graphql/schema.graphql > graphql/schema.graphql",
     "test": "vitest",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "generate": "pnpm run /generate:.*/",
+    "generate:app-graphql-types": "graphql-codegen",
+    "generate:app-webhooks-types": "tsx ./scripts/generate-app-webhooks-types.ts"
   },
-  "saleor": {
-    "schemaVersion": "3.20"
+  "config": {
+    "saleor": {
+      "schemaVersion": "3.21"
+    }
   },
   "engines": {
     "npm": ">=10.0.0 <11.0.0",
     "node": ">=22.0.0 <23.0.0",
-    "pnpm": ">=9.0.0 <10.0.0"
+    "pnpm": ">=10.0.0 <11.0.0"
   },
   "dependencies": {
     "@saleor/app-sdk": "1.0.0",
     "@saleor/macaw-ui": "1.1.10",
     "@urql/exchange-auth": "^1.0.0",
+    "next": "15.1.7",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "urql": "^4.0.2"
+  },
+  "packageManager": "pnpm@10.12.1",
+  "devDependencies": {
     "@vitejs/plugin-react": "4.2.1",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "jsdom": "^20.0.3",
-    "next": "15.1.7",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "urql": "^4.0.2",
     "vite": "5.2.10",
-    "vitest": "1.5.2"
-  },
-  "packageManager": "pnpm@9.12.3",
-  "devDependencies": {
+    "vitest": "1.5.2",
+    "vite-tsconfig-paths": "5.1.4",
+    "tsx": "4.20.3",
+    "json-schema-to-typescript": "^15.0.4",
+    "@graphql-codegen/add": "3.2.0",
     "@graphql-codegen/cli": "3.3.1",
     "@graphql-codegen/introspection": "3.0.1",
     "@graphql-codegen/schema-ast": "^3.0.1",
