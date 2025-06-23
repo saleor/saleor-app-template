@@ -1,10 +1,10 @@
 import { SaleorSyncWebhook } from "@saleor/app-sdk/handlers/next";
 
+import { FilterShippingMethods } from "@/generated/app-webhooks-types/order-filter-shipping-methods";
 import {
   OrderFilterShippingMethodsPayloadFragment,
   OrderFilterShippingMethodsSubscriptionDocument,
 } from "@/generated/graphql";
-import { FilterShippingMethods } from "@/generated/json-schema/order-filter-shipping-methods";
 import { saleorApp } from "@/saleor-app";
 
 /**

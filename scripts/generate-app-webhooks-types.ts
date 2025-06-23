@@ -2,18 +2,53 @@ import { writeFileSync } from "node:fs";
 
 import { compile } from "json-schema-to-typescript";
 
-const schemaUrl =
-  "https://raw.githubusercontent.com/saleor/saleor/main/saleor/json_schemas/OrderFilterShippingMethods.json";
+const schemaFileNames = [
+  // List of all Saleor webhook response schemas - uncomment those you need
+  // "CheckoutCalculateTaxes",
+  // "CheckoutFilterShippingMethods",
+  // "ListStoredPaymentMethods",
+  // "OrderCalculateTaxes",
+  "OrderFilterShippingMethods",
+  // "PaymentGatewayInitializeSession",
+  // "PaymentGatewayInitializeTokenizationSession",
+  // "ShippingListMethodsForCheckout",
+  // "ShippingListMethodsForOrder",
+  // "StoredPaymentMethodDeleteRequested",
+  // "TransactionCancelationRequested",
+  // "TransactionChargeRequested",
+  // "TransactionInitializeSession",
+  // "TransactionProcessSession",
+  // "TransactionRefundRequested",
+];
+
+const path = "https://raw.githubusercontent.com/saleor/saleor/main/saleor/json_schemas/";
+
+const convertToKebabCase = (fileName: string): string => {
+  return fileName
+    .replace(/([A-Z])/g, "-$1")
+    .toLowerCase()
+    .replace(/^-/, "");
+};
+
+const schemaMapping = schemaFileNames.map((fileName) => ({
+  fileName: convertToKebabCase(fileName),
+  url: `${path}${fileName}.json`,
+}));
 
 async function main() {
-  const gitHubResponse = await fetch(schemaUrl);
-  const fetchedSchema = await gitHubResponse.json();
+  await Promise.all(
+    schemaMapping.map(async ({ fileName, url }) => {
+      const res = await fetch(url);
 
-  const compiledTypes = await compile(fetchedSchema, "OrderFilterShippingMethodsSchema", {
-    additionalProperties: false,
-  });
+      const fetchedSchema = await res.json();
 
-  writeFileSync("./generated/json-schema/order-filter-shipping-methods.ts", compiledTypes);
+      const compiledTypes = await compile(fetchedSchema, fileName, {
+        additionalProperties: false,
+      });
+
+      writeFileSync(`./generated/app-webhooks-types/${fileName}.ts`, compiledTypes);
+    })
+  );
 }
 
 try {
