@@ -5,3 +5,8 @@ a {
 code {
   background-color: var(--mu-colors-background-surface-brand-subdued);
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+}

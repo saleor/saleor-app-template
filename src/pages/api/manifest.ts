@@ -1,5 +1,5 @@
 import { createManifestHandler } from "@saleor/app-sdk/handlers/next";
-import { AppManifest } from "@saleor/app-sdk/types";
+import { AppExtension, AppManifest } from "@saleor/app-sdk/types";
 
 import packageJson from "@/package.json";
 
@@ -19,6 +19,40 @@ export default createManifestHandler({
      */
     const iframeBaseUrl = process.env.APP_IFRAME_BASE_URL ?? appBaseUrl;
     const apiBaseURL = process.env.APP_API_BASE_URL ?? appBaseUrl;
+
+    const extensionsForSaleor3_22: AppExtension[] = [
+        {
+          url: apiBaseURL + "/api/server-widget",
+          permissions: [],
+          mount: "PRODUCT_DETAILS_WIDGETS",
+          label: "Product Timestamps",
+          target: "WIDGET",
+          options: {
+            widgetTarget: {
+              method: "POST",
+            },
+          },
+        },
+        {
+          url: iframeBaseUrl+"/client-widget",
+          permissions: [],
+          mount: "ORDER_DETAILS_WIDGETS",
+          label: "Order widget example",
+          target: "WIDGET",
+          options: {
+            widgetTarget: {
+              method: "GET",
+            },
+          },
+        },
+      ]
+
+    const saleorMajor = schemaVersion && schemaVersion[0];
+    const saleorMinor = schemaVersion && schemaVersion[1]
+
+    const is3_22 = saleorMajor === 3 && saleorMinor === 22;
+
+    const extensions = is3_22 ? extensionsForSaleor3_22 : [];
 
     const manifest: AppManifest = {
       name: "Saleor App Template",
@@ -54,7 +88,7 @@ export default createManifestHandler({
        * Optionally, extend Dashboard with custom UIs
        * https://docs.saleor.io/docs/3.x/developer/extending/apps/extending-dashboard-with-apps
        */
-      extensions: [],
+      extensions: extensions,
       author: "Saleor Commerce",
       brand: {
         logo: {
