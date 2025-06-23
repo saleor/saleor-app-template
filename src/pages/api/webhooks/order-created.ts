@@ -1,12 +1,11 @@
 import { SaleorAsyncWebhook } from "@saleor/app-sdk/handlers/next";
 
-import { createClient } from "@/lib/create-graphq-client";
-import { saleorApp } from "@/saleor-app";
-
 import {
   OrderCreatedSubscriptionDocument,
   OrderCreatedWebhookPayloadFragment,
-} from "../../../../generated/graphql";
+} from "@/generated/graphql";
+import { createClient } from "@/lib/create-graphq-client";
+import { saleorApp } from "@/saleor-app";
 
 /**
  * Create abstract Webhook. It decorates handler and performs security checks under the hood.
@@ -22,7 +21,7 @@ export const orderCreatedWebhook = new SaleorAsyncWebhook<OrderCreatedWebhookPay
 });
 
 /**
- * Export decorated Next.js handler, which adds extra context
+ * Export decorated Next.js pages router handler, which adds extra context
  */
 export default orderCreatedWebhook.createHandler((req, res, ctx) => {
   const {
