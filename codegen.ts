@@ -45,6 +45,7 @@ const config: CodegenConfig = {
           WeightScalar: "number",
           Day: "string",
           Hour: "number",
+          PositiveInt: "number",
         },
       },
     },
