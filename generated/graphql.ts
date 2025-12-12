@@ -1080,18 +1080,43 @@ export type AppExtension = Node & {
   readonly id: Scalars['ID'];
   /** Label of the extension to show in the dashboard. */
   readonly label: Scalars['String'];
-  /** Place where given extension will be mounted. */
+  /**
+   * Place where given extension will be mounted.
+   * @deprecated Use `mountName` instead.
+   */
   readonly mount: AppExtensionMountEnum;
+  /**
+   * Name of the extension mount point in the dashboard. Replaces `mount`
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly mountName: Scalars['String'];
   /**
    * App extension options.
    *
    * Added in Saleor 3.22.
+   * @deprecated Use `settings` field instead.
    */
   readonly options?: Maybe<AppExtensionPossibleOptions>;
   /** List of the app extension's permissions. */
   readonly permissions: ReadonlyArray<Permission>;
-  /** Type of way how app extension will be opened. */
+  /**
+   * App extension settings. Replaces `options` field.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly settings: Scalars['JSON'];
+  /**
+   * Type of way how app extension will be opened.
+   * @deprecated Use `targetName` instead.
+   */
   readonly target: AppExtensionTargetEnum;
+  /**
+   * Name of the extension target in the dashboard. Replaces `target`
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly targetName: Scalars['String'];
   /** URL of a view where extension's iframe is placed. */
   readonly url: Scalars['String'];
 };
@@ -1112,8 +1137,28 @@ export type AppExtensionCountableEdge = {
 };
 
 export type AppExtensionFilterInput = {
+  /**
+   * DEPRECATED: Use `mountName` instead.
+   * @deprecated Field no longer supported
+   */
   readonly mount?: InputMaybe<ReadonlyArray<AppExtensionMountEnum>>;
+  /**
+   * Plain-text mount name (case insensitive)
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly mountName?: InputMaybe<ReadonlyArray<Scalars['String']>>;
+  /**
+   * DEPRECATED: Use `targetName` instead.
+   * @deprecated Field no longer supported
+   */
   readonly target?: InputMaybe<AppExtensionTargetEnum>;
+  /**
+   * Plain-text target name (case insensitive)
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly targetName?: InputMaybe<Scalars['String']>;
 };
 
 /** All places where app extension can be mounted. */
@@ -1163,6 +1208,7 @@ export enum AppExtensionMountEnum {
   ProductDetailsWidgets = 'PRODUCT_DETAILS_WIDGETS',
   ProductOverviewCreate = 'PRODUCT_OVERVIEW_CREATE',
   ProductOverviewMoreActions = 'PRODUCT_OVERVIEW_MORE_ACTIONS',
+  TranslationsMoreActions = 'TRANSLATIONS_MORE_ACTIONS',
   VoucherDetailsMoreActions = 'VOUCHER_DETAILS_MORE_ACTIONS',
   VoucherDetailsWidgets = 'VOUCHER_DETAILS_WIDGETS',
   VoucherOverviewCreate = 'VOUCHER_OVERVIEW_CREATE',
@@ -1171,13 +1217,19 @@ export enum AppExtensionMountEnum {
 
 /** Represents the options for an app extension. */
 export type AppExtensionOptionsNewTab = {
-  /** Options controlling behavior of the NEW_TAB extension target */
+  /**
+   * Options controlling behavior of the NEW_TAB extension target
+   * @deprecated Use `settings` field directly.
+   */
   readonly newTabTarget?: Maybe<NewTabTargetOptions>;
 };
 
 /** Represents the options for an app extension. */
 export type AppExtensionOptionsWidget = {
-  /** Options for displaying a Widget */
+  /**
+   * Options for displaying a Widget
+   * @deprecated Use `settings` field directly.
+   */
   readonly widgetTarget?: Maybe<WidgetTargetOptions>;
 };
 
@@ -1303,12 +1355,36 @@ export type AppManifestBrandLogoDefaultArgs = {
 export type AppManifestExtension = {
   /** Label of the extension to show in the dashboard. */
   readonly label: Scalars['String'];
-  /** Place where given extension will be mounted. */
+  /**
+   * Place where given extension will be mounted.
+   * @deprecated Use `mountName` instead.
+   */
   readonly mount: AppExtensionMountEnum;
+  /**
+   * Name of the extension mount point in the dashboard. Replaces `mount`
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly mountName: Scalars['String'];
   /** List of the app extension's permissions. */
   readonly permissions: ReadonlyArray<Permission>;
-  /** Type of way how app extension will be opened. */
+  /**
+   * JSON object with settings for this extension.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly settings: Scalars['JSON'];
+  /**
+   * Type of way how app extension will be opened.
+   * @deprecated Use `targetName` instead.
+   */
   readonly target: AppExtensionTargetEnum;
+  /**
+   * Name of the extension target in the dashboard. Replaces `target`
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly targetName: Scalars['String'];
   /** URL of a view where extension's iframe is placed. */
   readonly url: Scalars['String'];
 };
@@ -4324,6 +4400,15 @@ export enum CheckoutAuthorizeStatusEnum {
   Partial = 'PARTIAL'
 }
 
+export type CheckoutAutoCompleteInput = {
+  /** Specifies the earliest date on which fully paid checkouts can begin to be automatically completed. Fully paid checkouts dated before this cut-off will not be automatically completed. Must be less than the threshold of the oldest modified checkout eligible for automatic completion. Default is current date time. */
+  readonly cutOffDate?: InputMaybe<Scalars['DateTime']>;
+  /** The time in minutes after which the fully paid checkout will be automatically completed. Default is 30. Set to 0 for immediate completion. Should be less than the threshold for the oldest modified checkout eligible for automatic completion. */
+  readonly delay?: InputMaybe<Scalars['Minute']>;
+  /** Default `false`. Determines if the paid checkouts should be automatically completed. This setting applies only to checkouts where payment was processed through transactions.When enabled, the checkout will be automatically completed once the checkout `charge_status` reaches `FULL`. This occurs when the total sum of charged and authorized transaction amounts equals or exceeds the checkout's total amount. */
+  readonly enabled: Scalars['Boolean'];
+};
+
 /**
  * Updates billing address in the existing checkout.
  *
@@ -5000,6 +5085,18 @@ export type CheckoutRemovePromoCode = {
 /** Represents the channel-specific checkout settings. */
 export type CheckoutSettings = {
   /**
+   * The date time defines the earliest checkout creation date on which fully paid checkouts can begin to be automatically completed.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly automaticCompletionCutOffDate?: Maybe<Scalars['DateTime']>;
+  /**
+   * The time in minutes to wait after a checkout is fully paid before automatically completing it.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly automaticCompletionDelay?: Maybe<Scalars['Minute']>;
+  /**
    * Default `false`. Determines if the paid checkouts should be automatically completed. This setting applies only to checkouts where payment was processed through transactions.When enabled, the checkout will be automatically completed once the checkout `charge_status` reaches `FULL`. This occurs when the total sum of charged and authorized transaction amounts equals or exceeds the checkout's total amount.
    *
    * Added in Saleor 3.20.
@@ -5011,9 +5108,16 @@ export type CheckoutSettings = {
 
 export type CheckoutSettingsInput = {
   /**
-   * Default `false`. Determines if the paid checkouts should be automatically completed. This setting applies only to checkouts where payment was processed through transactions.When enabled, the checkout will be automatically completed once the checkout `charge_status` reaches `FULL`. This occurs when the total sum of charged and authorized transaction amounts equals or exceeds the checkout's total amount.
+   * Settings for automatic completion of fully paid checkouts.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly automaticCompletion?: InputMaybe<CheckoutAutoCompleteInput>;
+  /**
+   * Default `false`. Determines if the paid checkouts should be automatically completed. This setting applies only to checkouts where payment was processed through transactions.When enabled, the checkout will be automatically completed once the checkout `authorize_status` reaches `FULL`. This occurs when the total sum of charged and authorized transaction amounts equals or exceeds the checkout's total amount.
    *
    * Added in Saleor 3.20.
+   * @deprecated Use `automatic_completion` instead.
    */
   readonly automaticallyCompleteFullyPaidCheckouts?: InputMaybe<Scalars['Boolean']>;
   /**
@@ -14780,7 +14884,10 @@ export enum NavigationType {
 
 /** Represents the NEW_TAB target options for an app extension. */
 export type NewTabTargetOptions = {
-  /** HTTP method for New Tab target (GET or POST) */
+  /**
+   * HTTP method for New Tab target (GET or POST)
+   * @deprecated Use `settings` field directly.
+   */
   readonly method: HttpMethod;
 };
 
@@ -19338,7 +19445,7 @@ export type ProductAttributeArgs = {
 
 /** Represents an individual item for sale in the storefront. */
 export type ProductImageByIdArgs = {
-  id?: InputMaybe<Scalars['ID']>;
+  id: Scalars['ID'];
 };
 
 
@@ -19356,7 +19463,7 @@ export type ProductMediaArgs = {
 
 /** Represents an individual item for sale in the storefront. */
 export type ProductMediaByIdArgs = {
-  id?: InputMaybe<Scalars['ID']>;
+  id: Scalars['ID'];
 };
 
 
@@ -25616,6 +25723,13 @@ export type Shop = ObjectWithMetadata & {
   /** Returns translated shop fields for the given language code. */
   readonly translation?: Maybe<ShopTranslation>;
   /**
+   * Use legacy update webhook emission. When enabled, update webhooks (e.g. `customerUpdated`,`productVariantUpdated`) are sent even when only metadata changes. When disabled, update webhooks are not sent for metadata-only changes; only metadata-specific webhooks (e.g., `customerMetadataUpdated`, `productVariantMetadataUpdated`) are sent.
+   *
+   * Added in Saleor 3.22.
+   * @deprecated Field no longer supported
+   */
+  readonly useLegacyUpdateWebhookEmission?: Maybe<Scalars['Boolean']>;
+  /**
    * Saleor API version.
    *
    * Requires one of the following permissions: AUTHENTICATED_STAFF_USER, AUTHENTICATED_APP.
@@ -25808,6 +25922,13 @@ export type ShopSettingsInput = {
   readonly reserveStockDurationAuthenticatedUser?: InputMaybe<Scalars['Int']>;
   /** This field is used as a default value for `ProductVariant.trackInventory`. */
   readonly trackInventoryByDefault?: InputMaybe<Scalars['Boolean']>;
+  /**
+   * Use legacy update webhook emission. When enabled, update webhooks (e.g. `customerUpdated`,`productVariantUpdated`) are sent even when only metadata changes. When disabled, update webhooks are not sent for metadata-only changes; only metadata-specific webhooks (e.g., `customerMetadataUpdated`, `productVariantMetadataUpdated`) are sent.
+   *
+   * Added in Saleor 3.22.
+   * @deprecated Field no longer supported
+   */
+  readonly useLegacyUpdateWebhookEmission?: InputMaybe<Scalars['Boolean']>;
 };
 
 /**
@@ -30683,7 +30804,10 @@ export enum WeightUnitsEnum {
 
 /** Represents the WIDGET target options for an app extension. */
 export type WidgetTargetOptions = {
-  /** HTTP method for Widget target (GET or POST) */
+  /**
+   * HTTP method for Widget target (GET or POST)
+   * @deprecated Use `settings` field directly.
+   */
   readonly method: HttpMethod;
 };
 
@@ -33748,6 +33872,17 @@ export default {
             "args": []
           },
           {
+            "name": "mountName",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "options",
             "type": {
               "kind": "UNION",
@@ -33775,7 +33910,29 @@ export default {
             "args": []
           },
           {
+            "name": "settings",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "target",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "targetName",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -34262,6 +34419,17 @@ export default {
             "args": []
           },
           {
+            "name": "mountName",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "permissions",
             "type": {
               "kind": "NON_NULL",
@@ -34280,7 +34448,29 @@ export default {
             "args": []
           },
           {
+            "name": "settings",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "target",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "targetName",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -43249,6 +43439,22 @@ export default {
         "kind": "OBJECT",
         "name": "CheckoutSettings",
         "fields": [
+          {
+            "name": "automaticCompletionCutOffDate",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "automaticCompletionDelay",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
           {
             "name": "automaticallyCompleteFullyPaidCheckouts",
             "type": {
@@ -75828,8 +76034,11 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -75907,8 +76116,11 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -92469,6 +92681,14 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "useLegacyUpdateWebhookEmission",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
           },
           {
             "name": "version",

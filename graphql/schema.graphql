@@ -3026,10 +3026,31 @@ type AppExtension implements Node @doc(category: "Apps") {
   url: String!
 
   """Place where given extension will be mounted."""
-  mount: AppExtensionMountEnum!
+  mount: AppExtensionMountEnum! @deprecated(reason: "Use `mountName` instead.")
 
   """Type of way how app extension will be opened."""
-  target: AppExtensionTargetEnum!
+  target: AppExtensionTargetEnum! @deprecated(reason: "Use `targetName` instead.")
+
+  """
+  Name of the extension mount point in the dashboard. Replaces `mount`
+  
+  Added in Saleor 3.22.
+  """
+  mountName: String!
+
+  """
+  Name of the extension target in the dashboard. Replaces `target`
+  
+  Added in Saleor 3.22.
+  """
+  targetName: String!
+
+  """
+  App extension settings. Replaces `options` field.
+  
+  Added in Saleor 3.22.
+  """
+  settings: JSON!
 
   """The app assigned to app extension."""
   app: App!
@@ -3042,7 +3063,7 @@ type AppExtension implements Node @doc(category: "Apps") {
   
   Added in Saleor 3.22.
   """
-  options: AppExtensionPossibleOptions
+  options: AppExtensionPossibleOptions @deprecated(reason: "Use `settings` field instead.")
 }
 
 """All places where app extension can be mounted."""
@@ -3096,6 +3117,7 @@ enum AppExtensionMountEnum @doc(category: "Apps") {
   MENU_OVERVIEW_CREATE
   MENU_OVERVIEW_MORE_ACTIONS
   MENU_DETAILS_MORE_ACTIONS
+  TRANSLATIONS_MORE_ACTIONS
 }
 
 """
@@ -3111,18 +3133,20 @@ enum AppExtensionTargetEnum @doc(category: "Apps") {
   WIDGET
 }
 
+scalar JSON
+
 union AppExtensionPossibleOptions = AppExtensionOptionsWidget | AppExtensionOptionsNewTab
 
 """Represents the options for an app extension."""
 type AppExtensionOptionsWidget @doc(category: "Apps") {
   """Options for displaying a Widget"""
-  widgetTarget: WidgetTargetOptions
+  widgetTarget: WidgetTargetOptions @deprecated(reason: "Use `settings` field directly.")
 }
 
 """Represents the WIDGET target options for an app extension."""
 type WidgetTargetOptions @doc(category: "Apps") {
   """HTTP method for Widget target (GET or POST)"""
-  method: HttpMethod!
+  method: HttpMethod! @deprecated(reason: "Use `settings` field directly.")
 }
 
 enum HttpMethod {
@@ -3133,13 +3157,13 @@ enum HttpMethod {
 """Represents the options for an app extension."""
 type AppExtensionOptionsNewTab @doc(category: "Apps") {
   """Options controlling behavior of the NEW_TAB extension target"""
-  newTabTarget: NewTabTargetOptions
+  newTabTarget: NewTabTargetOptions @deprecated(reason: "Use `settings` field directly.")
 }
 
 """Represents the NEW_TAB target options for an app extension."""
 type NewTabTargetOptions @doc(category: "Apps") {
   """HTTP method for New Tab target (GET or POST)"""
-  method: HttpMethod!
+  method: HttpMethod! @deprecated(reason: "Use `settings` field directly.")
 }
 
 """Represents the app's brand data."""
@@ -5422,6 +5446,20 @@ type CheckoutSettings {
   Added in Saleor 3.20.
   """
   automaticallyCompleteFullyPaidCheckouts: Boolean!
+
+  """
+  The time in minutes to wait after a checkout is fully paid before automatically completing it.
+  
+  Added in Saleor 3.22.
+  """
+  automaticCompletionDelay: Minute
+
+  """
+  The date time defines the earliest checkout creation date on which fully paid checkouts can begin to be automatically completed. 
+  
+  Added in Saleor 3.22.
+  """
+  automaticCompletionCutOffDate: DateTime
 }
 
 """Represents the channel-specific payment settings."""
@@ -5770,13 +5808,13 @@ type Product implements Node & ObjectWithMetadata & ObjectWithAttributes @doc(ca
   """Get a single product media by ID."""
   mediaById(
     """ID of a product media."""
-    id: ID
+    id: ID!
   ): ProductMedia
 
   """Get a single product image by ID."""
   imageById(
     """ID of a product image."""
-    id: ID
+    id: ID!
   ): ProductImage @deprecated(reason: "Use the `mediaById` field instead.")
 
   """Get a single variant by SKU or ID."""
@@ -10124,6 +10162,13 @@ type Shop implements ObjectWithMetadata {
 
   """Charge taxes on shipping."""
   chargeTaxesOnShipping: Boolean! @deprecated(reason: "Use `ShippingMethodType.taxClass` to determine whether taxes are calculated for shipping methods; if a tax class is set, the taxes will be calculated, otherwise no tax rate will be applied.")
+
+  """
+  Use legacy update webhook emission. When enabled, update webhooks (e.g. `customerUpdated`,`productVariantUpdated`) are sent even when only metadata changes. When disabled, update webhooks are not sent for metadata-only changes; only metadata-specific webhooks (e.g., `customerMetadataUpdated`, `productVariantMetadataUpdated`) are sent.
+  
+  Added in Saleor 3.22.
+  """
+  useLegacyUpdateWebhookEmission: Boolean @deprecated
 }
 
 """
@@ -12701,8 +12746,6 @@ enum TokenizedPaymentFlowEnum @doc(category: "Payments") {
   INTERACTIVE
 }
 
-scalar JSON
-
 """Represents an problem in the checkout."""
 union CheckoutProblem = CheckoutLineProblemInsufficientStock | CheckoutLineProblemVariantNotAvailable
 
@@ -14821,8 +14864,25 @@ type AppExtensionCountableEdge @doc(category: "Apps") {
 }
 
 input AppExtensionFilterInput @doc(category: "Apps") {
-  mount: [AppExtensionMountEnum!]
-  target: AppExtensionTargetEnum
+  """DEPRECATED: Use `mountName` instead."""
+  mount: [AppExtensionMountEnum!] @deprecated
+
+  """DEPRECATED: Use `targetName` instead."""
+  target: AppExtensionTargetEnum @deprecated
+
+  """
+  Plain-text mount name (case insensitive)
+  
+  Added in Saleor 3.22.
+  """
+  mountName: [String!]
+
+  """
+  Plain-text target name (case insensitive)
+  
+  Added in Saleor 3.22.
+  """
+  targetName: String
 }
 
 """Represents address validation rules for a country."""
@@ -20698,6 +20758,13 @@ input ShopSettingsInput {
 
   """Charge taxes on shipping."""
   chargeTaxesOnShipping: Boolean @deprecated(reason: "To enable taxes for a shipping method, assign a tax class to the shipping method with `shippingPriceCreate` or `shippingPriceUpdate` mutations.")
+
+  """
+  Use legacy update webhook emission. When enabled, update webhooks (e.g. `customerUpdated`,`productVariantUpdated`) are sent even when only metadata changes. When disabled, update webhooks are not sent for metadata-only changes; only metadata-specific webhooks (e.g., `customerMetadataUpdated`, `productVariantMetadataUpdated`) are sent.
+  
+  Added in Saleor 3.22.
+  """
+  useLegacyUpdateWebhookEmission: Boolean @deprecated
 }
 
 """
@@ -28810,11 +28877,35 @@ input CheckoutSettingsInput @doc(category: "Checkout") {
   useLegacyErrorFlow: Boolean @deprecated
 
   """
-  Default `false`. Determines if the paid checkouts should be automatically completed. This setting applies only to checkouts where payment was processed through transactions.When enabled, the checkout will be automatically completed once the checkout `charge_status` reaches `FULL`. This occurs when the total sum of charged and authorized transaction amounts equals or exceeds the checkout's total amount.
+  Default `false`. Determines if the paid checkouts should be automatically completed. This setting applies only to checkouts where payment was processed through transactions.When enabled, the checkout will be automatically completed once the checkout `authorize_status` reaches `FULL`. This occurs when the total sum of charged and authorized transaction amounts equals or exceeds the checkout's total amount.
   
   Added in Saleor 3.20.
   """
-  automaticallyCompleteFullyPaidCheckouts: Boolean
+  automaticallyCompleteFullyPaidCheckouts: Boolean @deprecated(reason: "Use `automatic_completion` instead.")
+
+  """
+  Settings for automatic completion of fully paid checkouts.
+  
+  Added in Saleor 3.22.
+  """
+  automaticCompletion: CheckoutAutoCompleteInput
+}
+
+input CheckoutAutoCompleteInput @doc(category: "Checkout") {
+  """
+  Default `false`. Determines if the paid checkouts should be automatically completed. This setting applies only to checkouts where payment was processed through transactions.When enabled, the checkout will be automatically completed once the checkout `charge_status` reaches `FULL`. This occurs when the total sum of charged and authorized transaction amounts equals or exceeds the checkout's total amount.
+  """
+  enabled: Boolean!
+
+  """
+  The time in minutes after which the fully paid checkout will be automatically completed. Default is 30. Set to 0 for immediate completion. Should be less than the threshold for the oldest modified checkout eligible for automatic completion.
+  """
+  delay: Minute
+
+  """
+  Specifies the earliest date on which fully paid checkouts can begin to be automatically completed. Fully paid checkouts dated before this cut-off will not be automatically completed. Must be less than the threshold of the oldest modified checkout eligible for automatic completion. Default is current date time.
+  """
+  cutOffDate: DateTime
 }
 
 input PaymentSettingsInput @doc(category: "Payments") {
@@ -29311,7 +29402,7 @@ type AttributeBulkUpdateError @doc(category: "Attributes") {
   code: AttributeBulkUpdateErrorCode!
 }
 
-enum AttributeBulkUpdateErrorCode {
+enum AttributeBulkUpdateErrorCode @doc(category: "Attributes") {
   ALREADY_EXISTS
   BLANK
   GRAPHQL_ERROR
@@ -29843,10 +29934,31 @@ type AppManifestExtension @doc(category: "Apps") {
   url: String!
 
   """Place where given extension will be mounted."""
-  mount: AppExtensionMountEnum!
+  mount: AppExtensionMountEnum! @deprecated(reason: "Use `mountName` instead.")
 
   """Type of way how app extension will be opened."""
-  target: AppExtensionTargetEnum!
+  target: AppExtensionTargetEnum! @deprecated(reason: "Use `targetName` instead.")
+
+  """
+  Name of the extension mount point in the dashboard. Replaces `mount`
+  
+  Added in Saleor 3.22.
+  """
+  mountName: String!
+
+  """
+  Name of the extension target in the dashboard. Replaces `target`
+  
+  Added in Saleor 3.22.
+  """
+  targetName: String!
+
+  """
+  JSON object with settings for this extension.
+  
+  Added in Saleor 3.22.
+  """
+  settings: JSON!
 }
 
 type AppManifestWebhook @doc(category: "Apps") {
