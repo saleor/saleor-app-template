@@ -1,6 +1,6 @@
 import { APL } from "@saleor/app-sdk/APL";
-import { SaleorApp } from "@saleor/app-sdk/saleor-app";
 import { FileAPL } from "@saleor/app-sdk/APL/file";
+import { SaleorApp } from "@saleor/app-sdk/saleor-app";
 
 /**
  * By default auth data are stored in the `.auth-data.json` (FileAPL).

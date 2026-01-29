@@ -1,6 +1,6 @@
-import { NextPage } from "next";
 import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Text } from "@saleor/macaw-ui";
+import { NextPage } from "next";
 
 const ClientWidget: NextPage = () => {
   const { appBridgeState } = useAppBridge();
