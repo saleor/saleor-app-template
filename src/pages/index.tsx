@@ -2,7 +2,7 @@ import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Button, Input, Text } from "@saleor/macaw-ui";
 import { NextPage } from "next";
 import Link from "next/link";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { MouseEventHandler, useSyncExternalStore } from "react";
 
 const AddToSaleorForm = () => (
   <Box
@@ -28,17 +28,22 @@ const AddToSaleorForm = () => (
   </Box>
 );
 
+function useIsClient() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+}
+
 /**
  * This is page publicly accessible from your app.
  * You should probably remove it.
  */
 const IndexPage: NextPage = () => {
   const { appBridgeState, appBridge } = useAppBridge();
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isClient = useIsClient();
 
   const handleLinkClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
     /**
@@ -60,7 +65,7 @@ const IndexPage: NextPage = () => {
      */
   };
 
-  const isLocalHost = global.location.href.includes("localhost");
+  const isLocalHost = isClient && window.location.href.includes("localhost");
 
   return (
     <Box padding={8}>
@@ -69,7 +74,7 @@ const IndexPage: NextPage = () => {
         Saleor App Template is a minimalistic boilerplate that provides a working example of a
         Saleor app.
       </Text>
-      {appBridgeState?.ready && mounted && (
+      {appBridgeState?.ready && isClient && (
         <Link href="/actions">
           <Button variant="secondary">See what your app can do →</Button>
         </Link>
@@ -193,7 +198,7 @@ const IndexPage: NextPage = () => {
         </li>
       </ul>
 
-      {mounted && !isLocalHost && !appBridgeState?.ready && (
+      {isClient && !isLocalHost && !appBridgeState?.ready && (
         <>
           <Text marginBottom={4} as={"p"}>
             Install this app in your Dashboard and get extra powers!

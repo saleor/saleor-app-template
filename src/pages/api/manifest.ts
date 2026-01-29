@@ -11,7 +11,7 @@ import { orderFilterShippingMethodsWebhook } from "./webhooks/order-filter-shipp
  * https://github.com/saleor/saleor-app-sdk/blob/main/docs/api-handlers.md#manifest-handler-factory
  */
 export default createManifestHandler({
-  async manifestFactory({ appBaseUrl, request, schemaVersion }) {
+  async manifestFactory({ appBaseUrl, request: _request, schemaVersion }) {
     /**
      * Allow to overwrite default app base url, to enable Docker support.
      *
