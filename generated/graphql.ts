@@ -20042,6 +20042,7 @@ export enum ProductErrorCode {
   DuplicatedInputItem = 'DUPLICATED_INPUT_ITEM',
   GraphqlError = 'GRAPHQL_ERROR',
   Invalid = 'INVALID',
+  InvalidFileType = 'INVALID_FILE_TYPE',
   InvalidPrice = 'INVALID_PRICE',
   MediaAlreadyAssigned = 'MEDIA_ALREADY_ASSIGNED',
   NotFound = 'NOT_FOUND',
@@ -20053,6 +20054,7 @@ export enum ProductErrorCode {
   Required = 'REQUIRED',
   Unique = 'UNIQUE',
   UnsupportedMediaProvider = 'UNSUPPORTED_MEDIA_PROVIDER',
+  UnsupportedMimeType = 'UNSUPPORTED_MIME_TYPE',
   VariantNoDigitalContent = 'VARIANT_NO_DIGITAL_CONTENT'
 }
 
@@ -28256,7 +28258,9 @@ export type UploadError = {
 };
 
 export enum UploadErrorCode {
-  GraphqlError = 'GRAPHQL_ERROR'
+  GraphqlError = 'GRAPHQL_ERROR',
+  InvalidFileType = 'INVALID_FILE_TYPE',
+  UnsupportedMimeType = 'UNSUPPORTED_MIME_TYPE'
 }
 
 /** Represents user data. */
