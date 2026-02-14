@@ -2,7 +2,9 @@ import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Button, Input, Text } from "@saleor/macaw-ui";
 import { NextPage } from "next";
 import Link from "next/link";
-import { MouseEventHandler, useSyncExternalStore } from "react";
+import { MouseEventHandler } from "react";
+
+import { useIsClient } from "@/hooks/useIsClient";
 
 const AddToSaleorForm = () => (
   <Box
@@ -17,7 +19,7 @@ const AddToSaleorForm = () => (
       const manifestUrl = new URL("/api/manifest", window.location.origin);
       const redirectUrl = new URL(
         `/dashboard/apps/install?manifestUrl=${manifestUrl}`,
-        saleorUrl as string
+        saleorUrl as string,
       ).href;
 
       window.open(redirectUrl, "_blank");
@@ -27,14 +29,6 @@ const AddToSaleorForm = () => (
     <Button type="submit">Add to Saleor</Button>
   </Box>
 );
-
-function useIsClient() {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
-}
 
 /**
  * This is page publicly accessible from your app.
@@ -56,7 +50,7 @@ const IndexPage: NextPage = () => {
         actions.Redirect({
           newContext: true,
           to: e.currentTarget.href,
-        })
+        }),
       );
     }
 
@@ -65,7 +59,7 @@ const IndexPage: NextPage = () => {
      */
   };
 
-  const isLocalHost = isClient && window.location.href.includes("localhost");
+  const isLocalHost = isClient && globalThis.location.href.includes("localhost");
 
   return (
     <Box padding={8}>
