@@ -1,26 +1,18 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import js from "@eslint/js";
-
-import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
-import eslintConfigPrettier from "eslint-config-prettier";
-
-import saleorPlugin from "@saleor/eslint-plugin-saleor-app";
-import simpleImportSort from "eslint-plugin-simple-import-sort";
-
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import js from "@eslint/js";
+import { defineConfig, globalIgnores } from "eslint/config";
+import saleorPlugin from "@saleor/eslint-plugin-saleor-app";
+import eslintConfigPrettier from "eslint-config-prettier";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const saleorRecommended = saleorPlugin.configs["flat/recommended"];
-const saleorRecommendedArray = Array.isArray(saleorRecommended)
-  ? saleorRecommended
-  : [saleorRecommended];
-
 export default defineConfig([
-
-    globalIgnores([
+  globalIgnores([
     ".next/**",
     "node_modules/**",
     "dist/**",
@@ -36,7 +28,6 @@ export default defineConfig([
     files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
       "simple-import-sort": simpleImportSort,
-
       "@saleor/saleor-app": saleorPlugin,
     },
     languageOptions: {
@@ -51,21 +42,17 @@ export default defineConfig([
       "import/order": "off",
       "simple-import-sort/imports": "warn",
       "simple-import-sort/exports": "warn",
-      "no-unused-vars": ["error", { 
-        argsIgnorePattern: "^_", 
-        varsIgnorePattern: "^_",
-        caughtErrorsIgnorePattern: "^_"
-       }],
+      "@saleor/saleor-app/logger-leak": "error",
+      "no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
   },
-
-  ...saleorRecommendedArray.map((cfg) => ({
-    ...cfg,
-    plugins: {
-      "@saleor/saleor-app": saleorPlugin,
-      ...(cfg.plugins ?? {}),
-    },
-  })),
 
   eslintConfigPrettier,
 ]);
