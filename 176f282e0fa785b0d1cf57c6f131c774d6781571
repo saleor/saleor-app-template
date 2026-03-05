@@ -1,0 +1,49 @@
+src/hooks/use-quick-checkout.ts
+  d4ad0292f25c0296 1-365
+graphql/fragments/checkout-details.graphql
+  d4ad0292f25c0296 1-97
+graphql/mutations/checkout-shipping-address-update.graphql
+  d4ad0292f25c0296 1-12
+graphql/mutations/checkout-create.graphql
+  d4ad0292f25c0296 1-12
+graphql/queries/channels.graphql
+  d4ad0292f25c0296 1-8
+src/pages/index.tsx
+  d4ad0292f25c0296 6-8,13-14,20,22-31,35-38,40-45,47-56,58-68,70-71
+src/styles/globals.css
+  d4ad0292f25c0296 9,12
+graphql/mutations/checkout-billing-address-update.graphql
+  d4ad0292f25c0296 1-12
+graphql/mutations/checkout-delivery-method-update.graphql
+  d4ad0292f25c0296 1-12
+src/components/CheckoutPreview.tsx
+  d4ad0292f25c0296 1-133
+graphql/queries/first-product.graphql
+  d4ad0292f25c0296 1-14
+graphql/mutations/checkout-complete.graphql
+  d4ad0292f25c0296 1-15
+src/pages/api/manifest.ts
+  d4ad0292f25c0296 2,7,12,15-16,18-19
+src/components/CheckoutForm.tsx
+  d4ad0292f25c0296 1-199
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "176f282e0fa785b0d1cf57c6f131c774d6781571",
+  "prompts": {
+    "d4ad0292f25c0296": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "914a243e-6f08-4845-a218-d0dc319cce52",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Lukasz Ostrowski <lukasz.ostrowski@saleor.io>",
+      "messages": [],
+      "total_additions": 954,
+      "total_deletions": 278,
+      "accepted_lines": 938,
+      "overriden_lines": 0
+    }
+  }
+}
