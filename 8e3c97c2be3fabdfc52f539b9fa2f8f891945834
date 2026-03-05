@@ -1,0 +1,48 @@
+graphql/mutations/update-metadata.graphql
+  507b5ec26576e803 1-9
+src/pages/index.tsx
+  507b5ec26576e803 6,9,12-41,45-47,68-69,72-73,76-79,81-92,94-106,111-120,132-133
+src/components/CheckoutBrowser.tsx
+  507b5ec26576e803 1-148
+src/hooks/use-quick-checkout.ts
+  507b5ec26576e803 14,185-195
+src/components/CheckoutPreview.tsx
+  d4ad0292f25c0296 9-26,90,100
+graphql/queries/checkouts.graphql
+  507b5ec26576e803 1-13
+graphql/fragments/checkout-details.graphql
+  507b5ec26576e803 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.8",
+  "base_commit_sha": "8e3c97c2be3fabdfc52f539b9fa2f8f891945834",
+  "prompts": {
+    "507b5ec26576e803": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ae076ac1-bb99-4cd4-8793-520ae55e3891",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Lukasz Ostrowski <lukasz.ostrowski@saleor.io>",
+      "messages": [],
+      "total_additions": 281,
+      "total_deletions": 37,
+      "accepted_lines": 264,
+      "overriden_lines": 0
+    },
+    "d4ad0292f25c0296": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "914a243e-6f08-4845-a218-d0dc319cce52",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Lukasz Ostrowski <lukasz.ostrowski@saleor.io>",
+      "messages": [],
+      "total_additions": 22,
+      "total_deletions": 2,
+      "accepted_lines": 20,
+      "overriden_lines": 0
+    }
+  }
+}
