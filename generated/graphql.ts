@@ -877,6 +877,14 @@ export type App = Node & ObjectWithMetadata & {
   readonly privateMetafield?: Maybe<Scalars['String']>;
   /** Private metadata. Requires staff permissions to access. Use `keys` to control which fields you want to include. The default is to include everything. */
   readonly privateMetafields?: Maybe<Scalars['Metadata']>;
+  /**
+   * List of problems associated with this app.
+   *
+   * Added in Saleor 3.22.
+   *
+   * Requires one of the following permissions: AUTHENTICATED_APP, MANAGE_APPS.
+   */
+  readonly problems?: Maybe<ReadonlyArray<AppProblem>>;
   /** Support page for the app. */
   readonly supportUrl?: Maybe<Scalars['String']>;
   /**
@@ -919,6 +927,12 @@ export type AppPrivateMetafieldArgs = {
 /** Represents app data. */
 export type AppPrivateMetafieldsArgs = {
   keys?: InputMaybe<ReadonlyArray<Scalars['String']>>;
+};
+
+
+/** Represents app data. */
+export type AppProblemsArgs = {
+  limit?: InputMaybe<Scalars['PositiveInt']>;
 };
 
 /**
@@ -1408,6 +1422,199 @@ export type AppManifestWebhook = {
   /** The url to receive the payload. */
   readonly targetUrl: Scalars['String'];
 };
+
+/**
+ * Represents a problem associated with an app.
+ *
+ * Added in Saleor 3.22.
+ */
+export type AppProblem = Node & {
+  /**
+   * Number of occurrences.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly count: Scalars['Int'];
+  /**
+   * The date and time when the problem was created.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly createdAt: Scalars['DateTime'];
+  /**
+   * Dismissal information. Null if the problem has not been dismissed.
+   *
+   * Added in Saleor 3.22.
+   *
+   * Requires one of the following permissions: AUTHENTICATED_APP, MANAGE_APPS.
+   */
+  readonly dismissed?: Maybe<AppProblemDismissed>;
+  /**
+   * The ID of the app problem.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly id: Scalars['ID'];
+  /**
+   * Whether the problem has reached critical threshold.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly isCritical: Scalars['Boolean'];
+  /**
+   * Key identifying the type of problem.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly key: Scalars['String'];
+  /**
+   * The problem message.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly message: Scalars['String'];
+  /**
+   * The date and time when the problem was last updated.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly updatedAt: Scalars['DateTime'];
+};
+
+/**
+ * Add a problem to the calling app.
+ *
+ * Added in Saleor 3.22.
+ *
+ * Requires one of the following permissions: AUTHENTICATED_APP.
+ */
+export type AppProblemCreate = {
+  /** The created or updated app problem. */
+  readonly appProblem?: Maybe<AppProblem>;
+  readonly errors: ReadonlyArray<AppProblemCreateError>;
+};
+
+export type AppProblemCreateError = {
+  /** The error code. */
+  readonly code: AppProblemCreateErrorCode;
+  /** Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field. */
+  readonly field?: Maybe<Scalars['String']>;
+  /** The error message. */
+  readonly message?: Maybe<Scalars['String']>;
+};
+
+export enum AppProblemCreateErrorCode {
+  GraphqlError = 'GRAPHQL_ERROR',
+  Invalid = 'INVALID',
+  NotFound = 'NOT_FOUND',
+  Required = 'REQUIRED'
+}
+
+export type AppProblemCreateInput = {
+  /** Time window in minutes for aggregating problems with the same key. Defaults to 60. If 0, a new problem is always created. */
+  readonly aggregationPeriod?: InputMaybe<Scalars['Minute']>;
+  /** If set, the problem becomes critical when count reaches this value. If sent again with higher value than already counted, problem can be de-escalated. */
+  readonly criticalThreshold?: InputMaybe<Scalars['PositiveInt']>;
+  /** Key identifying the type of problem. App can add multiple problems under the same key, to merge them together or delete them in batch. Must be between 3 and 128 characters. */
+  readonly key: Scalars['String'];
+  /** The problem message to display. Must be at least 3 characters. Messages longer than 2048 characters will be truncated to 2048 characters with '...' suffix. */
+  readonly message: Scalars['String'];
+};
+
+/**
+ * Dismiss problems for an app.
+ *
+ * Added in Saleor 3.22.
+ *
+ * Requires one of the following permissions: MANAGE_APPS, AUTHENTICATED_APP.
+ */
+export type AppProblemDismiss = {
+  readonly errors: ReadonlyArray<AppProblemDismissError>;
+};
+
+/** Input for app callers to dismiss their own problems. */
+export type AppProblemDismissByAppInput = {
+  /** List of problem IDs to dismiss. Cannot be combined with keys. Max 100. */
+  readonly ids?: InputMaybe<ReadonlyArray<Scalars['ID']>>;
+  /** List of problem keys to dismiss. Cannot be combined with ids. Max 100. */
+  readonly keys?: InputMaybe<ReadonlyArray<Scalars['String']>>;
+};
+
+/** Input for staff callers to dismiss problems by IDs. */
+export type AppProblemDismissByStaffWithIdsInput = {
+  /** List of problem IDs to dismiss. Max 100. */
+  readonly ids: ReadonlyArray<Scalars['ID']>;
+};
+
+/** Input for staff callers to dismiss problems by keys. */
+export type AppProblemDismissByStaffWithKeysInput = {
+  /** ID of the app whose problems to dismiss. */
+  readonly app: Scalars['ID'];
+  /** List of problem keys to dismiss. Max 100. */
+  readonly keys: ReadonlyArray<Scalars['String']>;
+};
+
+export type AppProblemDismissError = {
+  /** The error code. */
+  readonly code: AppProblemDismissErrorCode;
+  /** Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field. */
+  readonly field?: Maybe<Scalars['String']>;
+  /** The error message. */
+  readonly message?: Maybe<Scalars['String']>;
+};
+
+export enum AppProblemDismissErrorCode {
+  GraphqlError = 'GRAPHQL_ERROR',
+  Invalid = 'INVALID',
+  NotFound = 'NOT_FOUND',
+  OutOfScopeApp = 'OUT_OF_SCOPE_APP',
+  Required = 'REQUIRED'
+}
+
+/** Input for dismissing app problems. Only one can be specified. */
+export type AppProblemDismissInput = {
+  /** For app callers only - dismiss own problems. */
+  readonly byApp?: InputMaybe<AppProblemDismissByAppInput>;
+  /** For staff callers - dismiss problems by IDs. */
+  readonly byStaffWithIds?: InputMaybe<AppProblemDismissByStaffWithIdsInput>;
+  /** For staff callers - dismiss problems by keys for specified app. */
+  readonly byStaffWithKeys?: InputMaybe<AppProblemDismissByStaffWithKeysInput>;
+};
+
+/**
+ * Dismissal information for an app problem.
+ *
+ * Added in Saleor 3.22.
+ */
+export type AppProblemDismissed = {
+  /**
+   * Whether the problem was dismissed by an App or a User.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly by: AppProblemDismissedByEnum;
+  /**
+   * The user who dismissed this problem. Null if dismissed by an app or the user was deleted.
+   *
+   * Added in Saleor 3.22.
+   *
+   * Requires one of the following permissions: MANAGE_STAFF.
+   */
+  readonly user?: Maybe<User>;
+  /**
+   * Email of the user who dismissed this problem. Preserved even if the user is deleted.
+   *
+   * Added in Saleor 3.22.
+   *
+   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER.
+   */
+  readonly userEmail?: Maybe<Scalars['String']>;
+};
+
+export enum AppProblemDismissedByEnum {
+  App = 'APP',
+  User = 'USER'
+}
 
 /**
  * Re-enable sync webhooks for provided app. Can be used to manually re-enable sync webhooks for the app before the cooldown period ends.
@@ -5888,256 +6095,507 @@ export type ContainsFilterInput = {
  * The `EU` value is DEPRECATED and will be removed in Saleor 3.21.
  */
 export enum CountryCode {
+  /** Andorra */
   Ad = 'AD',
+  /** United Arab Emirates */
   Ae = 'AE',
+  /** Afghanistan */
   Af = 'AF',
+  /** Antigua and Barbuda */
   Ag = 'AG',
+  /** Anguilla */
   Ai = 'AI',
+  /** Albania */
   Al = 'AL',
+  /** Armenia */
   Am = 'AM',
+  /** Angola */
   Ao = 'AO',
+  /** Antarctica */
   Aq = 'AQ',
+  /** Argentina */
   Ar = 'AR',
+  /** American Samoa */
   As = 'AS',
+  /** Austria */
   At = 'AT',
+  /** Australia */
   Au = 'AU',
+  /** Aruba */
   Aw = 'AW',
+  /** Åland Islands */
   Ax = 'AX',
+  /** Azerbaijan */
   Az = 'AZ',
+  /** Bosnia and Herzegovina */
   Ba = 'BA',
+  /** Barbados */
   Bb = 'BB',
+  /** Bangladesh */
   Bd = 'BD',
+  /** Belgium */
   Be = 'BE',
+  /** Burkina Faso */
   Bf = 'BF',
+  /** Bulgaria */
   Bg = 'BG',
+  /** Bahrain */
   Bh = 'BH',
+  /** Burundi */
   Bi = 'BI',
+  /** Benin */
   Bj = 'BJ',
+  /** Saint Barthélemy */
   Bl = 'BL',
+  /** Bermuda */
   Bm = 'BM',
+  /** Brunei */
   Bn = 'BN',
+  /** Bolivia */
   Bo = 'BO',
+  /** Bonaire, Sint Eustatius and Saba */
   Bq = 'BQ',
+  /** Brazil */
   Br = 'BR',
+  /** Bahamas */
   Bs = 'BS',
+  /** Bhutan */
   Bt = 'BT',
+  /** Bouvet Island */
   Bv = 'BV',
+  /** Botswana */
   Bw = 'BW',
+  /** Belarus */
   By = 'BY',
+  /** Belize */
   Bz = 'BZ',
+  /** Canada */
   Ca = 'CA',
+  /** Cocos (Keeling) Islands */
   Cc = 'CC',
+  /** Congo (the Democratic Republic of the) */
   Cd = 'CD',
+  /** Central African Republic */
   Cf = 'CF',
+  /** Congo */
   Cg = 'CG',
+  /** Switzerland */
   Ch = 'CH',
+  /** Côte d'Ivoire */
   Ci = 'CI',
+  /** Cook Islands */
   Ck = 'CK',
+  /** Chile */
   Cl = 'CL',
+  /** Cameroon */
   Cm = 'CM',
+  /** China */
   Cn = 'CN',
+  /** Colombia */
   Co = 'CO',
+  /** Costa Rica */
   Cr = 'CR',
+  /** Cuba */
   Cu = 'CU',
+  /** Cabo Verde */
   Cv = 'CV',
+  /** Curaçao */
   Cw = 'CW',
+  /** Christmas Island */
   Cx = 'CX',
+  /** Cyprus */
   Cy = 'CY',
+  /** Czechia */
   Cz = 'CZ',
+  /** Germany */
   De = 'DE',
+  /** Djibouti */
   Dj = 'DJ',
+  /** Denmark */
   Dk = 'DK',
+  /** Dominica */
   Dm = 'DM',
+  /** Dominican Republic */
   Do = 'DO',
+  /** Algeria */
   Dz = 'DZ',
+  /** Ecuador */
   Ec = 'EC',
+  /** Estonia */
   Ee = 'EE',
+  /** Egypt */
   Eg = 'EG',
+  /** Western Sahara */
   Eh = 'EH',
+  /** Eritrea */
   Er = 'ER',
+  /** Spain */
   Es = 'ES',
+  /** Ethiopia */
   Et = 'ET',
+  /** European Union */
   Eu = 'EU',
+  /** Finland */
   Fi = 'FI',
+  /** Fiji */
   Fj = 'FJ',
+  /** Falkland Islands (Malvinas) */
   Fk = 'FK',
+  /** Micronesia */
   Fm = 'FM',
+  /** Faroe Islands */
   Fo = 'FO',
+  /** France */
   Fr = 'FR',
+  /** Gabon */
   Ga = 'GA',
+  /** United Kingdom */
   Gb = 'GB',
+  /** Grenada */
   Gd = 'GD',
+  /** Georgia */
   Ge = 'GE',
+  /** French Guiana */
   Gf = 'GF',
+  /** Guernsey */
   Gg = 'GG',
+  /** Ghana */
   Gh = 'GH',
+  /** Gibraltar */
   Gi = 'GI',
+  /** Greenland */
   Gl = 'GL',
+  /** Gambia */
   Gm = 'GM',
+  /** Guinea */
   Gn = 'GN',
+  /** Guadeloupe */
   Gp = 'GP',
+  /** Equatorial Guinea */
   Gq = 'GQ',
+  /** Greece */
   Gr = 'GR',
+  /** South Georgia and the South Sandwich Islands */
   Gs = 'GS',
+  /** Guatemala */
   Gt = 'GT',
+  /** Guam */
   Gu = 'GU',
+  /** Guinea-Bissau */
   Gw = 'GW',
+  /** Guyana */
   Gy = 'GY',
+  /** Hong Kong */
   Hk = 'HK',
+  /** Heard Island and McDonald Islands */
   Hm = 'HM',
+  /** Honduras */
   Hn = 'HN',
+  /** Croatia */
   Hr = 'HR',
+  /** Haiti */
   Ht = 'HT',
+  /** Hungary */
   Hu = 'HU',
+  /** Indonesia */
   Id = 'ID',
+  /** Ireland */
   Ie = 'IE',
+  /** Israel */
   Il = 'IL',
+  /** Isle of Man */
   Im = 'IM',
+  /** India */
   In = 'IN',
+  /** British Indian Ocean Territory */
   Io = 'IO',
+  /** Iraq */
   Iq = 'IQ',
+  /** Iran */
   Ir = 'IR',
+  /** Iceland */
   Is = 'IS',
+  /** Italy */
   It = 'IT',
+  /** Jersey */
   Je = 'JE',
+  /** Jamaica */
   Jm = 'JM',
+  /** Jordan */
   Jo = 'JO',
+  /** Japan */
   Jp = 'JP',
+  /** Kenya */
   Ke = 'KE',
+  /** Kyrgyzstan */
   Kg = 'KG',
+  /** Cambodia */
   Kh = 'KH',
+  /** Kiribati */
   Ki = 'KI',
+  /** Comoros */
   Km = 'KM',
+  /** Saint Kitts and Nevis */
   Kn = 'KN',
+  /** North Korea */
   Kp = 'KP',
+  /** South Korea */
   Kr = 'KR',
+  /** Kuwait */
   Kw = 'KW',
+  /** Cayman Islands */
   Ky = 'KY',
+  /** Kazakhstan */
   Kz = 'KZ',
+  /** Laos */
   La = 'LA',
+  /** Lebanon */
   Lb = 'LB',
+  /** Saint Lucia */
   Lc = 'LC',
+  /** Liechtenstein */
   Li = 'LI',
+  /** Sri Lanka */
   Lk = 'LK',
+  /** Liberia */
   Lr = 'LR',
+  /** Lesotho */
   Ls = 'LS',
+  /** Lithuania */
   Lt = 'LT',
+  /** Luxembourg */
   Lu = 'LU',
+  /** Latvia */
   Lv = 'LV',
+  /** Libya */
   Ly = 'LY',
+  /** Morocco */
   Ma = 'MA',
+  /** Monaco */
   Mc = 'MC',
+  /** Moldova */
   Md = 'MD',
+  /** Montenegro */
   Me = 'ME',
+  /** Saint Martin (French part) */
   Mf = 'MF',
+  /** Madagascar */
   Mg = 'MG',
+  /** Marshall Islands */
   Mh = 'MH',
+  /** North Macedonia */
   Mk = 'MK',
+  /** Mali */
   Ml = 'ML',
+  /** Myanmar */
   Mm = 'MM',
+  /** Mongolia */
   Mn = 'MN',
+  /** Macao */
   Mo = 'MO',
+  /** Northern Mariana Islands */
   Mp = 'MP',
+  /** Martinique */
   Mq = 'MQ',
+  /** Mauritania */
   Mr = 'MR',
+  /** Montserrat */
   Ms = 'MS',
+  /** Malta */
   Mt = 'MT',
+  /** Mauritius */
   Mu = 'MU',
+  /** Maldives */
   Mv = 'MV',
+  /** Malawi */
   Mw = 'MW',
+  /** Mexico */
   Mx = 'MX',
+  /** Malaysia */
   My = 'MY',
+  /** Mozambique */
   Mz = 'MZ',
+  /** Namibia */
   Na = 'NA',
+  /** New Caledonia */
   Nc = 'NC',
+  /** Niger */
   Ne = 'NE',
+  /** Norfolk Island */
   Nf = 'NF',
+  /** Nigeria */
   Ng = 'NG',
+  /** Nicaragua */
   Ni = 'NI',
+  /** Netherlands */
   Nl = 'NL',
+  /** Norway */
   No = 'NO',
+  /** Nepal */
   Np = 'NP',
+  /** Nauru */
   Nr = 'NR',
+  /** Niue */
   Nu = 'NU',
+  /** New Zealand */
   Nz = 'NZ',
+  /** Oman */
   Om = 'OM',
+  /** Panama */
   Pa = 'PA',
+  /** Peru */
   Pe = 'PE',
+  /** French Polynesia */
   Pf = 'PF',
+  /** Papua New Guinea */
   Pg = 'PG',
+  /** Philippines */
   Ph = 'PH',
+  /** Pakistan */
   Pk = 'PK',
+  /** Poland */
   Pl = 'PL',
+  /** Saint Pierre and Miquelon */
   Pm = 'PM',
+  /** Pitcairn */
   Pn = 'PN',
+  /** Puerto Rico */
   Pr = 'PR',
+  /** Palestine, State of */
   Ps = 'PS',
+  /** Portugal */
   Pt = 'PT',
+  /** Palau */
   Pw = 'PW',
+  /** Paraguay */
   Py = 'PY',
+  /** Qatar */
   Qa = 'QA',
+  /** Réunion */
   Re = 'RE',
+  /** Romania */
   Ro = 'RO',
+  /** Serbia */
   Rs = 'RS',
+  /** Russia */
   Ru = 'RU',
+  /** Rwanda */
   Rw = 'RW',
+  /** Saudi Arabia */
   Sa = 'SA',
+  /** Solomon Islands */
   Sb = 'SB',
+  /** Seychelles */
   Sc = 'SC',
+  /** Sudan */
   Sd = 'SD',
+  /** Sweden */
   Se = 'SE',
+  /** Singapore */
   Sg = 'SG',
+  /** Saint Helena, Ascension and Tristan da Cunha */
   Sh = 'SH',
+  /** Slovenia */
   Si = 'SI',
+  /** Svalbard and Jan Mayen */
   Sj = 'SJ',
+  /** Slovakia */
   Sk = 'SK',
+  /** Sierra Leone */
   Sl = 'SL',
+  /** San Marino */
   Sm = 'SM',
+  /** Senegal */
   Sn = 'SN',
+  /** Somalia */
   So = 'SO',
+  /** Suriname */
   Sr = 'SR',
+  /** South Sudan */
   Ss = 'SS',
+  /** Sao Tome and Principe */
   St = 'ST',
+  /** El Salvador */
   Sv = 'SV',
+  /** Sint Maarten (Dutch part) */
   Sx = 'SX',
+  /** Syria */
   Sy = 'SY',
+  /** Eswatini */
   Sz = 'SZ',
+  /** Turks and Caicos Islands */
   Tc = 'TC',
+  /** Chad */
   Td = 'TD',
+  /** French Southern Territories */
   Tf = 'TF',
+  /** Togo */
   Tg = 'TG',
+  /** Thailand */
   Th = 'TH',
+  /** Tajikistan */
   Tj = 'TJ',
+  /** Tokelau */
   Tk = 'TK',
+  /** Timor-Leste */
   Tl = 'TL',
+  /** Turkmenistan */
   Tm = 'TM',
+  /** Tunisia */
   Tn = 'TN',
+  /** Tonga */
   To = 'TO',
+  /** Türkiye */
   Tr = 'TR',
+  /** Trinidad and Tobago */
   Tt = 'TT',
+  /** Tuvalu */
   Tv = 'TV',
+  /** Taiwan */
   Tw = 'TW',
+  /** Tanzania */
   Tz = 'TZ',
+  /** Ukraine */
   Ua = 'UA',
+  /** Uganda */
   Ug = 'UG',
+  /** United States Minor Outlying Islands */
   Um = 'UM',
+  /** United States of America */
   Us = 'US',
+  /** Uruguay */
   Uy = 'UY',
+  /** Uzbekistan */
   Uz = 'UZ',
+  /** Holy See */
   Va = 'VA',
+  /** Saint Vincent and the Grenadines */
   Vc = 'VC',
+  /** Venezuela */
   Ve = 'VE',
+  /** Virgin Islands (British) */
   Vg = 'VG',
+  /** Virgin Islands (U.S.) */
   Vi = 'VI',
+  /** Vietnam */
   Vn = 'VN',
+  /** Vanuatu */
   Vu = 'VU',
+  /** Wallis and Futuna */
   Wf = 'WF',
+  /** Samoa */
   Ws = 'WS',
+  /** Kosovo */
   Xk = 'XK',
+  /** Yemen */
   Ye = 'YE',
+  /** Mayotte */
   Yt = 'YT',
+  /** South Africa */
   Za = 'ZA',
+  /** Zambia */
   Zm = 'ZM',
+  /** Zimbabwe */
   Zw = 'ZW'
 }
 
@@ -6424,6 +6882,62 @@ export type CustomerMetadataUpdated = Event & {
   readonly user?: Maybe<User>;
   /** Saleor version that triggered the event. */
   readonly version?: Maybe<Scalars['String']>;
+};
+
+export type CustomerOrderWhereInput = {
+  /** List of conditions that must be met. */
+  readonly AND?: InputMaybe<ReadonlyArray<CustomerOrderWhereInput>>;
+  /** A list of conditions of which at least one must be met. */
+  readonly OR?: InputMaybe<ReadonlyArray<CustomerOrderWhereInput>>;
+  /** Filter by authorize status. */
+  readonly authorizeStatus?: InputMaybe<OrderAuthorizeStatusEnumFilterInput>;
+  /** Filter by billing address of the order. */
+  readonly billingAddress?: InputMaybe<AddressFilterInput>;
+  /** Filter by channel. */
+  readonly channelId?: InputMaybe<GlobalIdFilterInput>;
+  /** Filter by charge status. */
+  readonly chargeStatus?: InputMaybe<OrderChargeStatusEnumFilterInput>;
+  /** Filter by checkout id. */
+  readonly checkoutId?: InputMaybe<GlobalIdFilterInput>;
+  /** Filter by checkout token. */
+  readonly checkoutToken?: InputMaybe<UuidFilterInput>;
+  /** Filter order by created at date. */
+  readonly createdAt?: InputMaybe<DateTimeRangeInput>;
+  /** Filter by whether the order has any fulfillments. */
+  readonly hasFulfillments?: InputMaybe<Scalars['Boolean']>;
+  /** Filter by whether the order has any invoices. */
+  readonly hasInvoices?: InputMaybe<Scalars['Boolean']>;
+  readonly ids?: InputMaybe<ReadonlyArray<Scalars['ID']>>;
+  /** Filter by invoice data associated with the order. Each list item represents conditions that must be satisfied by a single object. The filter matches orders that have related objects meeting all specified groups of conditions. */
+  readonly invoices?: InputMaybe<ReadonlyArray<InvoiceFilterInput>>;
+  /** Filter by whether the order uses the click and collect delivery method. */
+  readonly isClickAndCollect?: InputMaybe<Scalars['Boolean']>;
+  /** Filter based on whether the order includes a gift card purchase. */
+  readonly isGiftCardBought?: InputMaybe<Scalars['Boolean']>;
+  /** Filter based on whether a gift card was used in the order. */
+  readonly isGiftCardUsed?: InputMaybe<Scalars['Boolean']>;
+  /** Filter by number of lines in the order. */
+  readonly linesCount?: InputMaybe<IntFilterInput>;
+  /** Filter by metadata fields. */
+  readonly metadata?: InputMaybe<MetadataFilterInput>;
+  /** Filter by order number. */
+  readonly number?: InputMaybe<IntFilterInput>;
+  /** Filter by the product type of related order lines. */
+  readonly productTypeId?: InputMaybe<GlobalIdFilterInput>;
+  /** Filter by shipping address of the order. */
+  readonly shippingAddress?: InputMaybe<AddressFilterInput>;
+  /** Filter by order status. */
+  readonly status?: InputMaybe<OrderStatusEnumFilterInput>;
+  /** Filter by total gross amount of the order. */
+  readonly totalGross?: InputMaybe<PriceFilterInput>;
+  /** Filter by total net amount of the order. */
+  readonly totalNet?: InputMaybe<PriceFilterInput>;
+  /** Filter order by updated at date. */
+  readonly updatedAt?: InputMaybe<DateTimeRangeInput>;
+  /** Filter by user email. */
+  readonly userEmail?: InputMaybe<StringFilterInput>;
+  /** Filter by voucher code used in the order. */
+  readonly voucherCode?: InputMaybe<StringFilterInput>;
 };
 
 /**
@@ -7942,9 +8456,9 @@ export type GiftCard = Node & ObjectWithMetadata & {
    */
   readonly endDate?: Maybe<Scalars['DateTime']>;
   /**
-   * List of events associated with the gift card.
+   * List of events associated with the gift card. Requires MANAGE_GIFT_CARD permission to access all events. Users with MANAGE_ORDERS permission can access only USED_IN_ORDER events.
    *
-   * Requires one of the following permissions: MANAGE_GIFT_CARD.
+   * Requires one of the following permissions: MANAGE_GIFT_CARD, MANAGE_ORDERS.
    */
   readonly events: ReadonlyArray<GiftCardEvent>;
   /** Expiry date of the gift card. */
@@ -8970,785 +9484,1565 @@ export enum JobStatusEnum {
   Success = 'SUCCESS'
 }
 
+/** Language code enum. It contains all the languages supported by Saleor. */
 export enum LanguageCodeEnum {
+  /** Afrikaans */
   Af = 'AF',
+  /** Afrikaans (Namibia) */
   AfNa = 'AF_NA',
+  /** Afrikaans (South Africa) */
   AfZa = 'AF_ZA',
+  /** Aghem */
   Agq = 'AGQ',
+  /** Aghem (Cameroon) */
   AgqCm = 'AGQ_CM',
+  /** Akan */
   Ak = 'AK',
+  /** Akan (Ghana) */
   AkGh = 'AK_GH',
+  /** Amharic */
   Am = 'AM',
+  /** Amharic (Ethiopia) */
   AmEt = 'AM_ET',
+  /** Arabic */
   Ar = 'AR',
+  /** Arabic (United Arab Emirates) */
   ArAe = 'AR_AE',
+  /** Arabic (Bahrain) */
   ArBh = 'AR_BH',
+  /** Arabic (Djibouti) */
   ArDj = 'AR_DJ',
+  /** Arabic (Algeria) */
   ArDz = 'AR_DZ',
+  /** Arabic (Egypt) */
   ArEg = 'AR_EG',
+  /** Arabic (Western Sahara) */
   ArEh = 'AR_EH',
+  /** Arabic (Eritrea) */
   ArEr = 'AR_ER',
+  /** Arabic (Israel) */
   ArIl = 'AR_IL',
+  /** Arabic (Iraq) */
   ArIq = 'AR_IQ',
+  /** Arabic (Jordan) */
   ArJo = 'AR_JO',
+  /** Arabic (Comoros) */
   ArKm = 'AR_KM',
+  /** Arabic (Kuwait) */
   ArKw = 'AR_KW',
+  /** Arabic (Lebanon) */
   ArLb = 'AR_LB',
+  /** Arabic (Libya) */
   ArLy = 'AR_LY',
+  /** Arabic (Morocco) */
   ArMa = 'AR_MA',
+  /** Arabic (Mauritania) */
   ArMr = 'AR_MR',
+  /** Arabic (Oman) */
   ArOm = 'AR_OM',
+  /** Arabic (Palestinian Territories) */
   ArPs = 'AR_PS',
+  /** Arabic (Qatar) */
   ArQa = 'AR_QA',
+  /** Arabic (Saudi Arabia) */
   ArSa = 'AR_SA',
+  /** Arabic (Sudan) */
   ArSd = 'AR_SD',
+  /** Arabic (Somalia) */
   ArSo = 'AR_SO',
+  /** Arabic (South Sudan) */
   ArSs = 'AR_SS',
+  /** Arabic (Syria) */
   ArSy = 'AR_SY',
+  /** Arabic (Chad) */
   ArTd = 'AR_TD',
+  /** Arabic (Tunisia) */
   ArTn = 'AR_TN',
+  /** Arabic (Yemen) */
   ArYe = 'AR_YE',
+  /** Assamese */
   As = 'AS',
+  /** Asu */
   Asa = 'ASA',
+  /** Asu (Tanzania) */
   AsaTz = 'ASA_TZ',
+  /** Asturian */
   Ast = 'AST',
+  /** Asturian (Spain) */
   AstEs = 'AST_ES',
+  /** Assamese (India) */
   AsIn = 'AS_IN',
+  /** Azerbaijani */
   Az = 'AZ',
+  /** Azerbaijani (Cyrillic) */
   AzCyrl = 'AZ_CYRL',
+  /** Azerbaijani (Cyrillic, Azerbaijan) */
   AzCyrlAz = 'AZ_CYRL_AZ',
+  /** Azerbaijani (Latin) */
   AzLatn = 'AZ_LATN',
+  /** Azerbaijani (Latin, Azerbaijan) */
   AzLatnAz = 'AZ_LATN_AZ',
+  /** Basaa */
   Bas = 'BAS',
+  /** Basaa (Cameroon) */
   BasCm = 'BAS_CM',
+  /** Belarusian */
   Be = 'BE',
+  /** Bemba */
   Bem = 'BEM',
+  /** Bemba (Zambia) */
   BemZm = 'BEM_ZM',
+  /** Bena */
   Bez = 'BEZ',
+  /** Bena (Tanzania) */
   BezTz = 'BEZ_TZ',
+  /** Belarusian (Belarus) */
   BeBy = 'BE_BY',
+  /** Bulgarian */
   Bg = 'BG',
+  /** Bulgarian (Bulgaria) */
   BgBg = 'BG_BG',
+  /** Bambara */
   Bm = 'BM',
+  /** Bambara (Mali) */
   BmMl = 'BM_ML',
+  /** Bangla */
   Bn = 'BN',
+  /** Bangla (Bangladesh) */
   BnBd = 'BN_BD',
+  /** Bangla (India) */
   BnIn = 'BN_IN',
+  /** Tibetan */
   Bo = 'BO',
+  /** Tibetan (China) */
   BoCn = 'BO_CN',
+  /** Tibetan (India) */
   BoIn = 'BO_IN',
+  /** Breton */
   Br = 'BR',
+  /** Bodo */
   Brx = 'BRX',
+  /** Bodo (India) */
   BrxIn = 'BRX_IN',
+  /** Breton (France) */
   BrFr = 'BR_FR',
+  /** Bosnian */
   Bs = 'BS',
+  /** Bosnian (Cyrillic) */
   BsCyrl = 'BS_CYRL',
+  /** Bosnian (Cyrillic, Bosnia & Herzegovina) */
   BsCyrlBa = 'BS_CYRL_BA',
+  /** Bosnian (Latin) */
   BsLatn = 'BS_LATN',
+  /** Bosnian (Latin, Bosnia & Herzegovina) */
   BsLatnBa = 'BS_LATN_BA',
+  /** Catalan */
   Ca = 'CA',
+  /** Catalan (Andorra) */
   CaAd = 'CA_AD',
+  /** Catalan (Spain) */
   CaEs = 'CA_ES',
+  /** Catalan (Spain, Valencian) */
   CaEsValencia = 'CA_ES_VALENCIA',
+  /** Catalan (France) */
   CaFr = 'CA_FR',
+  /** Catalan (Italy) */
   CaIt = 'CA_IT',
+  /** Chakma */
   Ccp = 'CCP',
+  /** Chakma (Bangladesh) */
   CcpBd = 'CCP_BD',
+  /** Chakma (India) */
   CcpIn = 'CCP_IN',
+  /** Chechen */
   Ce = 'CE',
+  /** Cebuano */
   Ceb = 'CEB',
+  /** Cebuano (Philippines) */
   CebPh = 'CEB_PH',
+  /** Chechen (Russia) */
   CeRu = 'CE_RU',
+  /** Chiga */
   Cgg = 'CGG',
+  /** Chiga (Uganda) */
   CggUg = 'CGG_UG',
+  /** Cherokee */
   Chr = 'CHR',
+  /** Cherokee (United States) */
   ChrUs = 'CHR_US',
+  /** Central Kurdish */
   Ckb = 'CKB',
+  /** Central Kurdish (Iraq) */
   CkbIq = 'CKB_IQ',
+  /** Central Kurdish (Iran) */
   CkbIr = 'CKB_IR',
+  /** Czech */
   Cs = 'CS',
+  /** Czech (Czechia) */
   CsCz = 'CS_CZ',
+  /** Church Slavic */
   Cu = 'CU',
+  /** Church Slavic (Russia) */
   CuRu = 'CU_RU',
+  /** Welsh */
   Cy = 'CY',
+  /** Welsh (United Kingdom) */
   CyGb = 'CY_GB',
+  /** Danish */
   Da = 'DA',
+  /** Taita */
   Dav = 'DAV',
+  /** Taita (Kenya) */
   DavKe = 'DAV_KE',
+  /** Danish (Denmark) */
   DaDk = 'DA_DK',
+  /** Danish (Greenland) */
   DaGl = 'DA_GL',
+  /** German */
   De = 'DE',
+  /** German (Austria) */
   DeAt = 'DE_AT',
+  /** German (Belgium) */
   DeBe = 'DE_BE',
+  /** German (Switzerland) */
   DeCh = 'DE_CH',
+  /** German (Germany) */
   DeDe = 'DE_DE',
+  /** German (Italy) */
   DeIt = 'DE_IT',
+  /** German (Liechtenstein) */
   DeLi = 'DE_LI',
+  /** German (Luxembourg) */
   DeLu = 'DE_LU',
+  /** Zarma */
   Dje = 'DJE',
+  /** Zarma (Niger) */
   DjeNe = 'DJE_NE',
+  /** Lower Sorbian */
   Dsb = 'DSB',
+  /** Lower Sorbian (Germany) */
   DsbDe = 'DSB_DE',
+  /** Duala */
   Dua = 'DUA',
+  /** Duala (Cameroon) */
   DuaCm = 'DUA_CM',
+  /** Jola-Fonyi */
   Dyo = 'DYO',
+  /** Jola-Fonyi (Senegal) */
   DyoSn = 'DYO_SN',
+  /** Dzongkha */
   Dz = 'DZ',
+  /** Dzongkha (Bhutan) */
   DzBt = 'DZ_BT',
+  /** Embu */
   Ebu = 'EBU',
+  /** Embu (Kenya) */
   EbuKe = 'EBU_KE',
+  /** Ewe */
   Ee = 'EE',
+  /** Ewe (Ghana) */
   EeGh = 'EE_GH',
+  /** Ewe (Togo) */
   EeTg = 'EE_TG',
+  /** Greek */
   El = 'EL',
+  /** Greek (Cyprus) */
   ElCy = 'EL_CY',
+  /** Greek (Greece) */
   ElGr = 'EL_GR',
+  /** English */
   En = 'EN',
+  /** English (United Arab Emirates) */
   EnAe = 'EN_AE',
+  /** English (Antigua & Barbuda) */
   EnAg = 'EN_AG',
+  /** English (Anguilla) */
   EnAi = 'EN_AI',
+  /** English (American Samoa) */
   EnAs = 'EN_AS',
+  /** English (Austria) */
   EnAt = 'EN_AT',
+  /** English (Australia) */
   EnAu = 'EN_AU',
+  /** English (Barbados) */
   EnBb = 'EN_BB',
+  /** English (Belgium) */
   EnBe = 'EN_BE',
+  /** English (Burundi) */
   EnBi = 'EN_BI',
+  /** English (Bermuda) */
   EnBm = 'EN_BM',
+  /** English (Bahamas) */
   EnBs = 'EN_BS',
+  /** English (Botswana) */
   EnBw = 'EN_BW',
+  /** English (Belize) */
   EnBz = 'EN_BZ',
+  /** English (Canada) */
   EnCa = 'EN_CA',
+  /** English (Cocos (Keeling) Islands) */
   EnCc = 'EN_CC',
+  /** English (Switzerland) */
   EnCh = 'EN_CH',
+  /** English (Cook Islands) */
   EnCk = 'EN_CK',
+  /** English (Cameroon) */
   EnCm = 'EN_CM',
+  /** English (Christmas Island) */
   EnCx = 'EN_CX',
+  /** English (Cyprus) */
   EnCy = 'EN_CY',
+  /** English (Germany) */
   EnDe = 'EN_DE',
+  /** English (Diego Garcia) */
   EnDg = 'EN_DG',
+  /** English (Denmark) */
   EnDk = 'EN_DK',
+  /** English (Dominica) */
   EnDm = 'EN_DM',
+  /** English (Eritrea) */
   EnEr = 'EN_ER',
+  /** English (Finland) */
   EnFi = 'EN_FI',
+  /** English (Fiji) */
   EnFj = 'EN_FJ',
+  /** English (Falkland Islands) */
   EnFk = 'EN_FK',
+  /** English (Micronesia) */
   EnFm = 'EN_FM',
+  /** English (United Kingdom) */
   EnGb = 'EN_GB',
+  /** English (Grenada) */
   EnGd = 'EN_GD',
+  /** English (Guernsey) */
   EnGg = 'EN_GG',
+  /** English (Ghana) */
   EnGh = 'EN_GH',
+  /** English (Gibraltar) */
   EnGi = 'EN_GI',
+  /** English (Gambia) */
   EnGm = 'EN_GM',
+  /** English (Guam) */
   EnGu = 'EN_GU',
+  /** English (Guyana) */
   EnGy = 'EN_GY',
+  /** English (Hong Kong SAR China) */
   EnHk = 'EN_HK',
+  /** English (Ireland) */
   EnIe = 'EN_IE',
+  /** English (Israel) */
   EnIl = 'EN_IL',
+  /** English (Isle of Man) */
   EnIm = 'EN_IM',
+  /** English (India) */
   EnIn = 'EN_IN',
+  /** English (British Indian Ocean Territory) */
   EnIo = 'EN_IO',
+  /** English (Jersey) */
   EnJe = 'EN_JE',
+  /** English (Jamaica) */
   EnJm = 'EN_JM',
+  /** English (Kenya) */
   EnKe = 'EN_KE',
+  /** English (Kiribati) */
   EnKi = 'EN_KI',
+  /** English (St. Kitts & Nevis) */
   EnKn = 'EN_KN',
+  /** English (Cayman Islands) */
   EnKy = 'EN_KY',
+  /** English (St. Lucia) */
   EnLc = 'EN_LC',
+  /** English (Liberia) */
   EnLr = 'EN_LR',
+  /** English (Lesotho) */
   EnLs = 'EN_LS',
+  /** English (Madagascar) */
   EnMg = 'EN_MG',
+  /** English (Marshall Islands) */
   EnMh = 'EN_MH',
+  /** English (Macao SAR China) */
   EnMo = 'EN_MO',
+  /** English (Northern Mariana Islands) */
   EnMp = 'EN_MP',
+  /** English (Montserrat) */
   EnMs = 'EN_MS',
+  /** English (Malta) */
   EnMt = 'EN_MT',
+  /** English (Mauritius) */
   EnMu = 'EN_MU',
+  /** English (Malawi) */
   EnMw = 'EN_MW',
+  /** English (Malaysia) */
   EnMy = 'EN_MY',
+  /** English (Namibia) */
   EnNa = 'EN_NA',
+  /** English (Norfolk Island) */
   EnNf = 'EN_NF',
+  /** English (Nigeria) */
   EnNg = 'EN_NG',
+  /** English (Netherlands) */
   EnNl = 'EN_NL',
+  /** English (Nauru) */
   EnNr = 'EN_NR',
+  /** English (Niue) */
   EnNu = 'EN_NU',
+  /** English (New Zealand) */
   EnNz = 'EN_NZ',
+  /** English (Papua New Guinea) */
   EnPg = 'EN_PG',
+  /** English (Philippines) */
   EnPh = 'EN_PH',
+  /** English (Pakistan) */
   EnPk = 'EN_PK',
+  /** English (Pitcairn Islands) */
   EnPn = 'EN_PN',
+  /** English (Puerto Rico) */
   EnPr = 'EN_PR',
+  /** English (Palau) */
   EnPw = 'EN_PW',
+  /** English (Rwanda) */
   EnRw = 'EN_RW',
+  /** English (Solomon Islands) */
   EnSb = 'EN_SB',
+  /** English (Seychelles) */
   EnSc = 'EN_SC',
+  /** English (Sudan) */
   EnSd = 'EN_SD',
+  /** English (Sweden) */
   EnSe = 'EN_SE',
+  /** English (Singapore) */
   EnSg = 'EN_SG',
+  /** English (St. Helena) */
   EnSh = 'EN_SH',
+  /** English (Slovenia) */
   EnSi = 'EN_SI',
+  /** English (Sierra Leone) */
   EnSl = 'EN_SL',
+  /** English (South Sudan) */
   EnSs = 'EN_SS',
+  /** English (Sint Maarten) */
   EnSx = 'EN_SX',
+  /** English (Eswatini) */
   EnSz = 'EN_SZ',
+  /** English (Turks & Caicos Islands) */
   EnTc = 'EN_TC',
+  /** English (Tokelau) */
   EnTk = 'EN_TK',
+  /** English (Tonga) */
   EnTo = 'EN_TO',
+  /** English (Trinidad & Tobago) */
   EnTt = 'EN_TT',
+  /** English (Tuvalu) */
   EnTv = 'EN_TV',
+  /** English (Tanzania) */
   EnTz = 'EN_TZ',
+  /** English (Uganda) */
   EnUg = 'EN_UG',
+  /** English (U.S. Outlying Islands) */
   EnUm = 'EN_UM',
+  /** English (United States) */
   EnUs = 'EN_US',
+  /** English (St. Vincent & Grenadines) */
   EnVc = 'EN_VC',
+  /** English (British Virgin Islands) */
   EnVg = 'EN_VG',
+  /** English (U.S. Virgin Islands) */
   EnVi = 'EN_VI',
+  /** English (Vanuatu) */
   EnVu = 'EN_VU',
+  /** English (Samoa) */
   EnWs = 'EN_WS',
+  /** English (South Africa) */
   EnZa = 'EN_ZA',
+  /** English (Zambia) */
   EnZm = 'EN_ZM',
+  /** English (Zimbabwe) */
   EnZw = 'EN_ZW',
+  /** Esperanto */
   Eo = 'EO',
+  /** Spanish */
   Es = 'ES',
+  /** Spanish (Argentina) */
   EsAr = 'ES_AR',
+  /** Spanish (Bolivia) */
   EsBo = 'ES_BO',
+  /** Spanish (Brazil) */
   EsBr = 'ES_BR',
+  /** Spanish (Belize) */
   EsBz = 'ES_BZ',
+  /** Spanish (Chile) */
   EsCl = 'ES_CL',
+  /** Spanish (Colombia) */
   EsCo = 'ES_CO',
+  /** Spanish (Costa Rica) */
   EsCr = 'ES_CR',
+  /** Spanish (Cuba) */
   EsCu = 'ES_CU',
+  /** Spanish (Dominican Republic) */
   EsDo = 'ES_DO',
+  /** Spanish (Ceuta & Melilla) */
   EsEa = 'ES_EA',
+  /** Spanish (Ecuador) */
   EsEc = 'ES_EC',
+  /** Spanish (Spain) */
   EsEs = 'ES_ES',
+  /** Spanish (Equatorial Guinea) */
   EsGq = 'ES_GQ',
+  /** Spanish (Guatemala) */
   EsGt = 'ES_GT',
+  /** Spanish (Honduras) */
   EsHn = 'ES_HN',
+  /** Spanish (Canary Islands) */
   EsIc = 'ES_IC',
+  /** Spanish (Mexico) */
   EsMx = 'ES_MX',
+  /** Spanish (Nicaragua) */
   EsNi = 'ES_NI',
+  /** Spanish (Panama) */
   EsPa = 'ES_PA',
+  /** Spanish (Peru) */
   EsPe = 'ES_PE',
+  /** Spanish (Philippines) */
   EsPh = 'ES_PH',
+  /** Spanish (Puerto Rico) */
   EsPr = 'ES_PR',
+  /** Spanish (Paraguay) */
   EsPy = 'ES_PY',
+  /** Spanish (El Salvador) */
   EsSv = 'ES_SV',
+  /** Spanish (United States) */
   EsUs = 'ES_US',
+  /** Spanish (Uruguay) */
   EsUy = 'ES_UY',
+  /** Spanish (Venezuela) */
   EsVe = 'ES_VE',
+  /** Estonian */
   Et = 'ET',
+  /** Estonian (Estonia) */
   EtEe = 'ET_EE',
+  /** Basque */
   Eu = 'EU',
+  /** Basque (Spain) */
   EuEs = 'EU_ES',
+  /** Ewondo */
   Ewo = 'EWO',
+  /** Ewondo (Cameroon) */
   EwoCm = 'EWO_CM',
+  /** Persian */
   Fa = 'FA',
+  /** Persian (Afghanistan) */
   FaAf = 'FA_AF',
+  /** Persian (Iran) */
   FaIr = 'FA_IR',
+  /** Fulah */
   Ff = 'FF',
+  /** Fulah (Adlam) */
   FfAdlm = 'FF_ADLM',
+  /** Fulah (Adlam, Burkina Faso) */
   FfAdlmBf = 'FF_ADLM_BF',
+  /** Fulah (Adlam, Cameroon) */
   FfAdlmCm = 'FF_ADLM_CM',
+  /** Fulah (Adlam, Ghana) */
   FfAdlmGh = 'FF_ADLM_GH',
+  /** Fulah (Adlam, Gambia) */
   FfAdlmGm = 'FF_ADLM_GM',
+  /** Fulah (Adlam, Guinea) */
   FfAdlmGn = 'FF_ADLM_GN',
+  /** Fulah (Adlam, Guinea-Bissau) */
   FfAdlmGw = 'FF_ADLM_GW',
+  /** Fulah (Adlam, Liberia) */
   FfAdlmLr = 'FF_ADLM_LR',
+  /** Fulah (Adlam, Mauritania) */
   FfAdlmMr = 'FF_ADLM_MR',
+  /** Fulah (Adlam, Niger) */
   FfAdlmNe = 'FF_ADLM_NE',
+  /** Fulah (Adlam, Nigeria) */
   FfAdlmNg = 'FF_ADLM_NG',
+  /** Fulah (Adlam, Sierra Leone) */
   FfAdlmSl = 'FF_ADLM_SL',
+  /** Fulah (Adlam, Senegal) */
   FfAdlmSn = 'FF_ADLM_SN',
+  /** Fulah (Latin) */
   FfLatn = 'FF_LATN',
+  /** Fulah (Latin, Burkina Faso) */
   FfLatnBf = 'FF_LATN_BF',
+  /** Fulah (Latin, Cameroon) */
   FfLatnCm = 'FF_LATN_CM',
+  /** Fulah (Latin, Ghana) */
   FfLatnGh = 'FF_LATN_GH',
+  /** Fulah (Latin, Gambia) */
   FfLatnGm = 'FF_LATN_GM',
+  /** Fulah (Latin, Guinea) */
   FfLatnGn = 'FF_LATN_GN',
+  /** Fulah (Latin, Guinea-Bissau) */
   FfLatnGw = 'FF_LATN_GW',
+  /** Fulah (Latin, Liberia) */
   FfLatnLr = 'FF_LATN_LR',
+  /** Fulah (Latin, Mauritania) */
   FfLatnMr = 'FF_LATN_MR',
+  /** Fulah (Latin, Niger) */
   FfLatnNe = 'FF_LATN_NE',
+  /** Fulah (Latin, Nigeria) */
   FfLatnNg = 'FF_LATN_NG',
+  /** Fulah (Latin, Sierra Leone) */
   FfLatnSl = 'FF_LATN_SL',
+  /** Fulah (Latin, Senegal) */
   FfLatnSn = 'FF_LATN_SN',
+  /** Finnish */
   Fi = 'FI',
+  /** Filipino */
   Fil = 'FIL',
+  /** Filipino (Philippines) */
   FilPh = 'FIL_PH',
+  /** Finnish (Finland) */
   FiFi = 'FI_FI',
+  /** Faroese */
   Fo = 'FO',
+  /** Faroese (Denmark) */
   FoDk = 'FO_DK',
+  /** Faroese (Faroe Islands) */
   FoFo = 'FO_FO',
+  /** French */
   Fr = 'FR',
+  /** French (Belgium) */
   FrBe = 'FR_BE',
+  /** French (Burkina Faso) */
   FrBf = 'FR_BF',
+  /** French (Burundi) */
   FrBi = 'FR_BI',
+  /** French (Benin) */
   FrBj = 'FR_BJ',
+  /** French (St. Barthélemy) */
   FrBl = 'FR_BL',
+  /** French (Canada) */
   FrCa = 'FR_CA',
+  /** French (Congo - Kinshasa) */
   FrCd = 'FR_CD',
+  /** French (Central African Republic) */
   FrCf = 'FR_CF',
+  /** French (Congo - Brazzaville) */
   FrCg = 'FR_CG',
+  /** French (Switzerland) */
   FrCh = 'FR_CH',
+  /** French (Côte d’Ivoire) */
   FrCi = 'FR_CI',
+  /** French (Cameroon) */
   FrCm = 'FR_CM',
+  /** French (Djibouti) */
   FrDj = 'FR_DJ',
+  /** French (Algeria) */
   FrDz = 'FR_DZ',
+  /** French (France) */
   FrFr = 'FR_FR',
+  /** French (Gabon) */
   FrGa = 'FR_GA',
+  /** French (French Guiana) */
   FrGf = 'FR_GF',
+  /** French (Guinea) */
   FrGn = 'FR_GN',
+  /** French (Guadeloupe) */
   FrGp = 'FR_GP',
+  /** French (Equatorial Guinea) */
   FrGq = 'FR_GQ',
+  /** French (Haiti) */
   FrHt = 'FR_HT',
+  /** French (Comoros) */
   FrKm = 'FR_KM',
+  /** French (Luxembourg) */
   FrLu = 'FR_LU',
+  /** French (Morocco) */
   FrMa = 'FR_MA',
+  /** French (Monaco) */
   FrMc = 'FR_MC',
+  /** French (St. Martin) */
   FrMf = 'FR_MF',
+  /** French (Madagascar) */
   FrMg = 'FR_MG',
+  /** French (Mali) */
   FrMl = 'FR_ML',
+  /** French (Martinique) */
   FrMq = 'FR_MQ',
+  /** French (Mauritania) */
   FrMr = 'FR_MR',
+  /** French (Mauritius) */
   FrMu = 'FR_MU',
+  /** French (New Caledonia) */
   FrNc = 'FR_NC',
+  /** French (Niger) */
   FrNe = 'FR_NE',
+  /** French (French Polynesia) */
   FrPf = 'FR_PF',
+  /** French (St. Pierre & Miquelon) */
   FrPm = 'FR_PM',
+  /** French (Réunion) */
   FrRe = 'FR_RE',
+  /** French (Rwanda) */
   FrRw = 'FR_RW',
+  /** French (Seychelles) */
   FrSc = 'FR_SC',
+  /** French (Senegal) */
   FrSn = 'FR_SN',
+  /** French (Syria) */
   FrSy = 'FR_SY',
+  /** French (Chad) */
   FrTd = 'FR_TD',
+  /** French (Togo) */
   FrTg = 'FR_TG',
+  /** French (Tunisia) */
   FrTn = 'FR_TN',
+  /** French (Vanuatu) */
   FrVu = 'FR_VU',
+  /** French (Wallis & Futuna) */
   FrWf = 'FR_WF',
+  /** French (Mayotte) */
   FrYt = 'FR_YT',
+  /** Friulian */
   Fur = 'FUR',
+  /** Friulian (Italy) */
   FurIt = 'FUR_IT',
+  /** Western Frisian */
   Fy = 'FY',
+  /** Western Frisian (Netherlands) */
   FyNl = 'FY_NL',
+  /** Irish */
   Ga = 'GA',
+  /** Irish (United Kingdom) */
   GaGb = 'GA_GB',
+  /** Irish (Ireland) */
   GaIe = 'GA_IE',
+  /** Scottish Gaelic */
   Gd = 'GD',
+  /** Scottish Gaelic (United Kingdom) */
   GdGb = 'GD_GB',
+  /** Galician */
   Gl = 'GL',
+  /** Galician (Spain) */
   GlEs = 'GL_ES',
+  /** Swiss German */
   Gsw = 'GSW',
+  /** Swiss German (Switzerland) */
   GswCh = 'GSW_CH',
+  /** Swiss German (France) */
   GswFr = 'GSW_FR',
+  /** Swiss German (Liechtenstein) */
   GswLi = 'GSW_LI',
+  /** Gujarati */
   Gu = 'GU',
+  /** Gusii */
   Guz = 'GUZ',
+  /** Gusii (Kenya) */
   GuzKe = 'GUZ_KE',
+  /** Gujarati (India) */
   GuIn = 'GU_IN',
+  /** Manx */
   Gv = 'GV',
+  /** Manx (Isle of Man) */
   GvIm = 'GV_IM',
+  /** Hausa */
   Ha = 'HA',
+  /** Hawaiian */
   Haw = 'HAW',
+  /** Hawaiian (United States) */
   HawUs = 'HAW_US',
+  /** Hausa (Ghana) */
   HaGh = 'HA_GH',
+  /** Hausa (Niger) */
   HaNe = 'HA_NE',
+  /** Hausa (Nigeria) */
   HaNg = 'HA_NG',
+  /** Hebrew */
   He = 'HE',
+  /** Hebrew (Israel) */
   HeIl = 'HE_IL',
+  /** Hindi */
   Hi = 'HI',
+  /** Hindi (India) */
   HiIn = 'HI_IN',
+  /** Croatian */
   Hr = 'HR',
+  /** Croatian (Bosnia & Herzegovina) */
   HrBa = 'HR_BA',
+  /** Croatian (Croatia) */
   HrHr = 'HR_HR',
+  /** Upper Sorbian */
   Hsb = 'HSB',
+  /** Upper Sorbian (Germany) */
   HsbDe = 'HSB_DE',
+  /** Hungarian */
   Hu = 'HU',
+  /** Hungarian (Hungary) */
   HuHu = 'HU_HU',
+  /** Armenian */
   Hy = 'HY',
+  /** Armenian (Armenia) */
   HyAm = 'HY_AM',
+  /** Interlingua */
   Ia = 'IA',
+  /** Indonesian */
   Id = 'ID',
+  /** Indonesian (Indonesia) */
   IdId = 'ID_ID',
+  /** Igbo */
   Ig = 'IG',
+  /** Igbo (Nigeria) */
   IgNg = 'IG_NG',
+  /** Sichuan Yi */
   Ii = 'II',
+  /** Sichuan Yi (China) */
   IiCn = 'II_CN',
+  /** Icelandic */
   Is = 'IS',
+  /** Icelandic (Iceland) */
   IsIs = 'IS_IS',
+  /** Italian */
   It = 'IT',
+  /** Italian (Switzerland) */
   ItCh = 'IT_CH',
+  /** Italian (Italy) */
   ItIt = 'IT_IT',
+  /** Italian (San Marino) */
   ItSm = 'IT_SM',
+  /** Italian (Vatican City) */
   ItVa = 'IT_VA',
+  /** Japanese */
   Ja = 'JA',
+  /** Japanese (Japan) */
   JaJp = 'JA_JP',
+  /** Ngomba */
   Jgo = 'JGO',
+  /** Ngomba (Cameroon) */
   JgoCm = 'JGO_CM',
+  /** Machame */
   Jmc = 'JMC',
+  /** Machame (Tanzania) */
   JmcTz = 'JMC_TZ',
+  /** Javanese */
   Jv = 'JV',
+  /** Javanese (Indonesia) */
   JvId = 'JV_ID',
+  /** Georgian */
   Ka = 'KA',
+  /** Kabyle */
   Kab = 'KAB',
+  /** Kabyle (Algeria) */
   KabDz = 'KAB_DZ',
+  /** Kamba */
   Kam = 'KAM',
+  /** Kamba (Kenya) */
   KamKe = 'KAM_KE',
+  /** Georgian (Georgia) */
   KaGe = 'KA_GE',
+  /** Makonde */
   Kde = 'KDE',
+  /** Makonde (Tanzania) */
   KdeTz = 'KDE_TZ',
+  /** Kabuverdianu */
   Kea = 'KEA',
+  /** Kabuverdianu (Cape Verde) */
   KeaCv = 'KEA_CV',
+  /** Koyra Chiini */
   Khq = 'KHQ',
+  /** Koyra Chiini (Mali) */
   KhqMl = 'KHQ_ML',
+  /** Kikuyu */
   Ki = 'KI',
+  /** Kikuyu (Kenya) */
   KiKe = 'KI_KE',
+  /** Kazakh */
   Kk = 'KK',
+  /** Kako */
   Kkj = 'KKJ',
+  /** Kako (Cameroon) */
   KkjCm = 'KKJ_CM',
+  /** Kazakh (Kazakhstan) */
   KkKz = 'KK_KZ',
+  /** Kalaallisut */
   Kl = 'KL',
+  /** Kalenjin */
   Kln = 'KLN',
+  /** Kalenjin (Kenya) */
   KlnKe = 'KLN_KE',
+  /** Kalaallisut (Greenland) */
   KlGl = 'KL_GL',
+  /** Khmer */
   Km = 'KM',
+  /** Khmer (Cambodia) */
   KmKh = 'KM_KH',
+  /** Kannada */
   Kn = 'KN',
+  /** Kannada (India) */
   KnIn = 'KN_IN',
+  /** Korean */
   Ko = 'KO',
+  /** Konkani */
   Kok = 'KOK',
+  /** Konkani (India) */
   KokIn = 'KOK_IN',
+  /** Korean (North Korea) */
   KoKp = 'KO_KP',
+  /** Korean (South Korea) */
   KoKr = 'KO_KR',
+  /** Kashmiri */
   Ks = 'KS',
+  /** Shambala */
   Ksb = 'KSB',
+  /** Shambala (Tanzania) */
   KsbTz = 'KSB_TZ',
+  /** Bafia */
   Ksf = 'KSF',
+  /** Bafia (Cameroon) */
   KsfCm = 'KSF_CM',
+  /** Colognian */
   Ksh = 'KSH',
+  /** Colognian (Germany) */
   KshDe = 'KSH_DE',
+  /** Kashmiri (Arabic) */
   KsArab = 'KS_ARAB',
+  /** Kashmiri (Arabic, India) */
   KsArabIn = 'KS_ARAB_IN',
+  /** Kurdish */
   Ku = 'KU',
+  /** Kurdish (Turkey) */
   KuTr = 'KU_TR',
+  /** Cornish */
   Kw = 'KW',
+  /** Cornish (United Kingdom) */
   KwGb = 'KW_GB',
+  /** Kyrgyz */
   Ky = 'KY',
+  /** Kyrgyz (Kyrgyzstan) */
   KyKg = 'KY_KG',
+  /** Langi */
   Lag = 'LAG',
+  /** Langi (Tanzania) */
   LagTz = 'LAG_TZ',
+  /** Luxembourgish */
   Lb = 'LB',
+  /** Luxembourgish (Luxembourg) */
   LbLu = 'LB_LU',
+  /** Ganda */
   Lg = 'LG',
+  /** Ganda (Uganda) */
   LgUg = 'LG_UG',
+  /** Lakota */
   Lkt = 'LKT',
+  /** Lakota (United States) */
   LktUs = 'LKT_US',
+  /** Lingala */
   Ln = 'LN',
+  /** Lingala (Angola) */
   LnAo = 'LN_AO',
+  /** Lingala (Congo - Kinshasa) */
   LnCd = 'LN_CD',
+  /** Lingala (Central African Republic) */
   LnCf = 'LN_CF',
+  /** Lingala (Congo - Brazzaville) */
   LnCg = 'LN_CG',
+  /** Lao */
   Lo = 'LO',
+  /** Lao (Laos) */
   LoLa = 'LO_LA',
+  /** Northern Luri */
   Lrc = 'LRC',
+  /** Northern Luri (Iraq) */
   LrcIq = 'LRC_IQ',
+  /** Northern Luri (Iran) */
   LrcIr = 'LRC_IR',
+  /** Lithuanian */
   Lt = 'LT',
+  /** Lithuanian (Lithuania) */
   LtLt = 'LT_LT',
+  /** Luba-Katanga */
   Lu = 'LU',
+  /** Luo */
   Luo = 'LUO',
+  /** Luo (Kenya) */
   LuoKe = 'LUO_KE',
+  /** Luyia */
   Luy = 'LUY',
+  /** Luyia (Kenya) */
   LuyKe = 'LUY_KE',
+  /** Luba-Katanga (Congo - Kinshasa) */
   LuCd = 'LU_CD',
+  /** Latvian */
   Lv = 'LV',
+  /** Latvian (Latvia) */
   LvLv = 'LV_LV',
+  /** Maithili */
   Mai = 'MAI',
+  /** Maithili (India) */
   MaiIn = 'MAI_IN',
+  /** Masai */
   Mas = 'MAS',
+  /** Masai (Kenya) */
   MasKe = 'MAS_KE',
+  /** Masai (Tanzania) */
   MasTz = 'MAS_TZ',
+  /** Meru */
   Mer = 'MER',
+  /** Meru (Kenya) */
   MerKe = 'MER_KE',
+  /** Morisyen */
   Mfe = 'MFE',
+  /** Morisyen (Mauritius) */
   MfeMu = 'MFE_MU',
+  /** Malagasy */
   Mg = 'MG',
+  /** Makhuwa-Meetto */
   Mgh = 'MGH',
+  /** Makhuwa-Meetto (Mozambique) */
   MghMz = 'MGH_MZ',
+  /** Metaʼ */
   Mgo = 'MGO',
+  /** Metaʼ (Cameroon) */
   MgoCm = 'MGO_CM',
+  /** Malagasy (Madagascar) */
   MgMg = 'MG_MG',
+  /** Maori */
   Mi = 'MI',
+  /** Maori (New Zealand) */
   MiNz = 'MI_NZ',
+  /** Macedonian */
   Mk = 'MK',
+  /** Macedonian (North Macedonia) */
   MkMk = 'MK_MK',
+  /** Malayalam */
   Ml = 'ML',
+  /** Malayalam (India) */
   MlIn = 'ML_IN',
+  /** Mongolian */
   Mn = 'MN',
+  /** Manipuri */
   Mni = 'MNI',
+  /** Manipuri (Bangla) */
   MniBeng = 'MNI_BENG',
+  /** Manipuri (Bangla, India) */
   MniBengIn = 'MNI_BENG_IN',
+  /** Mongolian (Mongolia) */
   MnMn = 'MN_MN',
+  /** Marathi */
   Mr = 'MR',
+  /** Marathi (India) */
   MrIn = 'MR_IN',
+  /** Malay */
   Ms = 'MS',
+  /** Malay (Brunei) */
   MsBn = 'MS_BN',
+  /** Malay (Indonesia) */
   MsId = 'MS_ID',
+  /** Malay (Malaysia) */
   MsMy = 'MS_MY',
+  /** Malay (Singapore) */
   MsSg = 'MS_SG',
+  /** Maltese */
   Mt = 'MT',
+  /** Maltese (Malta) */
   MtMt = 'MT_MT',
+  /** Mundang */
   Mua = 'MUA',
+  /** Mundang (Cameroon) */
   MuaCm = 'MUA_CM',
+  /** Burmese */
   My = 'MY',
+  /** Burmese (Myanmar (Burma)) */
   MyMm = 'MY_MM',
+  /** Mazanderani */
   Mzn = 'MZN',
+  /** Mazanderani (Iran) */
   MznIr = 'MZN_IR',
+  /** Nama */
   Naq = 'NAQ',
+  /** Nama (Namibia) */
   NaqNa = 'NAQ_NA',
+  /** Norwegian Bokmål */
   Nb = 'NB',
+  /** Norwegian Bokmål (Norway) */
   NbNo = 'NB_NO',
+  /** Norwegian Bokmål (Svalbard & Jan Mayen) */
   NbSj = 'NB_SJ',
+  /** North Ndebele */
   Nd = 'ND',
+  /** Low German */
   Nds = 'NDS',
+  /** Low German (Germany) */
   NdsDe = 'NDS_DE',
+  /** Low German (Netherlands) */
   NdsNl = 'NDS_NL',
+  /** North Ndebele (Zimbabwe) */
   NdZw = 'ND_ZW',
+  /** Nepali */
   Ne = 'NE',
+  /** Nepali (India) */
   NeIn = 'NE_IN',
+  /** Nepali (Nepal) */
   NeNp = 'NE_NP',
+  /** Dutch */
   Nl = 'NL',
+  /** Dutch (Aruba) */
   NlAw = 'NL_AW',
+  /** Dutch (Belgium) */
   NlBe = 'NL_BE',
+  /** Dutch (Caribbean Netherlands) */
   NlBq = 'NL_BQ',
+  /** Dutch (Curaçao) */
   NlCw = 'NL_CW',
+  /** Dutch (Netherlands) */
   NlNl = 'NL_NL',
+  /** Dutch (Suriname) */
   NlSr = 'NL_SR',
+  /** Dutch (Sint Maarten) */
   NlSx = 'NL_SX',
+  /** Kwasio */
   Nmg = 'NMG',
+  /** Kwasio (Cameroon) */
   NmgCm = 'NMG_CM',
+  /** Norwegian Nynorsk */
   Nn = 'NN',
+  /** Ngiemboon */
   Nnh = 'NNH',
+  /** Ngiemboon (Cameroon) */
   NnhCm = 'NNH_CM',
+  /** Norwegian Nynorsk (Norway) */
   NnNo = 'NN_NO',
+  /** Nuer */
   Nus = 'NUS',
+  /** Nuer (South Sudan) */
   NusSs = 'NUS_SS',
+  /** Nyankole */
   Nyn = 'NYN',
+  /** Nyankole (Uganda) */
   NynUg = 'NYN_UG',
+  /** Oromo */
   Om = 'OM',
+  /** Oromo (Ethiopia) */
   OmEt = 'OM_ET',
+  /** Oromo (Kenya) */
   OmKe = 'OM_KE',
+  /** Odia */
   Or = 'OR',
+  /** Odia (India) */
   OrIn = 'OR_IN',
+  /** Ossetic */
   Os = 'OS',
+  /** Ossetic (Georgia) */
   OsGe = 'OS_GE',
+  /** Ossetic (Russia) */
   OsRu = 'OS_RU',
+  /** Punjabi */
   Pa = 'PA',
+  /** Punjabi (Arabic) */
   PaArab = 'PA_ARAB',
+  /** Punjabi (Arabic, Pakistan) */
   PaArabPk = 'PA_ARAB_PK',
+  /** Punjabi (Gurmukhi) */
   PaGuru = 'PA_GURU',
+  /** Punjabi (Gurmukhi, India) */
   PaGuruIn = 'PA_GURU_IN',
+  /** Nigerian Pidgin */
   Pcm = 'PCM',
+  /** Nigerian Pidgin (Nigeria) */
   PcmNg = 'PCM_NG',
+  /** Polish */
   Pl = 'PL',
+  /** Polish (Poland) */
   PlPl = 'PL_PL',
+  /** Prussian */
   Prg = 'PRG',
+  /** Pashto */
   Ps = 'PS',
+  /** Pashto (Afghanistan) */
   PsAf = 'PS_AF',
+  /** Pashto (Pakistan) */
   PsPk = 'PS_PK',
+  /** Portuguese */
   Pt = 'PT',
+  /** Portuguese (Angola) */
   PtAo = 'PT_AO',
+  /** Portuguese (Brazil) */
   PtBr = 'PT_BR',
+  /** Portuguese (Switzerland) */
   PtCh = 'PT_CH',
+  /** Portuguese (Cape Verde) */
   PtCv = 'PT_CV',
+  /** Portuguese (Equatorial Guinea) */
   PtGq = 'PT_GQ',
+  /** Portuguese (Guinea-Bissau) */
   PtGw = 'PT_GW',
+  /** Portuguese (Luxembourg) */
   PtLu = 'PT_LU',
+  /** Portuguese (Macao SAR China) */
   PtMo = 'PT_MO',
+  /** Portuguese (Mozambique) */
   PtMz = 'PT_MZ',
+  /** Portuguese (Portugal) */
   PtPt = 'PT_PT',
+  /** Portuguese (São Tomé & Príncipe) */
   PtSt = 'PT_ST',
+  /** Portuguese (Timor-Leste) */
   PtTl = 'PT_TL',
+  /** Quechua */
   Qu = 'QU',
+  /** Quechua (Bolivia) */
   QuBo = 'QU_BO',
+  /** Quechua (Ecuador) */
   QuEc = 'QU_EC',
+  /** Quechua (Peru) */
   QuPe = 'QU_PE',
+  /** Romansh */
   Rm = 'RM',
+  /** Romansh (Switzerland) */
   RmCh = 'RM_CH',
+  /** Rundi */
   Rn = 'RN',
+  /** Rundi (Burundi) */
   RnBi = 'RN_BI',
+  /** Romanian */
   Ro = 'RO',
+  /** Rombo */
   Rof = 'ROF',
+  /** Rombo (Tanzania) */
   RofTz = 'ROF_TZ',
+  /** Romanian (Moldova) */
   RoMd = 'RO_MD',
+  /** Romanian (Romania) */
   RoRo = 'RO_RO',
+  /** Russian */
   Ru = 'RU',
+  /** Russian (Belarus) */
   RuBy = 'RU_BY',
+  /** Russian (Kyrgyzstan) */
   RuKg = 'RU_KG',
+  /** Russian (Kazakhstan) */
   RuKz = 'RU_KZ',
+  /** Russian (Moldova) */
   RuMd = 'RU_MD',
+  /** Russian (Russia) */
   RuRu = 'RU_RU',
+  /** Russian (Ukraine) */
   RuUa = 'RU_UA',
+  /** Kinyarwanda */
   Rw = 'RW',
+  /** Rwa */
   Rwk = 'RWK',
+  /** Rwa (Tanzania) */
   RwkTz = 'RWK_TZ',
+  /** Kinyarwanda (Rwanda) */
   RwRw = 'RW_RW',
+  /** Sakha */
   Sah = 'SAH',
+  /** Sakha (Russia) */
   SahRu = 'SAH_RU',
+  /** Samburu */
   Saq = 'SAQ',
+  /** Samburu (Kenya) */
   SaqKe = 'SAQ_KE',
+  /** Santali */
   Sat = 'SAT',
+  /** Santali (Ol Chiki) */
   SatOlck = 'SAT_OLCK',
+  /** Santali (Ol Chiki, India) */
   SatOlckIn = 'SAT_OLCK_IN',
+  /** Sangu */
   Sbp = 'SBP',
+  /** Sangu (Tanzania) */
   SbpTz = 'SBP_TZ',
+  /** Sindhi */
   Sd = 'SD',
+  /** Sindhi (Arabic) */
   SdArab = 'SD_ARAB',
+  /** Sindhi (Arabic, Pakistan) */
   SdArabPk = 'SD_ARAB_PK',
+  /** Sindhi (Devanagari) */
   SdDeva = 'SD_DEVA',
+  /** Sindhi (Devanagari, India) */
   SdDevaIn = 'SD_DEVA_IN',
+  /** Northern Sami */
   Se = 'SE',
+  /** Sena */
   Seh = 'SEH',
+  /** Sena (Mozambique) */
   SehMz = 'SEH_MZ',
+  /** Koyraboro Senni */
   Ses = 'SES',
+  /** Koyraboro Senni (Mali) */
   SesMl = 'SES_ML',
+  /** Northern Sami (Finland) */
   SeFi = 'SE_FI',
+  /** Northern Sami (Norway) */
   SeNo = 'SE_NO',
+  /** Northern Sami (Sweden) */
   SeSe = 'SE_SE',
+  /** Sango */
   Sg = 'SG',
+  /** Sango (Central African Republic) */
   SgCf = 'SG_CF',
+  /** Tachelhit */
   Shi = 'SHI',
+  /** Tachelhit (Latin) */
   ShiLatn = 'SHI_LATN',
+  /** Tachelhit (Latin, Morocco) */
   ShiLatnMa = 'SHI_LATN_MA',
+  /** Tachelhit (Tifinagh) */
   ShiTfng = 'SHI_TFNG',
+  /** Tachelhit (Tifinagh, Morocco) */
   ShiTfngMa = 'SHI_TFNG_MA',
+  /** Sinhala */
   Si = 'SI',
+  /** Sinhala (Sri Lanka) */
   SiLk = 'SI_LK',
+  /** Slovak */
   Sk = 'SK',
+  /** Slovak (Slovakia) */
   SkSk = 'SK_SK',
+  /** Slovenian */
   Sl = 'SL',
+  /** Slovenian (Slovenia) */
   SlSi = 'SL_SI',
+  /** Inari Sami */
   Smn = 'SMN',
+  /** Inari Sami (Finland) */
   SmnFi = 'SMN_FI',
+  /** Shona */
   Sn = 'SN',
+  /** Shona (Zimbabwe) */
   SnZw = 'SN_ZW',
+  /** Somali */
   So = 'SO',
+  /** Somali (Djibouti) */
   SoDj = 'SO_DJ',
+  /** Somali (Ethiopia) */
   SoEt = 'SO_ET',
+  /** Somali (Kenya) */
   SoKe = 'SO_KE',
+  /** Somali (Somalia) */
   SoSo = 'SO_SO',
+  /** Albanian */
   Sq = 'SQ',
+  /** Albanian (Albania) */
   SqAl = 'SQ_AL',
+  /** Albanian (North Macedonia) */
   SqMk = 'SQ_MK',
+  /** Albanian (Kosovo) */
   SqXk = 'SQ_XK',
+  /** Serbian */
   Sr = 'SR',
+  /** Serbian (Cyrillic) */
   SrCyrl = 'SR_CYRL',
+  /** Serbian (Cyrillic, Bosnia & Herzegovina) */
   SrCyrlBa = 'SR_CYRL_BA',
+  /** Serbian (Cyrillic, Montenegro) */
   SrCyrlMe = 'SR_CYRL_ME',
+  /** Serbian (Cyrillic, Serbia) */
   SrCyrlRs = 'SR_CYRL_RS',
+  /** Serbian (Cyrillic, Kosovo) */
   SrCyrlXk = 'SR_CYRL_XK',
+  /** Serbian (Latin) */
   SrLatn = 'SR_LATN',
+  /** Serbian (Latin, Bosnia & Herzegovina) */
   SrLatnBa = 'SR_LATN_BA',
+  /** Serbian (Latin, Montenegro) */
   SrLatnMe = 'SR_LATN_ME',
+  /** Serbian (Latin, Serbia) */
   SrLatnRs = 'SR_LATN_RS',
+  /** Serbian (Latin, Kosovo) */
   SrLatnXk = 'SR_LATN_XK',
+  /** Sundanese */
   Su = 'SU',
+  /** Sundanese (Latin) */
   SuLatn = 'SU_LATN',
+  /** Sundanese (Latin, Indonesia) */
   SuLatnId = 'SU_LATN_ID',
+  /** Swedish */
   Sv = 'SV',
+  /** Swedish (Åland Islands) */
   SvAx = 'SV_AX',
+  /** Swedish (Finland) */
   SvFi = 'SV_FI',
+  /** Swedish (Sweden) */
   SvSe = 'SV_SE',
+  /** Swahili */
   Sw = 'SW',
+  /** Swahili (Congo - Kinshasa) */
   SwCd = 'SW_CD',
+  /** Swahili (Kenya) */
   SwKe = 'SW_KE',
+  /** Swahili (Tanzania) */
   SwTz = 'SW_TZ',
+  /** Swahili (Uganda) */
   SwUg = 'SW_UG',
+  /** Tamil */
   Ta = 'TA',
+  /** Tamil (India) */
   TaIn = 'TA_IN',
+  /** Tamil (Sri Lanka) */
   TaLk = 'TA_LK',
+  /** Tamil (Malaysia) */
   TaMy = 'TA_MY',
+  /** Tamil (Singapore) */
   TaSg = 'TA_SG',
+  /** Telugu */
   Te = 'TE',
+  /** Teso */
   Teo = 'TEO',
+  /** Teso (Kenya) */
   TeoKe = 'TEO_KE',
+  /** Teso (Uganda) */
   TeoUg = 'TEO_UG',
+  /** Telugu (India) */
   TeIn = 'TE_IN',
+  /** Tajik */
   Tg = 'TG',
+  /** Tajik (Tajikistan) */
   TgTj = 'TG_TJ',
+  /** Thai */
   Th = 'TH',
+  /** Thai (Thailand) */
   ThTh = 'TH_TH',
+  /** Tigrinya */
   Ti = 'TI',
+  /** Tigrinya (Eritrea) */
   TiEr = 'TI_ER',
+  /** Tigrinya (Ethiopia) */
   TiEt = 'TI_ET',
+  /** Turkmen */
   Tk = 'TK',
+  /** Turkmen (Turkmenistan) */
   TkTm = 'TK_TM',
+  /** Tongan */
   To = 'TO',
+  /** Tongan (Tonga) */
   ToTo = 'TO_TO',
+  /** Turkish */
   Tr = 'TR',
+  /** Turkish (Cyprus) */
   TrCy = 'TR_CY',
+  /** Turkish (Turkey) */
   TrTr = 'TR_TR',
+  /** Tatar */
   Tt = 'TT',
+  /** Tatar (Russia) */
   TtRu = 'TT_RU',
+  /** Tasawaq */
   Twq = 'TWQ',
+  /** Tasawaq (Niger) */
   TwqNe = 'TWQ_NE',
+  /** Central Atlas Tamazight */
   Tzm = 'TZM',
+  /** Central Atlas Tamazight (Morocco) */
   TzmMa = 'TZM_MA',
+  /** Uyghur */
   Ug = 'UG',
+  /** Uyghur (China) */
   UgCn = 'UG_CN',
+  /** Ukrainian */
   Uk = 'UK',
+  /** Ukrainian (Ukraine) */
   UkUa = 'UK_UA',
+  /** Urdu */
   Ur = 'UR',
+  /** Urdu (India) */
   UrIn = 'UR_IN',
+  /** Urdu (Pakistan) */
   UrPk = 'UR_PK',
+  /** Uzbek */
   Uz = 'UZ',
+  /** Uzbek (Arabic) */
   UzArab = 'UZ_ARAB',
+  /** Uzbek (Arabic, Afghanistan) */
   UzArabAf = 'UZ_ARAB_AF',
+  /** Uzbek (Cyrillic) */
   UzCyrl = 'UZ_CYRL',
+  /** Uzbek (Cyrillic, Uzbekistan) */
   UzCyrlUz = 'UZ_CYRL_UZ',
+  /** Uzbek (Latin) */
   UzLatn = 'UZ_LATN',
+  /** Uzbek (Latin, Uzbekistan) */
   UzLatnUz = 'UZ_LATN_UZ',
+  /** Vai */
   Vai = 'VAI',
+  /** Vai (Latin) */
   VaiLatn = 'VAI_LATN',
+  /** Vai (Latin, Liberia) */
   VaiLatnLr = 'VAI_LATN_LR',
+  /** Vai (Vai) */
   VaiVaii = 'VAI_VAII',
+  /** Vai (Vai, Liberia) */
   VaiVaiiLr = 'VAI_VAII_LR',
+  /** Vietnamese */
   Vi = 'VI',
+  /** Vietnamese (Vietnam) */
   ViVn = 'VI_VN',
+  /** Volapük */
   Vo = 'VO',
+  /** Vunjo */
   Vun = 'VUN',
+  /** Vunjo (Tanzania) */
   VunTz = 'VUN_TZ',
+  /** Walser */
   Wae = 'WAE',
+  /** Walser (Switzerland) */
   WaeCh = 'WAE_CH',
+  /** Wolof */
   Wo = 'WO',
+  /** Wolof (Senegal) */
   WoSn = 'WO_SN',
+  /** Xhosa */
   Xh = 'XH',
+  /** Xhosa (South Africa) */
   XhZa = 'XH_ZA',
+  /** Soga */
   Xog = 'XOG',
+  /** Soga (Uganda) */
   XogUg = 'XOG_UG',
+  /** Yangben */
   Yav = 'YAV',
+  /** Yangben (Cameroon) */
   YavCm = 'YAV_CM',
+  /** Yiddish */
   Yi = 'YI',
+  /** Yoruba */
   Yo = 'YO',
+  /** Yoruba (Benin) */
   YoBj = 'YO_BJ',
+  /** Yoruba (Nigeria) */
   YoNg = 'YO_NG',
+  /** Cantonese */
   Yue = 'YUE',
+  /** Cantonese (Simplified) */
   YueHans = 'YUE_HANS',
+  /** Cantonese (Simplified, China) */
   YueHansCn = 'YUE_HANS_CN',
+  /** Cantonese (Traditional) */
   YueHant = 'YUE_HANT',
+  /** Cantonese (Traditional, Hong Kong SAR China) */
   YueHantHk = 'YUE_HANT_HK',
+  /** Standard Moroccan Tamazight */
   Zgh = 'ZGH',
+  /** Standard Moroccan Tamazight (Morocco) */
   ZghMa = 'ZGH_MA',
+  /** Chinese */
   Zh = 'ZH',
+  /** Chinese (Simplified) */
   ZhHans = 'ZH_HANS',
+  /** Chinese (Simplified, China) */
   ZhHansCn = 'ZH_HANS_CN',
+  /** Chinese (Simplified, Hong Kong SAR China) */
   ZhHansHk = 'ZH_HANS_HK',
+  /** Chinese (Simplified, Macao SAR China) */
   ZhHansMo = 'ZH_HANS_MO',
+  /** Chinese (Simplified, Singapore) */
   ZhHansSg = 'ZH_HANS_SG',
+  /** Chinese (Traditional) */
   ZhHant = 'ZH_HANT',
+  /** Chinese (Traditional, Hong Kong SAR China) */
   ZhHantHk = 'ZH_HANT_HK',
+  /** Chinese (Traditional, Macao SAR China) */
   ZhHantMo = 'ZH_HANT_MO',
+  /** Chinese (Traditional, Taiwan) */
   ZhHantTw = 'ZH_HANT_TW',
+  /** Zulu */
   Zu = 'ZU',
+  /** Zulu (South Africa) */
   ZuZa = 'ZU_ZA'
 }
 
@@ -10775,6 +12069,22 @@ export type Mutation = {
   /** Install new app by using app manifest. Requires the following permissions: AUTHENTICATED_STAFF_USER and MANAGE_APPS. */
   readonly appInstall?: Maybe<AppInstall>;
   /**
+   * Add a problem to the calling app.
+   *
+   * Added in Saleor 3.22.
+   *
+   * Requires one of the following permissions: AUTHENTICATED_APP.
+   */
+  readonly appProblemCreate?: Maybe<AppProblemCreate>;
+  /**
+   * Dismiss problems for an app.
+   *
+   * Added in Saleor 3.22.
+   *
+   * Requires one of the following permissions: MANAGE_APPS, AUTHENTICATED_APP.
+   */
+  readonly appProblemDismiss?: Maybe<AppProblemDismiss>;
+  /**
    * Re-enable sync webhooks for provided app. Can be used to manually re-enable sync webhooks for the app before the cooldown period ends.
    *
    * Added in Saleor 3.21.
@@ -11321,24 +12631,28 @@ export type Mutation = {
    * Create new digital content. This mutation must be sent as a `multipart` request. More detailed specs of the upload format can be found here: https://github.com/jaydenseric/graphql-multipart-request-spec
    *
    * Requires one of the following permissions: MANAGE_PRODUCTS.
+   * @deprecated Support for Digital Content is deprecated and will be removed in Saleor v3.23.0. This functionality is legacy and undocumented, and is not part of the supported API. Users should not rely on this behavior.
    */
   readonly digitalContentCreate?: Maybe<DigitalContentCreate>;
   /**
    * Remove digital content assigned to given variant.
    *
    * Requires one of the following permissions: MANAGE_PRODUCTS.
+   * @deprecated Support for Digital Content is deprecated and will be removed in Saleor v3.23.0. This functionality is legacy and undocumented, and is not part of the supported API. Users should not rely on this behavior.
    */
   readonly digitalContentDelete?: Maybe<DigitalContentDelete>;
   /**
    * Updates digital content.
    *
    * Requires one of the following permissions: MANAGE_PRODUCTS.
+   * @deprecated Support for Digital Content is deprecated and will be removed in Saleor v3.23.0. This functionality is legacy and undocumented, and is not part of the supported API. Users should not rely on this behavior.
    */
   readonly digitalContentUpdate?: Maybe<DigitalContentUpdate>;
   /**
    * Generate new URL to digital content.
    *
    * Requires one of the following permissions: MANAGE_PRODUCTS.
+   * @deprecated Support for Digital Content is deprecated and will be removed in Saleor v3.23.0. This functionality is legacy and undocumented, and is not part of the supported API. Users should not rely on this behavior.
    */
   readonly digitalContentUrlCreate?: Maybe<DigitalContentUrlCreate>;
   /**
@@ -13042,6 +14356,16 @@ export type MutationAppFetchManifestArgs = {
 
 export type MutationAppInstallArgs = {
   input: AppInstallInput;
+};
+
+
+export type MutationAppProblemCreateArgs = {
+  input: AppProblemCreateInput;
+};
+
+
+export type MutationAppProblemDismissArgs = {
+  input: AppProblemDismissInput;
 };
 
 
@@ -23003,12 +24327,14 @@ export type Query = {
    * Look up digital content by ID.
    *
    * Requires one of the following permissions: MANAGE_PRODUCTS.
+   * @deprecated Support for Digital Content is deprecated and will be removed in Saleor v3.23.0. This functionality is legacy and undocumented, and is not part of the supported API. Users should not rely on this behavior.
    */
   readonly digitalContent?: Maybe<DigitalContent>;
   /**
    * List of digital content.
    *
    * Requires one of the following permissions: MANAGE_PRODUCTS.
+   * @deprecated Support for Digital Content is deprecated and will be removed in Saleor v3.23.0. This functionality is legacy and undocumented, and is not part of the supported API. Users should not rely on this behavior.
    */
   readonly digitalContents?: Maybe<DigitalContentCountableConnection>;
   /**
@@ -23266,9 +24592,17 @@ export type Query = {
   /**
    * Look up a transaction by ID.
    *
-   * Requires one of the following permissions: HANDLE_PAYMENTS.
+   * Requires one of the following permissions: HANDLE_PAYMENTS, MANAGE_ORDERS.
    */
   readonly transaction?: Maybe<TransactionItem>;
+  /**
+   * List of transactions. For apps with `MANAGE_ORDERS` permission, returns all transactions. For apps with just `HANDLE_PAYMENTS` permission, returns only transactions created by that app. For staff users, returns transactions from orders and checkouts in channels they have access to.
+   *
+   * Added in Saleor 3.22.
+   *
+   * Requires one of the following permissions: HANDLE_PAYMENTS, MANAGE_ORDERS.
+   */
+  readonly transactions?: Maybe<TransactionCountableConnection>;
   /**
    * Lookup a translatable item by ID.
    *
@@ -23872,6 +25206,15 @@ export type QueryTaxCountryConfigurationArgs = {
 export type QueryTransactionArgs = {
   id?: InputMaybe<Scalars['ID']>;
   token?: InputMaybe<Scalars['UUID']>;
+};
+
+
+export type QueryTransactionsArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<TransactionWhereInput>;
 };
 
 
@@ -25690,6 +27033,14 @@ export type Shop = ObjectWithMetadata & {
   readonly permissions: ReadonlyArray<Permission>;
   /** List of possible phone prefixes. */
   readonly phonePrefixes: ReadonlyArray<Scalars['String']>;
+  /**
+   * When enabled, address fields that are not valid for a given country (according to Google's i18n address data) will be preserved instead of being removed during validation. Validation errors are still returned.
+   *
+   * Added in Saleor 3.22.
+   *
+   * Requires one of the following permissions: MANAGE_SETTINGS.
+   */
+  readonly preserveAllAddressFields: Scalars['Boolean'];
   /** List of private metadata items. Requires staff permissions to access. */
   readonly privateMetadata: ReadonlyArray<MetadataItem>;
   /**
@@ -25912,6 +27263,12 @@ export type ShopSettingsInput = {
    * Warning: never store sensitive information, including financial data such as credit card details.
    */
   readonly metadata?: InputMaybe<ReadonlyArray<MetadataInput>>;
+  /**
+   * When enabled, address fields that are not valid for a given country (according to Google's i18n address data) will be preserved instead of being removed during validation. Validation errors are still returned.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly preserveAllAddressFields?: InputMaybe<Scalars['Boolean']>;
   /**
    * Shop private metadata. Requires permissions to modify and to read the metadata of the object it's attached to.
    *
@@ -27501,6 +28858,21 @@ export type TransactionChargeRequested = Event & {
   readonly version?: Maybe<Scalars['String']>;
 };
 
+export type TransactionCountableConnection = {
+  readonly edges: ReadonlyArray<TransactionCountableEdge>;
+  /** Pagination data for this connection. */
+  readonly pageInfo: PageInfo;
+  /** A total count of items in the collection. */
+  readonly totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type TransactionCountableEdge = {
+  /** A cursor for use in pagination. */
+  readonly cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  readonly node: TransactionItem;
+};
+
 /**
  * Creates transaction for checkout or order.
  *
@@ -27695,6 +29067,12 @@ export type TransactionFilterInput = {
   readonly metadata?: InputMaybe<MetadataFilterInput>;
   /** Filter by payment method details used to pay for the order. */
   readonly paymentMethodDetails?: InputMaybe<PaymentMethodDetailsFilterInput>;
+  /**
+   * Filter by PSP reference of transactions.
+   *
+   * Added in Saleor 3.22.
+   */
+  readonly pspReference?: InputMaybe<StringFilterInput>;
 };
 
 /**
@@ -28104,6 +29482,18 @@ export type TransactionUpdateInput = {
   readonly pspReference?: InputMaybe<Scalars['String']>;
 };
 
+export type TransactionWhereInput = {
+  /** List of conditions that must be met. */
+  readonly AND?: InputMaybe<ReadonlyArray<TransactionWhereInput>>;
+  /** A list of conditions of which at least one must be met. */
+  readonly OR?: InputMaybe<ReadonlyArray<TransactionWhereInput>>;
+  /** Filter by app identifier. */
+  readonly appIdentifier?: InputMaybe<StringFilterInput>;
+  readonly ids?: InputMaybe<ReadonlyArray<Scalars['ID']>>;
+  /** Filter by PSP reference. */
+  readonly pspReference?: InputMaybe<StringFilterInput>;
+};
+
 export type TranslatableItem = AttributeTranslatableContent | AttributeValueTranslatableContent | CategoryTranslatableContent | CollectionTranslatableContent | MenuItemTranslatableContent | PageTranslatableContent | ProductTranslatableContent | ProductVariantTranslatableContent | PromotionRuleTranslatableContent | PromotionTranslatableContent | SaleTranslatableContent | ShippingMethodTranslatableContent | VoucherTranslatableContent;
 
 export type TranslatableItemConnection = {
@@ -28420,6 +29810,7 @@ export type UserOrdersArgs = {
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<CustomerOrderWhereInput>;
 };
 
 
@@ -33255,6 +34646,29 @@ export default {
             ]
           },
           {
+            "name": "problems",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "NON_NULL",
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "AppProblem",
+                  "ofType": null
+                }
+              }
+            },
+            "args": [
+              {
+                "name": "limit",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "supportUrl",
             "type": {
               "kind": "SCALAR",
@@ -34589,6 +36003,266 @@ export default {
                 "kind": "SCALAR",
                 "name": "Any"
               }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AppProblem",
+        "fields": [
+          {
+            "name": "count",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "createdAt",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "dismissed",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AppProblemDismissed",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "isCritical",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "key",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "message",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "updatedAt",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "Node"
+          }
+        ]
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AppProblemCreate",
+        "fields": [
+          {
+            "name": "appProblem",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AppProblem",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "errors",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AppProblemCreateError",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AppProblemCreateError",
+        "fields": [
+          {
+            "name": "code",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "field",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "message",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AppProblemDismiss",
+        "fields": [
+          {
+            "name": "errors",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AppProblemDismissError",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AppProblemDismissError",
+        "fields": [
+          {
+            "name": "code",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "field",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "message",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AppProblemDismissed",
+        "fields": [
+          {
+            "name": "by",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "userEmail",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           }
@@ -55879,6 +57553,46 @@ export default {
             ]
           },
           {
+            "name": "appProblemCreate",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AppProblemCreate",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "appProblemDismiss",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AppProblemDismiss",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "appReenableSyncWebhooks",
             "type": {
               "kind": "OBJECT",
@@ -64842,6 +66556,10 @@ export default {
           {
             "kind": "OBJECT",
             "name": "AppInstallation"
+          },
+          {
+            "kind": "OBJECT",
+            "name": "AppProblem"
           },
           {
             "kind": "OBJECT",
@@ -87371,6 +89089,51 @@ export default {
             ]
           },
           {
+            "name": "transactions",
+            "type": {
+              "kind": "OBJECT",
+              "name": "TransactionCountableConnection",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "after",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "before",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "first",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "where",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "translation",
             "type": {
               "kind": "UNION",
@@ -92558,6 +94321,17 @@ export default {
             "args": []
           },
           {
+            "name": "preserveAllAddressFields",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
             "name": "privateMetadata",
             "type": {
               "kind": "NON_NULL",
@@ -96885,6 +98659,81 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "TransactionCountableConnection",
+        "fields": [
+          {
+            "name": "edges",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "TransactionCountableEdge",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "pageInfo",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PageInfo",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "totalCount",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "TransactionCountableEdge",
+        "fields": [
+          {
+            "name": "cursor",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "node",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "TransactionItem",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "TransactionCreate",
         "fields": [
           {
@@ -99260,6 +101109,13 @@ export default {
               },
               {
                 "name": "last",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "where",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
