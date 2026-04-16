@@ -33,15 +33,15 @@ export default orderFilterShippingMethodsWebhook.createHandler((req, res, ctx) =
     /**
      * Saleor event that triggers the webhook (here - ORDER_FILTER_SHIPPING_METHODS)
      */
-    event,
+    event: _event,
     /**
      * App's URL
      */
-    baseUrl,
+    baseUrl: _baseUrl,
     /**
      * Auth data (from APL) - contains token and saleorApiUrl that can be used to construct graphQL client
      */
-    authData,
+    authData: _authData,
   } = ctx;
 
   /**

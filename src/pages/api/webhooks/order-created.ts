@@ -32,11 +32,11 @@ export default orderCreatedWebhook.createHandler((req, res, ctx) => {
     /**
      * Saleor event that triggers the webhook (here - ORDER_CREATED)
      */
-    event,
+    event: _event,
     /**
      * App's URL
      */
-    baseUrl,
+    baseUrl: _baseUrl,
     /**
      * Auth data (from APL) - contains token and saleorApiUrl that can be used to construct graphQL client
      */
@@ -51,7 +51,7 @@ export default orderCreatedWebhook.createHandler((req, res, ctx) => {
   /**
    * Create GraphQL client to interact with Saleor API.
    */
-  const client = createClient(authData.saleorApiUrl, async () => ({ token: authData.token }));
+  const _client = createClient(authData.saleorApiUrl, async () => ({ token: authData.token }));
 
   /**
    * Now you can fetch additional data using urql.
