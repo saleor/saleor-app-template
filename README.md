@@ -19,7 +19,7 @@
 </div>
 
 > [!TIP]
-> Questions or issues? Check our [discord](https://discord.gg/H52JTZAtSH) channel for help.
+> Questions or issues? Check our [discord](https://saleor.io/discord) channel for help.
 
 ### What is Saleor App
 
