@@ -50,7 +50,7 @@ export default createManifestHandler({
     const saleorMajor = schemaVersion && schemaVersion[0];
     const saleorMinor = schemaVersion && schemaVersion[1]
 
-    const isAbove3_21 = saleorMajor >= 3 && saleorMinor >= 22;
+    const isAbove3_21 = (saleorMajor ?? 0) >= 3 && (saleorMinor ?? 0) >= 22;
 
     const extensions = isAbove3_21 ? extensionsForLatestSaleor : [];
 
