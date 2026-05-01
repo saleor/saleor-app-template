@@ -20,7 +20,7 @@ export default createManifestHandler({
     const iframeBaseUrl = process.env.APP_IFRAME_BASE_URL ?? appBaseUrl;
     const apiBaseURL = process.env.APP_API_BASE_URL ?? appBaseUrl;
 
-    const extensionsForSaleor3_22: AppExtension[] = [
+    const extensionsForLatestSaleor: AppExtension[] = [
         {
           url: apiBaseURL + "/api/server-widget",
           permissions: [],
@@ -50,9 +50,9 @@ export default createManifestHandler({
     const saleorMajor = schemaVersion && schemaVersion[0];
     const saleorMinor = schemaVersion && schemaVersion[1]
 
-    const is3_22 = saleorMajor === 3 && saleorMinor === 22;
+    const isAbove3_21 = (saleorMajor ?? 0) >= 3 && (saleorMinor ?? 0) >= 22;
 
-    const extensions = is3_22 ? extensionsForSaleor3_22 : [];
+    const extensions = isAbove3_21 ? extensionsForLatestSaleor : [];
 
     const manifest: AppManifest = {
       name: "Saleor App Template",
