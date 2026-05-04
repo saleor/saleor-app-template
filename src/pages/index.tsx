@@ -2,7 +2,9 @@ import { actions, useAppBridge } from "@saleor/app-sdk/app-bridge";
 import { Box, Button, Input, Text } from "@saleor/macaw-ui";
 import { NextPage } from "next";
 import Link from "next/link";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { MouseEventHandler } from "react";
+
+import { useIsClient } from "@/hooks/useIsClient";
 
 const AddToSaleorForm = () => (
   <Box
@@ -17,7 +19,7 @@ const AddToSaleorForm = () => (
       const manifestUrl = new URL("/api/manifest", window.location.origin);
       const redirectUrl = new URL(
         `/dashboard/apps/install?manifestUrl=${manifestUrl}`,
-        saleorUrl as string
+        saleorUrl as string,
       ).href;
 
       window.open(redirectUrl, "_blank");
@@ -34,11 +36,8 @@ const AddToSaleorForm = () => (
  */
 const IndexPage: NextPage = () => {
   const { appBridgeState, appBridge } = useAppBridge();
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isClient = useIsClient();
 
   const handleLinkClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
     /**
@@ -51,7 +50,7 @@ const IndexPage: NextPage = () => {
         actions.Redirect({
           newContext: true,
           to: e.currentTarget.href,
-        })
+        }),
       );
     }
 
@@ -60,7 +59,7 @@ const IndexPage: NextPage = () => {
      */
   };
 
-  const isLocalHost = global.location.href.includes("localhost");
+  const isLocalHost = isClient && globalThis.location.href.includes("localhost");
 
   return (
     <Box padding={8}>
@@ -69,7 +68,7 @@ const IndexPage: NextPage = () => {
         Saleor App Template is a minimalistic boilerplate that provides a working example of a
         Saleor app.
       </Text>
-      {appBridgeState?.ready && mounted && (
+      {appBridgeState?.ready && isClient && (
         <Link href="/actions">
           <Button variant="secondary">See what your app can do →</Button>
         </Link>
@@ -193,7 +192,7 @@ const IndexPage: NextPage = () => {
         </li>
       </ul>
 
-      {mounted && !isLocalHost && !appBridgeState?.ready && (
+      {isClient && !isLocalHost && !appBridgeState?.ready && (
         <>
           <Text marginBottom={4} as={"p"}>
             Install this app in your Dashboard and get extra powers!

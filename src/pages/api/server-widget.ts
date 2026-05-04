@@ -1,7 +1,9 @@
-import { NextApiHandler } from "next";
-import { ExtensionPOSTAttributes } from "@saleor/app-sdk/types";
 import { verifyJWT } from "@saleor/app-sdk/auth";
+import { ExtensionPOSTAttributes } from "@saleor/app-sdk/types";
+import { NextApiHandler } from "next";
+
 import { createClient } from "@/lib/create-graphq-client";
+
 import { ProductTimestampsDocument } from "../../../generated/graphql";
 
 const handler: NextApiHandler = async (req, res) => {
@@ -16,7 +18,7 @@ const handler: NextApiHandler = async (req, res) => {
       token: accessToken,
       saleorApiUrl,
     });
-  } catch (e) {
+  } catch (_e) {
     return res.status(401).send("Not authorized");
   }
 
