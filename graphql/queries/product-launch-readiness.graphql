@@ -1,0 +1,23 @@
+query ProductLaunchReadiness($id: ID!) {
+  product(id: $id) {
+    name
+    description
+    productType {
+      isShippingRequired
+    }
+    media {
+      id
+    }
+    channelListings {
+      id
+      discountedPrice {
+        amount
+        currency
+      }
+    }
+    weight {
+      value
+      unit
+    }
+  }
+}

@@ -89,6 +89,10 @@ export default createManifestHandler({
          * This can be removed
          */
         "MANAGE_ORDERS",
+        /**
+         * Required by the product launch widget to read product channel listings.
+         */
+        "MANAGE_PRODUCTS",
       ],
       id: "saleor.app",
       version: packageJson.version,
