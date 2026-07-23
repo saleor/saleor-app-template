@@ -45,6 +45,26 @@ export default createManifestHandler({
             },
           },
         },
+        {
+          url: iframeBaseUrl + "/product-launch-widget",
+          permissions: [],
+          mount: "PRODUCT_DETAILS_WIDGETS",
+          label: "Product launch",
+          target: "WIDGET",
+          options: {
+            widgetTarget: {
+              method: "GET",
+            },
+          },
+        },
+        {
+          url: iframeBaseUrl + "/product-launch-checklist",
+          identifier: "product-launch-checklist",
+          permissions: [],
+          mount: "PRODUCT_DETAILS_WIDGETS",
+          label: "Product launch checklist",
+          target: "POPUP",
+        },
       ]
 
     const saleorMajor = schemaVersion && schemaVersion[0];
