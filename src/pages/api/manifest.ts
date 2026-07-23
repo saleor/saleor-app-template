@@ -47,7 +47,7 @@ export default createManifestHandler({
         },
         {
           url: iframeBaseUrl + "/product-launch-widget",
-          permissions: [],
+          permissions: ["MANAGE_PRODUCTS"],
           mount: "PRODUCT_DETAILS_WIDGETS",
           label: "Product launch",
           target: "WIDGET",
