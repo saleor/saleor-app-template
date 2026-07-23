@@ -26,7 +26,7 @@ const hasMeaningfulContent = (value: unknown): boolean => {
   if (typeof value === "string") {
     return (
       value
-        .replace(/<[^>]*>/g, "")
+        .replace(/[<>]/g, "")
         .replace(/&nbsp;/g, " ")
         .trim().length > 0
     );
