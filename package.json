@@ -8,7 +8,7 @@
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "fetch-schema": "curl https://raw.githubusercontent.com/saleor/saleor/${npm_package_config_saleor_schemaVersion}/saleor/graphql/schema.graphql > graphql/schema.graphql",
     "test": "vitest",
     "check-types": "tsc --noEmit",
@@ -28,9 +28,9 @@
   },
   "dependencies": {
     "@saleor/app-sdk": "1.12.0",
-    "@saleor/macaw-ui": "1.4.1",
+    "@saleor/macaw-ui": "2.0.0",
     "@urql/exchange-auth": "^1.0.0",
-    "next": "15.5.27",
+    "next": "16.4.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "urql": "^4.0.2"
@@ -65,7 +65,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "prettier": "^2.8.2",
-    "typescript": "5.0.4"
+    "typescript": "5.9.3"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint --cache --fix",
